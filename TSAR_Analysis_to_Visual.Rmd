@@ -1,0 +1,73 @@
+---
+title: "TSAR Analysis to Visualization"
+author: "Candy Gao"
+date: "4/20/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# load libraries
+```{r}
+library(devtools)
+devtools::install_local("/Users/candygao/Desktop/TSAR_0.1.0.tar.gz")
+library(TSAR)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+```
+
+# intial analysis
+## data day 1
+```{r}
+raw_data1 <- read.delim(header = TRUE, skip = 0, nrow = 112976, "/Users/candygao/Desktop/qpcrresult/CA_IP_HCB_2_20220110_134917_RawData_Thermal Shift_02_55.eds.txt")
+x <- gam_analysis(raw_data1, smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+#write.tsar(read.tsar(x, code = 2), name = "tm_val", file = "csv")
+output <- read_tsar(x, code = 2)
+
+tmresult <- join_well_info("/Users/candygao/Desktop/qpcrresult/Well Information Template.xlsx", output, type = "by_template")
+head(tmresult)
+```
+
+## data day 2
+```{r}
+raw_data2 <- read.delim(header = TRUE, skip = 0, nrow = 112976, "/Users/candygao/Desktop/qpcrresult/CA_IP6_HCB_3_20220110_134240_RawData_20220110_CA_IP6_HCB_3.eds.txt")
+y <- gam_analysis(raw_data2, smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+#write.tsar(read.tsar(x, code = 2), name = "tm_val", file = "csv")
+output2 <- read_tsar(y, code = 2)
+tmresult2 <- join_well_info("/Users/candygao/Desktop/qpcrresult/CA_IP6_HCB_3_20220110_134240_AnalysisResults.txt", output, type = "by_well")
+head(tmresult2)
+```
+
+
+
+
+# merge data
+```{r}
+Bigdata <- merge_norm(tmresult, tmresult2, 
+                      "CA_IP_HCB_2_20220110_134917", 
+                      "CA_IP6_HCB_3_20220110_134240", 
+                      "20220110", "20220110")
+```
+
+
+```{r}
+condition_IDs(Bigdata)
+well_IDs(Bigdata)
+conclusion <- Bigdata%>%
+  filter(condition_ID != "NA_NA") %>%
+  filter(condition_ID != "_")
+TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand", separate_legend = TRUE)
+```
+
+
+
+```{r}
+control_ID <- "CA121_Buffer"
+tsa_compare_plot(conclusion,
+                 y = "Fluorescence",
+                 control_condition = control_ID)
+```
+
