@@ -17,8 +17,9 @@ containing numeric values for normalizing.}
 the minimum and maximum observation. Each well can be
  normalized to either the minimum or maximum value with
   \code{by = "min"} or \code{by = "max"}, respectively. To normalize
-  all values to a numeric value or vector, set \code{by = "control"}.
-@param control_vect numeric vector to normalize the column "Fluorescence"
+  all values to a numeric value or vector, set \code{by = "control"}.}
+
+\item{control_vect}{numeric vector to normalize the column "Fluorescence"
 to. An individual number will normalize all measurements to be normalized
 to it. The vector will need to align with tsa_data$Fluorescence. Ensure
 \code{by = "control"}, else the supplied vector will be ignored.}

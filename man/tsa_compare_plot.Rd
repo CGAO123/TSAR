@@ -36,15 +36,6 @@ Automatically names the plots by the specified condition category.}
 
 \item{digits}{integer; the numer of decimal places to round for change in Tm
 calculations displayed in the subtitle of each plot..}
-
-\item{smooth}{logical; \code{smooth = TRUE} by default. When TRUE, linear
-regression by \code{\link[mgcv]{gam()}} is used to make clean lines on
-the plot. See \code{\link{tsa_average}} for more details. When FALSE,
-individual points are plotted (slows down rendering).}
-
-\item{separate_legend}{logical; \code{separate_legend = TRUE} by default.
-When TRUE, the ggplot2 legend is separated from the TSA curve.
-This is to help with readability. One ggplot is returned when FALSE.}
 }
 \value{
 Generates a number of ggplot objects equal to the number of unique

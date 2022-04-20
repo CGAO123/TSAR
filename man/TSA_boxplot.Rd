@@ -29,6 +29,10 @@ plot for comparison. This is represented in the legend. Set to NA to skip.}
 \item{label_by}{character string, either c("Ligand", "Protein").
 The condition category to group the boxes within the box
 plot. This is represented in the axis. Set to NA to skip.}
+
+\item{separate_legend}{logical; \code{separate_legend = TRUE} by default.
+When TRUE, the ggplot2 legend is separated from the TSA curve.
+This is to help with readability. One ggplot is returned when FALSE.}
 }
 \value{
 by default, two ggplots are returned: one TSA curve and one key.
