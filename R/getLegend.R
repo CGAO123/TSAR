@@ -1,6 +1,7 @@
 #' Extract ggplot2 legend
 #'
 #' A function to enable separation of legends from plots within the TSAR package
+#'
 #' @param input_plot a ggplot2 object
 #' @return two ggplots, one containing the legend and another containg all else.
 #' @export
@@ -14,7 +15,7 @@ get_legend <- function(input_plot) {
         warning("No Legend to Return")
     } else {
         legend <- legend_plot$grobs[[legend]]
-        legend_plot <- as_ggplot(legend)
+        legend_plot <- ggpubr::as_ggplot(legend)
         legend_plot <- legend_plot + theme_void()
         return(legend_plot)
     }
