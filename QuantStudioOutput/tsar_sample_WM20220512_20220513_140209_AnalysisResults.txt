@@ -1,0 +1,115 @@
+#Positive Hit Settings: dTm Boltzmann: > 2.0, dTm Derivative: > 2.0
+
+#	Well	Protein	Ligand	Buffer	Salt	Task	Tm B	dTm B	B Fit	Tm B Start	Tm B End	Flag Indicator	Single/Multiple	Analysis Mode	Tm D	dTm D	High Background	High NPC	Algorithm Failure	Sparse Data	Low Signal	Poor Fit	Replicate Mismatch	Multiple Melts	Reference Mismatch	Analysis Group	Experiment File Name
+1	A01	CA121 (HEX)	None (Buffer)	50 mM Tris (pH 8)		Sample	42.706352		1.2881064	26.020454	49.43085	0	Single	Auto	43.63027											AG 1	Thermal Shift_wm0512.eds
+2	A02	CA121 (HEX)	None (Buffer)	50 mM Tris (pH 8)		Sample	42.686886		1.3918245	21.9698	49.37128	0	Single	Auto	43.776623											AG 1	Thermal Shift_wm0512.eds
+3	A03	CA121 (HEX)	DMSO Vehicle	50 mM Tris (pH 8)		Sample	42.128754		1.311914	23.220737	48.65646	0	Single	Auto	43.33756											AG 1	Thermal Shift_wm0512.eds
+4	A04	CA121 (HEX)	DMSO Vehicle	50 mM Tris (pH 8)		Sample	43.419415		1.3218108	31.262476	58.663956	1	Single	Auto	43.483913									Yes		AG 1	Thermal Shift_wm0512.eds
+5	A05	CA121 (HEX)	PF74	50 mM Tris (pH 8)		Sample	45.47288		1.1272897	32.27514	55.50683	0	Single	Auto	45.679234											AG 1	Thermal Shift_wm0512.eds
+6	A06	CA121 (HEX)	PF74	50 mM Tris (pH 8)		Sample	45.099655		1.0067294	31.262476	58.06827	1	Single	Auto	45.53288									Yes		AG 1	Thermal Shift_wm0512.eds
+7	A07	CA121 (HEX)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	54.874702		1.3414729	39.363785	63.54857	0	Single	Auto	55.484985											AG 1	Thermal Shift_wm0512.eds
+8	A08	CA121 (HEX)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	54.402077		1.4262375	37.10018	62.952885	0	Single	Auto	55.192276											AG 1	Thermal Shift_wm0512.eds
+9	A09											0	Single	Auto													Thermal Shift_wm0512.eds
+10	A10											0	Single	Auto													Thermal Shift_wm0512.eds
+11	A11	Buffer	DMSO Vehicle	50 mM Tris (pH 8)		Sample						2	Single	Auto					Yes		Yes					AG 1	Thermal Shift_wm0512.eds
+12	A12	Buffer	DMSO Vehicle	50 mM Tris (pH 8)		Sample						2	Single	Auto					Yes		Yes					AG 1	Thermal Shift_wm0512.eds
+13	B01	CA FL (Mono)	None (Buffer)	50 mM Tris (pH 8)		Sample	52.539875		1.2821608	45.32063	58.24698	0	Single	Auto	52.8506											AG 1	Thermal Shift_wm0512.eds
+14	B02	CA FL (Mono)	None (Buffer)	50 mM Tris (pH 8)		Sample	52.40794		1.240821	45.082355	57.88957	1	Single	Auto	52.8506									Yes		AG 1	Thermal Shift_wm0512.eds
+15	B03	CA FL (Mono)	DMSO Vehicle	50 mM Tris (pH 8)		Sample	52.584133		1.2519864	46.03545	58.60439	0	Single	Auto	52.8506											AG 1	Thermal Shift_wm0512.eds
+16	B04	CA FL (Mono)	DMSO Vehicle	50 mM Tris (pH 8)		Sample	52.872257		1.2232964	46.214153	59.080936	0	Single	Auto	53.14331											AG 1	Thermal Shift_wm0512.eds
+17	B05	CA FL (Mono)	PF74	50 mM Tris (pH 8)		Sample	53.500546		1.3091803	45.201492	60.57015	0	Single	Auto	53.582375											AG 1	Thermal Shift_wm0512.eds
+18	B06	CA FL (Mono)	PF74	50 mM Tris (pH 8)		Sample	52.884468		1.355782	44.188828	59.200073	1	Single	Auto	53.289665									Yes		AG 1	Thermal Shift_wm0512.eds
+19	B07	CA FL (Mono)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	52.91204		1.1563658	45.797176	59.67662	0	Single	Auto	52.996956											AG 1	Thermal Shift_wm0512.eds
+20	B08	CA FL (Mono)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	52.824936		1.2100388	45.737606	59.31921	0	Single	Auto	52.996956											AG 1	Thermal Shift_wm0512.eds
+21	B09											0	Single	Auto													Thermal Shift_wm0512.eds
+22	B10											0	Single	Auto													Thermal Shift_wm0512.eds
+23	B11	Buffer	PF74	50 mM Tris (pH 8)		Sample						3	Single	Auto					Yes		Yes		Yes			AG 1	Thermal Shift_wm0512.eds
+24	B12	Buffer	PF74	50 mM Tris (pH 8)		Sample	22.57607		1.8595606	21.9698	25.663044	3	Single	Auto	86.073074						Yes	Yes	Yes			AG 1	Thermal Shift_wm0512.eds
+25	C01	CA121 (HEX)	None (Buffer)	50 mM Tris (pH 8)		Sample	42.537415		1.2778218	24.829086	49.192577	0	Single	Auto	43.63027											AG 1	Thermal Shift_wm0512.eds
+26	C02	CA121 (HEX)	None (Buffer)	50 mM Tris (pH 8)		Sample	42.57982		1.3223547	29.832834	48.954304	0	Single	Auto	43.63027											AG 1	Thermal Shift_wm0512.eds
+27	C03	CA121 (HEX)	IP6 (2uM)	50 mM Tris (pH 8)		Sample	43.034447		1.2721752	21.9698	49.847828	0	Single	Auto	44.069332											AG 1	Thermal Shift_wm0512.eds
+28	C04	CA121 (HEX)	IP6 (2uM)	50 mM Tris (pH 8)		Sample	42.879135		1.2213914	31.08377	49.490417	0	Single	Auto	44.215687											AG 1	Thermal Shift_wm0512.eds
+29	C05	CA121 (HEX)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	54.11233		1.3713049	39.006374	62.178493	0	Single	Auto	55.04592											AG 1	Thermal Shift_wm0512.eds
+30	C06	CA121 (HEX)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	54.48524		1.3601347	39.42335	63.489	0	Single	Auto	55.192276											AG 1	Thermal Shift_wm0512.eds
+31	C07	CA121 (HEX)	IP6 (200uM)	50 mM Tris (pH 8)		Sample	55.678448		1.3981266	40.376446	64.68037	0	Single	Auto	56.36311											AG 1	Thermal Shift_wm0512.eds
+32	C08	CA121 (HEX)	IP6 (200uM)	50 mM Tris (pH 8)		Sample	55.68637		1.3011763	37.27889	65.09735	1	Single	Auto	56.36311									Yes		AG 1	Thermal Shift_wm0512.eds
+33	C09											0	Single	Auto													Thermal Shift_wm0512.eds
+34	C10											0	Single	Auto													Thermal Shift_wm0512.eds
+35	C11	Buffer	IP6 (20uM)	50 mM Tris (pH 8)		Sample	94.35073		1.1540678	93.51149	94.94113	3	Single	Auto	74.80378						Yes		Yes	Yes		AG 1	Thermal Shift_wm0512.eds
+36	C12	Buffer	IP6 (20uM)	50 mM Tris (pH 8)		Sample						3	Single	Auto					Yes		Yes		Yes			AG 1	Thermal Shift_wm0512.eds
+37	D01											0	Single	Auto													Thermal Shift_wm0512.eds
+38	D02											0	Single	Auto													Thermal Shift_wm0512.eds
+39	D03											0	Single	Auto													Thermal Shift_wm0512.eds
+40	D04											0	Single	Auto													Thermal Shift_wm0512.eds
+41	D05											0	Single	Auto													Thermal Shift_wm0512.eds
+42	D06											0	Single	Auto													Thermal Shift_wm0512.eds
+43	D07											0	Single	Auto													Thermal Shift_wm0512.eds
+44	D08											0	Single	Auto													Thermal Shift_wm0512.eds
+45	D09											0	Single	Auto													Thermal Shift_wm0512.eds
+46	D10											0	Single	Auto													Thermal Shift_wm0512.eds
+47	D11											0	Single	Auto													Thermal Shift_wm0512.eds
+48	D12											0	Single	Auto													Thermal Shift_wm0512.eds
+49	E01											0	Single	Auto													Thermal Shift_wm0512.eds
+50	E02											0	Single	Auto													Thermal Shift_wm0512.eds
+51	E03											0	Single	Auto													Thermal Shift_wm0512.eds
+52	E04											0	Single	Auto													Thermal Shift_wm0512.eds
+53	E05											0	Single	Auto													Thermal Shift_wm0512.eds
+54	E06											0	Single	Auto													Thermal Shift_wm0512.eds
+55	E07											0	Single	Auto													Thermal Shift_wm0512.eds
+56	E08											0	Single	Auto													Thermal Shift_wm0512.eds
+57	E09											0	Single	Auto													Thermal Shift_wm0512.eds
+58	E10											0	Single	Auto													Thermal Shift_wm0512.eds
+59	E11											0	Single	Auto													Thermal Shift_wm0512.eds
+60	E12											0	Single	Auto													Thermal Shift_wm0512.eds
+61	F01											0	Single	Auto													Thermal Shift_wm0512.eds
+62	F02											0	Single	Auto													Thermal Shift_wm0512.eds
+63	F03											0	Single	Auto													Thermal Shift_wm0512.eds
+64	F04											0	Single	Auto													Thermal Shift_wm0512.eds
+65	F05											0	Single	Auto													Thermal Shift_wm0512.eds
+66	F06											0	Single	Auto													Thermal Shift_wm0512.eds
+67	F07											0	Single	Auto													Thermal Shift_wm0512.eds
+68	F08											0	Single	Auto													Thermal Shift_wm0512.eds
+69	F09											0	Single	Auto													Thermal Shift_wm0512.eds
+70	F10											0	Single	Auto													Thermal Shift_wm0512.eds
+71	F11											0	Single	Auto													Thermal Shift_wm0512.eds
+72	F12											0	Single	Auto													Thermal Shift_wm0512.eds
+73	G01											0	Single	Auto													Thermal Shift_wm0512.eds
+74	G02											0	Single	Auto													Thermal Shift_wm0512.eds
+75	G03											0	Single	Auto													Thermal Shift_wm0512.eds
+76	G04											0	Single	Auto													Thermal Shift_wm0512.eds
+77	G05											0	Single	Auto													Thermal Shift_wm0512.eds
+78	G06											0	Single	Auto													Thermal Shift_wm0512.eds
+79	G07											0	Single	Auto													Thermal Shift_wm0512.eds
+80	G08											0	Single	Auto													Thermal Shift_wm0512.eds
+81	G09											0	Single	Auto													Thermal Shift_wm0512.eds
+82	G10											0	Single	Auto													Thermal Shift_wm0512.eds
+83	G11											0	Single	Auto													Thermal Shift_wm0512.eds
+84	G12											0	Single	Auto													Thermal Shift_wm0512.eds
+85	H01											0	Single	Auto													Thermal Shift_wm0512.eds
+86	H02											0	Single	Auto													Thermal Shift_wm0512.eds
+87	H03											0	Single	Auto													Thermal Shift_wm0512.eds
+88	H04											0	Single	Auto													Thermal Shift_wm0512.eds
+89	H05											0	Single	Auto													Thermal Shift_wm0512.eds
+90	H06											0	Single	Auto													Thermal Shift_wm0512.eds
+91	H07											0	Single	Auto													Thermal Shift_wm0512.eds
+92	H08											0	Single	Auto													Thermal Shift_wm0512.eds
+93	H09											0	Single	Auto													Thermal Shift_wm0512.eds
+94	H10											0	Single	Auto													Thermal Shift_wm0512.eds
+95	H11											0	Single	Auto													Thermal Shift_wm0512.eds
+96	H12											0	Single	Auto													Thermal Shift_wm0512.eds
+
+#	Hits B	Hits D	Protein	Ligand	Buffer	Salt	Task	Analysis Group	Replicate Mismatch	Reference Mismatch	Tm B - Mean	Tm B Lower 95%	Tm B Upper 95%	Tm B - Median	Tm B - Std. Error	Tm B - Min	Tm B - Max	dTm B - Mean	dTm B Lower 95%	dTm B Upper 95%	dTm B - Median	dTm B - Std. Error	dTm B - Min	dTm B - Max	Tm D - Mean	Tm D Lower 95%	Tm D Upper 95%	Tm D - Median	Tm D - Std. Error	Tm D - Min	Tm D - Max	dTm D - Mean	dTm D Lower 95%	dTm D Upper 95%	dTm D - Median	dTm D - Std. Error	dTm D - Min	dTm D - Max
+1			CA121 (HEX)	DMSO Vehicle	50 mM Tris (pH 8)		Sample	AG 1			42.774086	34.574387	50.973785	42.774086	0.6453304	42.128754	43.419415								43.410736	42.48093	44.34054	43.410736	0.07317734	43.33756	43.483913							
+2			CA FL (Mono)	None (Buffer)	50 mM Tris (pH 8)		Sample	AG 1			52.473907	51.63571	53.312103	52.473907	0.06596756	52.40794	52.539875								52.8506	52.8506	52.8506	52.8506	0.0	52.8506	52.8506							
+3			Buffer	PF74	50 mM Tris (pH 8)		Sample	AG 1	Yes																													
+4			CA FL (Mono)	DMSO Vehicle	50 mM Tris (pH 8)		Sample	AG 1			52.728195	50.897713	54.558678	52.728195	0.14406204	52.584133	52.872257								52.996956	51.137344	54.856567	52.996956	0.14635468	52.8506	53.14331							
+5			CA121 (HEX)	None (Buffer)	50 mM Tris (pH 8)		Sample	AG 1			42.627617	42.49726	42.757973	42.633354	0.04096054	42.537415	42.706352								43.666855	43.550415	43.783295	43.63027	0.03658867	43.63027	43.776623							
+6			CA121 (HEX)	IP6 (2uM)	50 mM Tris (pH 8)		Sample	AG 1			42.95679	41.97008	43.9435	42.95679	0.0776558	42.879135	43.034447								44.14251	43.212704	45.072315	44.14251	0.07317734	44.069332	44.215687							
+7			CA FL (Mono)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	AG 1			52.86849	52.3151	53.421875	52.86849	0.0435524	52.824936	52.91204								52.996956	52.996956	52.996956	52.996956	0.0	52.996956	52.996956							
+8			Buffer	DMSO Vehicle	50 mM Tris (pH 8)		Sample	AG 1																														
+9			CA121 (HEX)	IP6 (20uM)	50 mM Tris (pH 8)		Sample	AG 1			54.46859	53.968304	54.968876	54.443657	0.15720178	54.11233	54.874702								55.228867	54.93583	55.521904	55.192276	0.09207946	55.04592	55.484985							
+10			CA121 (HEX)	PF74	50 mM Tris (pH 8)		Sample	AG 1			45.28627	42.915127	47.657413	45.28627	0.18661308	45.099655	45.47288								45.606056	44.67625	46.535862	45.606056	0.07317734	45.53288	45.679234							
+11			CA FL (Mono)	PF74	50 mM Tris (pH 8)		Sample	AG 1			53.192505	49.278503	57.106506	53.192505	0.3080387	52.884468	53.500546								53.43602	51.57641	55.29563	53.43602	0.14635468	53.289665	53.582375							
+12			Buffer	IP6 (20uM)	50 mM Tris (pH 8)		Sample	AG 1	Yes																													
+13			CA121 (HEX)	IP6 (200uM)	50 mM Tris (pH 8)		Sample	AG 1			55.68241	55.632076	55.732746	55.68241	0.0039615636	55.678448	55.68637								56.36311	56.36311	56.36311	56.36311	0.0	56.36311	56.36311							
+
