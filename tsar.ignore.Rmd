@@ -1,0 +1,42 @@
+---
+title: "tsar.ignore"
+author: "William McFadden"
+date: '2022-05-11'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# License 
+```{r}
+usethis::use_gpl_license(version = 3, include_future = TRUE)
+```
+
+
+# Dependencies
+## Imports  
+    Import packages are required at runtime
+```{r}
+usethis::use_package("dplyr", min_version = TRUE)
+usethis::use_package("ggplot2", min_version = TRUE)
+usethis::use_package("ggpubr", min_version = TRUE)
+usethis::use_package("magrittr", min_version = TRUE)
+usethis::use_package("methods", min_version = TRUE)
+usethis::use_package("mgcv", min_versio1n = TRUE)
+usethis::use_package("readr", min_version = TRUE)
+usethis::use_package("readxl", min_version = TRUE)
+usethis::use_package("stringr", min_version = TRUE)
+usethis::use_package("tidyr", min_version = TRUE)
+usethis::use_package("stats", min_version = TRUE)
+
+```
+
+
+
+
+
+
+
