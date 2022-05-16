@@ -28,7 +28,7 @@ type = "by_template" requires input of excel file following the template
 format provided}
 }
 \value{
-outputs data fram joining data information with well information
+outputs data frame joining data information with well information
 
 examples
 #Analysis <- join.well_info("/Users/candygao/Desktop/qpcrresult/

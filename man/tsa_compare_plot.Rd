@@ -21,7 +21,7 @@ rounded and the average & sd of each rounded temperature is calculated.}
 
 \item{control_condition}{character string matching a Condition ID. Must be
 equal to a value within tsa_data$condition_ID. See unique condition IDs
-with \code{\link{condition_IDs(tsa_data)}}.}
+with \code{\link{condition_IDs}}.}
 
 \item{y}{character string; c("Fluorescence", "RFU").
 When \code{y = "Fluorescence"}, the original Fluorescence data from

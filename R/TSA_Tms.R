@@ -23,7 +23,6 @@
 #' @seealso \code{\link{merge_TSA}}, \code{\link{read_raw_data}},
 #' and \code{\link{read_analysis}} for preparing input.
 #' @export
-#'
 
 TSA_Tms <- function(
     analysis_data,  #analysis DF
@@ -36,11 +35,10 @@ TSA_Tms <- function(
             condition_i <- condition_IDs(analysis_data)[i]
             analysis_data_i <-
                 analysis_data[analysis_data$condition_ID == condition_i, ]
-            tm_df_i <- distinct(analysis_data_i, well_ID, Tm)
+            tm_df_i <- dplyr::distinct(analysis_data_i, well_ID, Tm)
             n_tms_i <- nrow(tm_df_i)
             avg_tm_i <- mean(tm_df_i$Tm, na.rm = TRUE)
-            sd_tm_i <- sd(tm_df_i$Tm, na.rm = TRUE)
-
+            sd_tm_i <- stats::sd(tm_df_i$Tm, na.rm = TRUE)
 
             tm_df[i, 1:(n_tms_i+3)] <-
                 c(condition_i, avg_tm_i, sd_tm_i, tm_df_i$Tm)
@@ -57,10 +55,8 @@ TSA_Tms <- function(
             analysis_data$Ligand[match(tm_df$condition_ID,
                                        analysis_data$condition_ID)]
     } else { #When only reporting wells, not conditions
-        tm_df <- distinct(analysis_data, well_ID, Tm, condition_ID, Protein, Ligand)
+        tm_df <- dplyr::distinct(analysis_data, well_ID, Tm,
+                                 condition_ID, Protein, Ligand)
     }
     return(tm_df)
 }
-
-
-

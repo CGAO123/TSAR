@@ -4,7 +4,7 @@
 #'   curves from the submitted data frame and find the average (mean) and
 #'   standard deviation (sd) for each temperature measured in the TSA curve.
 #'   Mean and sd are smoothened by default to generate cleaner curves.
-#'   The function \code{\link[mgcv]{gam()}} from the mgcv package is used for
+#'   The function \code{\link[mgcv]{gam}} from the mgcv package is used for
 #'   regression to smoothen lines. Smoothing can be turned off and the true
 #'   average for each point can be given, however, plots will look messier.
 #'   The qPCR machine may return temperatures with many decimal places,
