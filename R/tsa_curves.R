@@ -157,6 +157,33 @@ TSA_wells_plot <- function(
             TSA_return[[1]] <- TSA_curve
         } else {TSA_return <- TSA_curve}
 
+    } else { ###
+
+        if(smooth){ #If settings are smoothed, then use regression lines
+
+            TSA_curve <- TSA_curve +
+                ggplot2::geom_line(
+                    inherit.aes = FALSE,
+                    linetype = "dotdash",
+                    data = tsa_average_df,
+                    aes(x = Temperature,
+                        y = avg_smooth))
+        } else { #If not smoothened, use errors and lines without regression
+
+            TSA_curve <- TSA_curve +
+                ggplot2::geom_line(
+                    inherit.aes = FALSE,
+                    linetype = "dotdash",
+                    data = tsa_average_df,
+                    aes(x = Temperature,
+                        y = average))
+
+        }
+
+        if(!is.null(TSA_return)) {
+            TSA_return[[1]] <- TSA_curve
+        } else {TSA_return <- TSA_curve}
+
     }
 
     return(TSA_return)
