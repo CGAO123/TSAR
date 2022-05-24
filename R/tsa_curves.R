@@ -18,8 +18,8 @@
 #'   regression by \code{\link[mgcv]{gam}} is used to make clean lines on
 #'   the plot. See \code{\link{tsa_average}} for more details. When FALSE,
 #'   individual points are plotted (slows down rendering).
-#' @param plot_title,plot_subtitle characer string, NA by default.
-#'   User-specified plots to overright automatic naming.
+#' @param plot_title,plot_subtitle character string, NA by default.
+#'   User-specified plots to overwrite automatic naming.
 #' @param separate_legend logical; \code{separate_legend = TRUE} by default.
 #'   When TRUE, the ggplot2 legend is separated from the TSA curve.
 #'   This is to help with readability. One ggplot is returned when FALSE.
@@ -27,9 +27,10 @@
 #' @return by default, two ggplots are returned: one TSA curve and one key.
 #'   When \code{separate_legend = FALSE} one ggplot is returned.
 #' @family TSA Plots
-#' @seealso \code{\link{merge_TSA} and \code{\link{normalize_fluorescence}
+#' @seealso \code{\link{merge_TSA}} and \code{\link{normalize_fluorescence}}
 #'   for preparing data. See \code{\link{tsa_average}} and
 #'   \code{\link{get_legend}} for details on function parameters.
+#' @importFrom ggplot2 ggplot aes theme labs
 #' @export
 
 
@@ -69,23 +70,23 @@ TSA_wells_plot <- function(
 
     if(smooth){ #Adds smoothed lines
         TSA_curve <- TSA_curve +
-            geom_line(aes(color = well_ID), alpha = 0.95)
+            ggplot2::geom_line(aes(color = well_ID), alpha = 0.95)
 
     } else { #add each temp/fluor obs as individ. point
         TSA_curve <- TSA_curve +
-            geom_point(aes(color = well_ID),
+            ggplot2::geom_point(aes(color = well_ID),
                        alpha = 0.5)
     }
 
-    TSA_curve <- TSA_curve + theme_bw()
+    TSA_curve <- TSA_curve + ggplot2::theme_bw()
 
     if(show_Tm){
         avg_tm <- TSA_Tms(tsa_data)$Avg_Tm
         TSA_curve <- TSA_curve +
-            geom_vline(xintercept = avg_tm,
+            ggplot2::geom_vline(xintercept = avg_tm,
                        linetype = "dashed",
                        color = "#BC9595") +
-            geom_label(label = paste0("Tm=", round(avg_tm, 2), "C", sep = ""),
+            ggplot2::geom_label(label = paste0("Tm=", round(avg_tm, 2), "C", sep = ""),
                        aes(x = avg_tm,
                            y = tm_height),
                        nudge_x = Tm_label_nudge)
@@ -110,7 +111,7 @@ TSA_wells_plot <- function(
 
     if (separate_legend) { #Sep legend if desired
         legend_plot <- get_legend(TSA_curve)
-        TSA_curve <- TSA_curve + theme(legend.position = "none")
+        TSA_curve <- TSA_curve + ggplot2::theme(legend.position = "none")
         TSA_return <- list(TSA_curve, legend_plot)
     } else {TSA_return <- NULL}
 
@@ -119,7 +120,7 @@ TSA_wells_plot <- function(
 
         if(smooth){ #If settings are smoothed, then use regression lines
             TSA_curve <- TSA_curve +
-                geom_ribbon(
+                ggplot2::geom_ribbon(
                     inherit.aes = FALSE,
                     data = tsa_average_df,
                     aes(x = Temperature,
@@ -127,7 +128,7 @@ TSA_wells_plot <- function(
                         ymax = sd_max_smooth),
                     alpha = 0.4)
             TSA_curve <- TSA_curve +
-                geom_line(
+                ggplot2::geom_line(
                     inherit.aes = FALSE,
                     linetype = "dotdash",
                     data = tsa_average_df,
@@ -135,7 +136,7 @@ TSA_wells_plot <- function(
                         y = avg_smooth))
         } else { #If not smoothened, use errors and lines without regression
             TSA_curve <- TSA_curve +
-                geom_ribbon(
+                ggplot2::geom_ribbon(
                     inherit.aes = FALSE,
                     data = tsa_average_df,
                     aes(x = Temperature,
@@ -143,7 +144,7 @@ TSA_wells_plot <- function(
                         ymax = sd_max),
                     alpha = 0.4)
             TSA_curve <- TSA_curve +
-                geom_line(
+                ggplot2::geom_line(
                     inherit.aes = FALSE,
                     linetype = "dotdash",
                     data = tsa_average_df,
@@ -183,9 +184,10 @@ TSA_wells_plot <- function(
 #' @return by default, two ggplots are returned: one TSA curve and one key.
 #'   When \code{separate_legend = FALSE} one ggplot is returned.
 #' @family TSA Plots
-#' @seealso \code{\link{merge_TSA}
+#' @seealso \code{\link{merge_TSA}}
 #'   for preparing data. See \code{\link{Tm_difference}} and
 #'   \code{\link{get_legend}} for details on function parameters.
+#' @importFrom ggplot2 ggplot aes theme labs
 #' @export
 
 TSA_boxplot <- function(
@@ -215,9 +217,9 @@ TSA_boxplot <- function(
                            aes(x = condition_ID,
                                y = Tm,
                                color = Ligand)) +
-            geom_boxplot(alpha = 0.25) +
-            geom_point(shape = 1) +
-            scale_color_discrete(unique(tsa_data$Ligand),
+            ggplot2::geom_boxplot(alpha = 0.25) +
+            ggplot2::geom_point(shape = 1) +
+            ggplot2::scale_color_discrete(unique(tsa_data$Ligand),
                                  name = "Ligand")
     }
     if (color_by == "Protein") {
@@ -225,22 +227,22 @@ TSA_boxplot <- function(
                            aes(x = condition_ID,
                                y = Tm,
                                color = Protein)) +
-            geom_boxplot(alpha = 0.25) +
-            geom_point(shape = 1) +
-            scale_color_discrete(unique(tsa_data$Protein),
+            ggplot2::geom_boxplot(alpha = 0.25) +
+            ggplot2::geom_point(shape = 1) +
+            ggplot2::scale_color_discrete(unique(tsa_data$Protein),
                                  name = "Protein")
 
     }
 
     if (label_by == "Ligand") {
         tsa_plot <- tsa_plot +
-            scale_x_discrete(breaks = plot_data$condition_ID,
+            ggplot2::scale_x_discrete(breaks = plot_data$condition_ID,
                              labels = plot_data$Ligand,
                              name = label_by)
     }
     if (label_by == "Protein") {
         tsa_plot <- tsa_plot +
-            scale_x_discrete(breaks = plot_data$condition_ID,
+            ggplot2::scale_x_discrete(breaks = plot_data$condition_ID,
                              labels = plot_data$Protein,
                              name = label_by)
     }
@@ -252,7 +254,7 @@ TSA_boxplot <- function(
                 TSA_Tms(analysis_data = tsa_data[tsa_data$condition_ID == control_condition, ])
             ctrl_Tm <- ctrl_Tm$Avg_Tm
             tsa_plot <- tsa_plot +
-                geom_hline(yintercept = ctrl_Tm,
+                ggplot2::geom_hline(yintercept = ctrl_Tm,
                            color = "grey",
                            linetype = 2,
                            alpha = 0.9)
@@ -263,13 +265,13 @@ TSA_boxplot <- function(
     }
 
     tsa_plot <- tsa_plot +
-        coord_flip() +
-        theme_bw()  +
-        labs(y = expression("T"["m"]~"("*degree*"C)"))
+        ggplot2::coord_flip() +
+        ggplot2::theme_bw()  +
+        ggplot2::labs(y = expression("T"["m"]~"("*degree*"C)"))
 
     if (separate_legend) {
         legend_plot <- get_legend(tsa_plot)
-        tsa_plot <- tsa_plot + theme(legend.position = "none")
+        tsa_plot <- tsa_plot + ggplot2::theme(legend.position = "none")
         plot_list <- list(tsa_plot, legend_plot)
         return(plot_list)
     } else {
@@ -291,16 +293,19 @@ TSA_boxplot <- function(
 #'   is displayed on the plot. When FALSE, the Tm is not added to the plot.
 #' @param title_by character string; c("ligand", "protein", "both").
 #'  Automatically names the plots by the specified condition category.
-#' @param digits integer; the numer of decimal places to round for change in Tm
+#' @param digits integer; the number of decimal places to round for change in Tm
 #'  calculations displayed in the subtitle of each plot..
 #' @return Generates a number of ggplot objects equal to the number of unique
 #'  Condition IDs present in the input data.
 #' @family TSA Plots
-#' @seealso \code{\link{merge_TSA} and \code{\link{normalize_fluorescence}
+#' @seealso \code{\link{merge_TSA}} and \code{\link{normalize_fluorescence}}
 #'   for preparing data. See \code{\link{tsa_average}} and
 #'   \code{\link{get_legend}} for details on function parameters.
-#'   See \code{\link{TSA_wells_plot} for individual curves of the averaged
+#'   See \code{\link{TSA_wells_plot}} for individual curves of the averaged
 #'   conditions shown.
+#'
+#' @importFrom ggplot2 ggplot aes labs theme
+#'
 #' @export
 
 tsa_compare_plot <- function(
@@ -331,23 +336,22 @@ tsa_compare_plot <- function(
 
     control_curve <- ggplot(control_df,
                             aes(x = Temperature, y = avg_smooth)) +
-        geom_ribbon(
+        ggplot2::geom_ribbon(
             aes(x = Temperature,
                 ymin = sd_min_smooth,
                 ymax = sd_max_smooth),
             alpha = 0.4,
             fill = "black") +
-        geom_line(linetype = "dotdash",
-                  color = "black")
+        ggplot2::geom_line(linetype = "dotdash",
+                           color = "black")
 
 
-    colfunc <- colorRampPalette(c("red", "blue"))
+    colfunc <- grDevices::colorRampPalette(c("red", "blue"))
     col_vect <- colfunc(condition_IDs(tsa_data, n = TRUE))
 
     Tm_difference_DF <-
-        Tm_difference(tsa_data = tsa_data,  control_condition = control_condition)
-
-
+        Tm_difference(tsa_data = tsa_data,
+                      control_condition = control_condition)
     curve_list <- as.list(rep(NA, condition_IDs(tsa_data, n = TRUE)))
 
     for(i in 1:condition_IDs(tsa_data, n = TRUE)) {
@@ -393,25 +397,25 @@ tsa_compare_plot <- function(
         cond_df_i <- tsa_average(tsa_data = cond_df_i, y = y)
 
         diff_curve_i <- control_curve +
-            geom_ribbon(
+            ggplot2::geom_ribbon(
                 data = cond_df_i,
                 aes(x = Temperature,
                     ymin = sd_min_smooth,
                     ymax = sd_max_smooth),
                 alpha = 0.4,
                 fill = col_vect[i]) +
-            geom_line(color = col_vect[i],
+            ggplot2::geom_line(color = col_vect[i],
                       data = cond_df_i)
         diff_curve_i <- diff_curve_i +
-            geom_vline(xintercept = control_avg,
+            ggplot2::geom_vline(xintercept = control_avg,
                        linetype = "dashed",
                        color = "black") +
-            geom_vline(xintercept = tm_avg_i,
+            ggplot2::geom_vline(xintercept = tm_avg_i,
                        linetype = "dashed",
                        color = col_vect[i])
 
         diff_curve_i <- diff_curve_i +
-            theme_bw() +
+            ggplot2::theme_bw() +
             labs(title = title_i,
                  subtitle = subtitle_i)
 
@@ -423,7 +427,7 @@ tsa_compare_plot <- function(
     control_curve <- control_curve +
         labs(title = "Control",
              subtitle = ctrl_subtitle) +
-        theme_bw()
+        ggplot2::theme_bw()
 
     #-- removes control plot from loop and replace with control only
     curve_list[names(curve_list) == control_condition] <- NULL

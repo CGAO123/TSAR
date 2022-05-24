@@ -89,6 +89,8 @@
 #' @seealso \code{\link{read_raw_data}} for loading accompanying data.
 #'   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
 #'   from the TSA software.
+#' @importFrom stringr str_detect str_replace_all
+#' @importFrom tidyr unite
 #' @export
 #'
 #'

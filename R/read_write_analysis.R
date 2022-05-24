@@ -60,13 +60,13 @@ read_tsar <- function(result, code){
 write_tsar <- function(data, name, file = "txt"){
     if(file == "csv"){
         rename <- paste(name, "tsar_output.csv", sep="_")
-        write.csv(data,
+        utils::write.csv(data,
                   file = rename,
                   row.names=FALSE,
                   quote = FALSE)
     }else if(file == "txt"){
         rename <- paste(name, "tsar_output.txt", sep="_")
-        write.table(data,
+        utils::write.table(data,
                     file = rename,
                     row.names=FALSE,
                     sep = "\t",

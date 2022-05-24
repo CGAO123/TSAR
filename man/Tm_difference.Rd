@@ -28,7 +28,11 @@ From a specified control condition, the change in Tm is calculated for
   To see all conditions use \code{condition_IDs(tsa_data)}.
 }
 \seealso{
-
+\code{\link{merge_TSA}} for preparing data.
+  \code{\link{tsa_average}} for more information on the output data.
+  \code{\link{condition_IDs}} to get unique Condition IDs within the
+  input.
+  \code{\link{TSA_boxplot}} for application.
 
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},

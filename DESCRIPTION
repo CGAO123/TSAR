@@ -14,6 +14,7 @@ Imports:
     dplyr (>= 1.0.9),
     ggplot2 (>= 3.3.6),
     ggpubr (>= 0.4.0),
+    grDevices (>= 4.2.0),
     magrittr (>= 2.0.3),
     methods (>= 4.2.0),
     mgcv (>= 1.8.40),
@@ -21,4 +22,5 @@ Imports:
     readxl (>= 1.4.0),
     stats (>= 4.2.0),
     stringr (>= 1.4.0),
-    tidyr (>= 1.2.0)
+    tidyr (>= 1.2.0),
+    utils (>= 4.2.0)

@@ -44,7 +44,9 @@ is used to compare Tm values between the data set.
 See \code{\link{Tm_difference}} for details.
 }
 \seealso{
-
+\code{\link{merge_TSA}}
+  for preparing data. See \code{\link{Tm_difference}} and
+  \code{\link{get_legend}} for details on function parameters.
 
 Other TSA Plots: 
 \code{\link{TSA_wells_plot}()},

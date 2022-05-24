@@ -12,11 +12,11 @@
 #' @return a data frame of reformatted data with the \code{\link{tsa_average}}
 #'   data and the Tm.
 #' @family TSAR Formatting
-#' @seealso \code{\link{merge_TSA} for preparing data.
+#' @seealso \code{\link{merge_TSA}} for preparing data.
 #'   \code{\link{tsa_average}} for more information on the output data.
 #'   \code{\link{condition_IDs}} to get unique Condition IDs within the
 #'   input.
-#'   \code{\link{TSA_boxplot} for application.
+#'   \code{\link{TSA_boxplot}} for application.
 #' @export
 
 Tm_difference <-

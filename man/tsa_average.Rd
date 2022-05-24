@@ -53,7 +53,8 @@ This function will take either Fluorescence or Normalized Fluorescence
   and run this function on subsets.
 }
 \seealso{
-
+\code{\link{merge_TSA}} and \code{\link{merge_TSA}} for
+   preparing data.
 
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},

@@ -35,7 +35,7 @@
 #'  n (# of averaged values) calculated. Depending on avg_smooth and sd_smooth, the smoothened
 #'  lines for the maximum and mimimum sd and the average will also be returned.
 #' @family TSAR Formatting
-#' @seealso \code{\link{merge_TSA}} and \code{\link{merge_TSA} for
+#' @seealso \code{\link{merge_TSA}} and \code{\link{merge_TSA}} for
 #'    preparing data.
 #'
 #' @export
