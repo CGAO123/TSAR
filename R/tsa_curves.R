@@ -320,23 +320,18 @@ tsa_compare_plot <- function(
     title_by = "both", #c("ligand", "protein", "both"); Auto names plot
     digits = 1
 ) {
-
-
     if (!"well_ID"  %in% names(tsa_data) ||
         !"condition_ID"  %in% names(tsa_data)) {
         stop("tsa_data must be a data frame merged by merge_TSA()")
     }
-
     if (!control_condition  %in% condition_IDs(tsa_data))  {
         stop("control_condition must be a value from tsa_data$condition_ID")
     }
-
     Tms_df <- TSA_Tms(tsa_data)
     control_avg <- Tms_df$Avg_Tm[Tms_df$condition_ID == control_condition]
 
     control_df <- tsa_data[tsa_data$condition_ID == control_condition , ]
     control_df <- tsa_average(tsa_data = control_df, y = y)
-
 
     control_curve <- ggplot(control_df,
                             aes(x = Temperature, y = avg_smooth)) +
@@ -348,7 +343,6 @@ tsa_compare_plot <- function(
             fill = "black") +
         ggplot2::geom_line(linetype = "dotdash",
                            color = "black")
-
 
     colfunc <- grDevices::colorRampPalette(c("red", "blue"))
     col_vect <- colfunc(condition_IDs(tsa_data, n = TRUE))
@@ -394,9 +388,6 @@ tsa_compare_plot <- function(
                 sep = "")
         }
 
-
-
-
         cond_df_i <- tsa_data[tsa_data$condition_ID == condition_i, ]
         cond_df_i <- tsa_average(tsa_data = cond_df_i, y = y)
 
@@ -410,19 +401,20 @@ tsa_compare_plot <- function(
                 fill = col_vect[i]) +
             ggplot2::geom_line(color = col_vect[i],
                       data = cond_df_i)
-        diff_curve_i <- diff_curve_i +
-            ggplot2::geom_vline(xintercept = control_avg,
-                       linetype = "dashed",
-                       color = "black") +
-            ggplot2::geom_vline(xintercept = tm_avg_i,
-                       linetype = "dashed",
-                       color = col_vect[i])
+        if(show_Tm){
+            diff_curve_i <- diff_curve_i +
+                ggplot2::geom_vline(xintercept = control_avg,
+                                    linetype = "dashed",
+                                    color = "black") +
+                ggplot2::geom_vline(xintercept = tm_avg_i,
+                                    linetype = "dashed",
+                                    color = col_vect[i])
+        }
 
         diff_curve_i <- diff_curve_i +
             ggplot2::theme_bw() +
             labs(title = title_i,
                  subtitle = subtitle_i)
-
         curve_list[[i]] <- diff_curve_i
         names(curve_list)[i] <- condition_i
     }
