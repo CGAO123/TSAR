@@ -1,3 +1,0 @@
-"0","#normalize fluorescence reading into scale between 0 and 1"
-"0","test <- normalize(test, fluo = 5, selected = c(""Well.Position"", ""Temperature"", ""Fluorescence"", ""Normalized"")) "
-"0","head(test)"

@@ -1,5 +1,0 @@
-"0","test <- raw_data %>%"
-"0","  filter(Well.Position == ""A01"") # select data for one well by well ID"
-"0",""
-"0","#section data by temperature to remove messy area"
-"0","#test <- subset(test, test$Temperature>40 & test$Temperature <50) "

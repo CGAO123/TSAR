@@ -1,3 +1,0 @@
-"0",""
-"0","#write output data file"
-"0","write_tsar(read_tsar(x, code = 2), name = ""0923_tm_val"", file = ""csv"")"

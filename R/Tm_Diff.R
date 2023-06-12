@@ -8,13 +8,13 @@
 #' @inheritParams tsa_average
 #' @param control_condition character string matching a Condition ID. Must be
 #'   equal to a value within tsa_data$condition_ID. See unique condition IDs
-#'   with \code{\link{condition_IDs(tsa_data)}}.
-#' @return a data frame of reformatted data with the \code{\link{tsa_average()}}
+#'   with \code{\link{condition_IDs}}.
+#' @return a data frame of reformatted data with the \code{\link{tsa_average}}
 #'   data and the Tm.
 #' @family TSAR Formatting
-#' @seealso \code{\link{merge_TSA}} for preparing data.
-#'   \code{\link{tsa_average()}} for more information on the output data.
-#'   \code{\link{condition_IDs()}} to get unique Condition IDs within the
+#' @seealso \code{\link{merge_tsa}} for preparing data.
+#'   \code{\link{tsa_average}} for more information on the output data.
+#'   \code{\link{condition_IDs}} to get unique Condition IDs within the
 #'   input.
 #'   \code{\link{TSA_boxplot}} for application.
 #' @export

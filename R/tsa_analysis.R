@@ -24,7 +24,7 @@
 #' #tm_est(A1, min = 30, max= 35)
 #' @export
 #'
-Tm_est <- function(norm_data, min, max) {
+tm_est <- function(norm_data, min, max) {
     # if min and max are not specified, default to check across the graph
     if (missing(min) && missing(max)) {
         return(norm_data$Temperature[which.max(norm_data$norm_deriv)])
@@ -79,8 +79,11 @@ gam_analysis <- function(
     fit = FALSE,
     smoothed = FALSE,
     fluo = -1,
-    selections = c("Well.Position", "Temperature",
-                   "Fluorescence", "Normalized")) {
+    selections = c("Well.Position",
+                   "Temperature",
+                   "Fluorescence",
+                   "Normalized")
+    ) {
     #Initialize variables
     tm <- c()
     kept <- data.frame()
@@ -116,7 +119,7 @@ gam_analysis <- function(
         }
 
         #estimate tm values and concat them into one list
-        tm <- c(tm, Tm_est(by_well))
+        tm <- c(tm, tm_est(by_well))
 
         #if user wishes to keep all fitted data
         if (keep == TRUE) {
@@ -141,8 +144,14 @@ gam_analysis <- function(
     tobereturned <- list(tm)
 
     #concat by users' specifications
-    if (keep == TRUE) { tobereturned <- append(tobereturned, list(kept)) }
-    if (fit == TRUE) { tobereturned <- append(tobereturned, list(fitsummaries)) }
+    if (keep == TRUE) {
+        tobereturned <- append(tobereturned, list(kept))
+    }
+
+    if (fit == TRUE) {
+        tobereturned <- append(tobereturned, list(fitsummaries))
+    }
+
     #return list of data frames
     return(tobereturned)
 

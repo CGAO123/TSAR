@@ -1,5 +1,0 @@
-"0","#join protein and ligand information "
-"0","norm_data <- join_well_info(""/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx"", read_tsar(x, code = 2), type = ""by_template"")"
-"2","New names:"
-"0","norm_data <- na.omit(norm_data)"
-"0","head(norm_data)"
