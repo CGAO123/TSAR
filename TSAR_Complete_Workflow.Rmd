@@ -57,12 +57,12 @@ test <- model_fit(test, model = gammodel) #, smoothed="Fluorescence")
 Output analysis result using ggplot to view normalized data and fitted model. Determine is any noise need to be removed (i.e. subsetting by temperature range). Determine which model is the best (i.e. is currrent data already smoothed, does fitted model suit well.) Determine if tm-estimation is proper.
 *current model assumes derivative estimation of tm value.
 ```{r}
-Tm_est(test)
+tm_est(test)
 
 result <- ggplot(data = test, aes(x = Temperature, y = Normalized)) +
   geom_point(shape = 1)+ #normalized data
   geom_point(aes(y=fitted), color = "blue", alpha = 1/10)+ #fitted value
-  geom_vline(xintercept = Tm_est(test), color = "red") #tm temperature value
+  geom_vline(xintercept = tm_est(test), color = "red") #tm temperature value
 
 result
 ```
