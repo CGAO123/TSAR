@@ -87,7 +87,7 @@
 #'
 #' @family Read TSA Data
 #' @seealso \code{\link{read_raw_data}} for loading accompanying data.
-#'   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
+#'   \code{\link{merge_tsa}} for joining Analysis Results and Raw Data files
 #'   from the TSA software.
 #' @export
 #'
@@ -95,14 +95,11 @@
 read_analysis <- function(
     path,
     type =  "derivative",
-    #c("boltzmann", "derivative") #To use the TmB or TmD values
-    conditions = c("Protein", "Ligand"), #Conditions that vary between wells
-    #Users can specify IDs needed for merging manually. Each AG needs a
-    manual_conditions = NA, #
+    conditions = c("Protein", "Ligand"),
+    manual_conditions = NA,
     manual_wells = NA,
-    #user can specify a chr vector of IDs for each well assigned
-    skip_flags = FALSE, #Remove wells that have flags reported by TSA software
-    manual_file = NA #User can specify .eds for merging if needed for well_ID
+    skip_flags = FALSE,
+    manual_file = NA
 ) {
     #Note: Wells that do not have an Analysis Group assigned are removed
 
@@ -128,7 +125,8 @@ read_analysis <- function(
         analysis <- analysis[1:96, ] #Trim to 96 wells
         analysis$`Tm D` <- as.numeric(analysis$`Tm D`)
         analysis$`Tm B` <- as.numeric(analysis$`Tm B`)
-    }else { error("File type not .csv or .txt")
+    } else {
+        error("File type not .csv or .txt")
         }
     if (type == "boltzmann") {
         col_names <-

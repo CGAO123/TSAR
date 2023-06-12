@@ -1,8 +1,0 @@
-"0","raw_data <- read.delim(header = TRUE, skip = 118428, nrow = 118176, ""/Users/candygao/Desktop/qpcrresult/experiment file/0923Thermal_Shift.txt"")"
-"2","Error in exists(cacheKey, where = .rs.WorkingDataEnv, inherits = FALSE) : 
-  invalid first argument
-"
-"2","Error in assign(cacheKey, frame, .rs.CachedDataEnv) : 
-  attempt to use zero-length variable name
-"
-"0","#raw_data <- read.delim(header = TRUE, skip = 1, file = ""/Users/candygao/Desktop/raw.txt"")"

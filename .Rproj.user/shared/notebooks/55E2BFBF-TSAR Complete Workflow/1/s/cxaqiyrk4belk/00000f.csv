@@ -1,5 +1,0 @@
-"0","#smoothed = T infers current data is smoothed and no separate gam modeling is needed. If modeling needed, input arguement as smoothed = F"
-"0","x <- gam_analysis(raw_data, smoothed = T, fluo = 5, selections = c(""Well.Position"", ""Temperature"", ""Fluorescence"", ""Normalized""))"
-"2","Warning: NAs introduced by coercion"
-"2","Warning: NAs introduced by coercion"
-"0","x <- na.omit(x)"

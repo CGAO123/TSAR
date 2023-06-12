@@ -112,7 +112,7 @@ Open TSA Analysis files. This function is used to load data output from
 
 \seealso{
 \code{\link{read_raw_data}} for loading accompanying data.
-  \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
+  \code{\link{merge_tsa}} for joining Analysis Results and Raw Data files
   from the TSA software.
 
 Other Read TSA Data: 

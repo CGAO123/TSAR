@@ -1,8 +1,0 @@
-"0","control_ID <- ""CA FL_DMSO"""
-"0",""
-"0","tsa_compare_plot(conclusion,"
-"0","                 y = ""Fluorescence"","
-"0","                 control_condition = ""CA FL_DMSO"")"
-"2","Error in round(tsa_data_new$Temperature, digits = digits) : 
-  non-numeric argument to mathematical function
-"
