@@ -1,0 +1,28 @@
+"0","control_ID <- ""CA121_DMSO"""
+"0","tsa_compare_plot(conclusion1,"
+"0","                 y = ""Fluorescence"","
+"0","                 control_condition = control_ID)"
+"1","$CA121_IP6
+"
+"1","
+"
+"1","$CA121_B5
+"
+"1","
+"
+"1","$CA121_Biotin
+"
+"1","
+"
+"1","$CA121_B3
+"
+"1","
+"
+"1","$`CA121_4-ABA`
+"
+"1","
+"
+"1","$`Control: CA121_DMSO`
+"
+"1","
+"

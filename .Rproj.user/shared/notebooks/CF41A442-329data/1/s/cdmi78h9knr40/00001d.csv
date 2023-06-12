@@ -1,0 +1,3 @@
+"0","data <- fromJSON(file = ""/Users/candygao/Desktop/california_coast_data.json"", simplify = TRUE)"
+"0","#partition1 <- data.frame(data[[1]][[""risks""]])"
+"0","riskdata <- read.delim(file = ""/Users/candygao/Desktop/risk.txt"")"

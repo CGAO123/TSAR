@@ -1,0 +1,2 @@
+"0","gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)"
+"0","test <- model_fit(test, model = gammodel) #, smoothed=""Fluorescence"")"

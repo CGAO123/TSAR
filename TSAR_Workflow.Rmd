@@ -1,0 +1,135 @@
+---
+title: "TSAR Workflow"
+author: "William McFadden"
+date: "12/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, include=FALSE}
+devtools::load_all()
+
+library(ggplot2)
+library(ggpubr)
+library(readxl)
+library(stringr)
+library(tidyr)
+library(dplyr)
+library(readr)
+library(mgcv)
+```
+
+![TSAR Logo](TSAR_logo.png)
+
+
+# Loading Data
+
+```{r}
+tsa_pH <- 
+merge_TSA(
+    raw_data_path = 
+              c("/Users/billy/Desktop/SGS_Lab/TSA/TSAR_Files/CAFL_pH_20211203_20211203_162735_RawData_CAFL_pH_TSA_20211203.eds.txt",
+                "/Users/billy/Desktop/SGS_Lab/TSA/TSAR_Files/CAFL_pH_3_20211206_162845_RawData_CAFL_pH_3.eds.txt"),
+          analysis_file_path = 
+              c("/Users/billy/Desktop/SGS_Lab/TSA/TSAR_Files/CAFL_pH_20211203_20211203_162735_AnalysisResults.txt",
+                "/Users/billy/Desktop/SGS_Lab/TSA/TSAR_Files/CAFL_pH_3_20211206_162845_AnalysisResults.txt"))
+head(tsa_pH)
+```
+
+
+To get the ID:
+```{r}
+condition_IDs(tsa_pH)
+control_ID <- "CA FL_Tris (pH 8)"
+```
+
+# Summary of Data
+```{r}
+TSA_Tms(tsa_pH)
+```
+
+# Box Plot of Data:
+
+```{r}
+TSA_boxplot(tsa_pH,
+            control = control_ID)
+```
+
+```{r}
+TSA_boxplot(tsa_pH,
+            control = control_ID,
+            color_by = "Ligand")
+```
+
+
+```{r}
+rescale
+```
+
+
+ Normalize curves
+```{r}
+normalized_tsa_pH <- normalize_fluorescence(tsa_data = tsa_pH)
+head(normalized_tsa_pH)
+```
+
+# Curves of each condition with all replicates shown
+```{r}
+for(i in 1:condition_IDs(normalized_tsa_pH, n = TRUE)) {
+    cond_i <- condition_IDs(normalized_tsa_pH)[i]
+    subset_i <- normalized_tsa_pH$condition_ID == cond_i
+    subset_i <- normalized_tsa_pH[subset_i, ]
+    plot_i <- TSA_wells_plot(subset_i)
+    
+    print(plot_i)
+}
+```
+
+
+
+# Plots to compare the control condition to:
+
+
+
+Normalized Data
+```{r}
+tsa_compare_plot(normalized_tsa_pH,
+                 y = "RFU",
+                 control_condition = control_ID)
+```
+
+Original Data
+```{r}
+tsa_compare_plot(normalized_tsa_pH,
+                 y = "Fluorescence",
+                 control_condition = control_ID)
+```
+
+
+
+
+
+# Functions to extract info from TSA data
+
+
+```{r}
+# -- Condition IDs
+condition_IDs(normalized_tsa_pH)
+
+# -- Well IDs
+well_IDs(normalized_tsa_pH)
+
+# -- Proteins Tested
+TSA_proteins(normalized_tsa_pH)
+
+# -- Ligands Tested
+TSA_ligands(normalized_tsa_pH)
+```
+
+
+
+

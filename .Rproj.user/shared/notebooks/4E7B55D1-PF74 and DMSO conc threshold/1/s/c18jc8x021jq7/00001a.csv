@@ -1,0 +1,44 @@
+"0","control_ID <- ""CA121_DMSO_1p"""
+"0","tsa_compare_plot(conclusion,"
+"0","                 y = ""Fluorescence"","
+"0","                 control_condition = control_ID)"
+"1","$CA121_PF74_20
+"
+"1","
+"
+"1","$CA121_PF74_10
+"
+"1","
+"
+"1","$CA121_PF74_7.5
+"
+"1","
+"
+"1","$CA121_PF74_5
+"
+"1","
+"
+"1","$CA121_PF74_2.5
+"
+"1","
+"
+"1","$CA121_DMSO_2p
+"
+"1","
+"
+"1","$CA121_DMSO_0.75p
+"
+"1","
+"
+"1","$CA121_DMSO_0.5p
+"
+"1","
+"
+"1","$CA121_DMSO_0.25p
+"
+"1","
+"
+"1","$`Control: CA121_DMSO_1p`
+"
+"1","
+"

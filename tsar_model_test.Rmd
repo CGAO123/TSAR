@@ -1,0 +1,92 @@
+---
+title: "tsar_model_test"
+author: "Candy Gao"
+date: "2022-09-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{R}
+#obtain mix and max using original gammodel
+    #or use derivatives
+# peak of second derivative matches with the min
+```
+
+```{r}
+test <- raw_data %>%
+  filter(Well.Position == "B06") # select data for one well by well ID
+
+#section data by temperature to remove messy area
+#test <- subset(test, test$Temperature>40 & test$Temperature <50) 
+
+test <- normalize(test, Fluo = 5, selected = c("Well.Position", "Temperature", "Fluorescence", "Normalized")) 
+head(test)
+gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+test <- model_fit(test, model = gammodel, smoothed="Fluorescence")
+
+
+Tm_est(test)
+test <- mutate(test, second_deriv = c(diff(test$norm_deriv)/diff(test$Temperature), NA))
+test <- mutate(test, third_deriv = c(diff(test$second_deriv)/diff(test$Temperature), NA))
+test <- mutate(test, fourth_deriv = c(diff(test$third_deriv)/diff(test$Temperature), NA))
+
+#graphing
+#result <- ggplot(data = test, aes(x = Temperature, y = Normalized)) +
+#  geom_point(shape = 1)+ #normalized data
+#  geom_point(aes(y=fitted), color = "blue", alpha = 1/10)+ #fitted value
+#  geom_vline(xintercept = Tm_est(test), color = "red") #tm temperature value
+
+#result
+
+test %>%
+    group_by(Well.Position) %>%
+    ggplot(aes(x = Temperature, y = Normalized*50000)) +
+        geom_point(shape = 1)+
+        geom_point(aes(y=third_deriv), color = "blue", alpha = 1/10)+
+        geom_point(aes(y=norm_deriv), color = "magenta", alpha = 1/10)+
+        geom_vline(xintercept = test$Temperature[which.max(test$third_deriv)], color = "blue")+
+        geom_vline(xintercept = test$Temperature[which.max(test$norm_derive)], color = "magenta")+
+        geom_vline(xintercept = test$Temperature[which.max(test$Normalized)], color = "red")+
+        geom_vline(xintercept = Tm_est(test), color = "red")
+```
+
+## find sign chanegs
+
+```{r}
+#finf closest local max or min
+
+#first derivative
+ggplot(data = test, aes(x=Temperature, y=Normalized*50000))+
+    geom_point()+
+    #geom_point(aes(y=sign(test$norm_deriv)*50000), color = "magenta")+
+    geom_point(aes(y=norm_deriv), color = "magenta", alpha = 1/10)+
+    geom_vline(xintercept = test$Temperature[which(diff(sign(test$norm_deriv))!=0)], color = "magenta")
+
+
+#second derivative
+ggplot(data = test, aes(x=Temperature, y=Normalized*50000))+
+    geom_point()+
+    #geom_point(aes(y=sign(test$second_deriv)*50000), color = "blue")+
+    geom_point(aes(y=second_deriv), color = "blue", alpha = 1/10)+
+    geom_vline(xintercept = test$Temperature[which(diff(sign(test$second_deriv))!=0)], color = "blue")
+    #geom_vline(xintercept = test$Temperature[which.max(test$second_deriv)])+
+    #geom_vline(xintercept = test$Temperature[which.min(test$second_deriv)])
+
+#third derivative
+ggplot(data = test, aes(x=Temperature, y=Normalized*50000))+
+    geom_point()+
+    #geom_point(aes(y=sign(test$third_deriv)*50000), color = "green")+
+    geom_point(aes(y=third_deriv), color = "green", alpha = 1/10)+
+    geom_vline(xintercept = test$Temperature[which(diff(sign(test$third_deriv))!=0)], color = "green")
+
+#fourth derivative
+ggplot(data = test, aes(x=Temperature, y=Normalized*5000000))+
+    geom_point()+
+    #geom_point(aes(y=sign(test$fourth_deriv)*50000), color = "green")+
+    geom_point(aes(y=fourth_deriv), color = "green", alpha = 1/10)+
+    geom_vline(xintercept = test$Temperature[which(diff(sign(test$fourth_deriv))!=0)], color = "green")
+```
+

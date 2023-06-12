@@ -1,0 +1,6 @@
+"0","#hexamer 1 rep
+raw_data_rep <- read.delim(header = TRUE5, file = ""/Users/candygao/Desktop/qpcrresult/vitamin_data/Hexamer_Vitamin1_20230418_154608_RawData_Thermal Shift_02_190.eds.txt"")
+"
+"2","Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
+  object 'TRUE5' not found
+"

@@ -1,0 +1,110 @@
+---
+title: "Vitamin Data"
+author: "Candy Gao"
+date: "2022-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(devtools)
+devtools::install_local("/Users/candygao/Desktop/TSAR_0.1.0.tar.gz")
+library(TSAR)
+library(dplyr)
+library(ggplot2)
+```
+
+## load data
+
+```{r}
+
+raw_data <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_162.eds.csv", header = TRUE, nrows = 118177)
+raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118177)
+raw_data2 <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/vitamin2_17_RawData_Thermal Shift_02_171.eds.csv", header = TRUE)
+```
+
+## select individual cell for analysis
+
+```{r}
+test <- raw_data %>%
+  filter(Well.Position == "A01") # select data for one well by well ID
+
+#section data by temperature to remove messy area
+#test <- subset(test, test$Temperature>40 & test$Temperature <50) 
+
+test <- normalize(test, fluo = 5, selected = c("Well.Position", "Temperature", "Fluorescence", "Normalized")) 
+head(test)
+gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+test <- model_fit(test, model = gammodel, smoothed="Fluorescence")
+
+
+Tm_est(test)
+
+
+#graphing
+result <- ggplot(data = test, aes(x = Temperature, y = Normalized)) +
+  geom_point(shape = 1)+ #normalized data
+  #geom_point(aes(y=fitted), color = "blue", alpha = 1/10)+ #fitted value
+  geom_vline(xintercept = Tm_est(test), color = "red") #tm temperature value
+
+result
+```
+
+## 96 well application
+
+```{r, echo = FALSE}
+#run analysis
+vitamin1 <- gam_analysis(raw_data, smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+vitamin1rep <- gam_analysis(raw_data_rep , smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+vitamin2 <- gam_analysis(raw_data2 , smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+
+#write output data file
+#write_tsar(read_tsar(vitamin1rep, code = 2), name = "vitamin1rep_tm_val", file = "csv")
+
+#look at only tm result by well
+vitamin1_tm <- read_tsar(vitamin1, code = 2)
+vitamin1rep_tm <- read_tsar(vitamin1rep, code = 2)
+vitamin2_tm <- read_tsar(vitamin2, code = 2)
+
+
+#join protein and ligand information
+vitamin1_full <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx", vitamin1_tm, type = "by_template")
+vitamin1rep_full <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx", vitamin1rep_tm, type = "by_template")
+vitamin2_full <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0217_WellInformation.xlsx", vitamin2_tm, type = "by_template")
+#head(norm_data)
+vitamin1_full <- na.omit(vitamin1_full)
+vitamin1rep_full <- na.omit(vitamin1rep_full)
+vitamin2_full <- na.omit(vitamin2_full)
+jointout <- data.frame(vitamin1rep_full)
+jointout <- jointout %>% filter(!is.na(Protein))
+write.csv(jointout, file = "vit1rep_tmAnalysis.csv", row.names = F, quote = F)
+```
+
+# merge data
+
+```{r}
+Bigdata <- merge_norm(vitamin1_full, vitamin1rep_full, 
+                      "Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
+                      "Vitamin_RawData_Thermal Shift_02_168.eds.csv", 
+                      "20230203", "20230209")
+
+```
+
+```{r}
+condition_IDs(Bigdata)
+well_IDs(Bigdata)
+conclusion <- Bigdata%>%
+  filter(condition_ID != "NA_NA") %>%
+  filter(condition_ID != "CA FL_Riboflavin")
+TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand", separate_legend = FALSE)
+```
+
+```{r}
+control_ID <- "CA FL_DMSO"
+tsa_compare_plot(conclusion,
+                 y = "Fluorescence",
+                 control_condition = "CA FL_DMSO")
+```
