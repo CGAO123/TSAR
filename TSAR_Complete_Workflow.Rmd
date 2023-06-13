@@ -144,6 +144,6 @@ Specify Control condition by assigning condition_ID to control. tsa_compare_plot
 control_ID <- "CA FL_DMSO"
 
 tsa_compare_plot(conclusion,
-                 y = "Fluorescence",
-                 control_condition = "CA FL_DMSO")
+                 y = "RFU",
+                 control_condition = control_ID)
 ```

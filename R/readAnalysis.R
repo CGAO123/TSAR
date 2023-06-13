@@ -12,6 +12,8 @@
 #'   The TSA software automatically assigns all wells to Analysis Group 1 by
 #'   default, and can be changed but not removed by the software.
 #'
+#' @importFrom stringr str_detect str_replace_all
+#' @importFrom tidyr unite
 #'
 #' @param path a character string; the path or the name of the file which the
 #'  'AnalysisResults' data are to be read from. Either a .txt or .csv file.
@@ -107,26 +109,27 @@ read_analysis <- function(
     #--- Loading and formatting
 
 
-    if (!str_detect(path, "AnalysisResults")) {
+    if (!stringr::str_detect(path, "AnalysisResults")) {
         warning('Check the input file,
                     The path name does not include "AnalysisResults"')
     }
-    if (str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
-        if (str_detect(path, pattern = "(.*\\.txt$)")) {
+    if (stringr::str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
+        if (stringr::str_detect(path, pattern = "(.*\\.txt$)")) {
             analysis <- read.delim(path, skip = 2,
                                    na.strings = c("", "NA", " "))
         }
-        if (str_detect(path, pattern = "(.*\\.csv$)")) {
+        if (stringr::str_detect(path, pattern = "(.*\\.csv$)")) {
             analysis <- read.csv(path, skip = 2,
                                  na.strings = c("", "NA", " "))
         }
-        names(analysis) <- str_replace_all(names(analysis), "\\.", " ")
+        names(analysis) <- stringr::str_replace_all(names(analysis), "\\.", " ")
         names(analysis)[names(analysis) == "Flag Indicator"] <- "Flags"
         analysis <- analysis[1:96, ] #Trim to 96 wells
         analysis$`Tm D` <- as.numeric(analysis$`Tm D`)
         analysis$`Tm B` <- as.numeric(analysis$`Tm B`)
+
     } else {
-        error("File type not .csv or .txt")
+        utils::error("File type not .csv or .txt")
         }
     if (type == "boltzmann") {
         col_names <-
@@ -145,7 +148,7 @@ read_analysis <- function(
     #--- Making condition_ID-same for all equivalent wells (for well matching)
     if (is.na(manual_conditions)) {  #Default, auto generate condition IDs
         analysis$condition_ID <-
-            unite(analysis, "condition_ID", conditions)$condition_ID
+            tidyr::unite(analysis, "condition_ID", conditions)$condition_ID
     } else {
         analysis$condition_ID <- manual_conditions #manual well assignments
     }
@@ -155,7 +158,7 @@ read_analysis <- function(
     }
     if (is.na(manual_wells)) {  #Default, auto generate condition IDs
         analysis$well_ID <-
-            unite(analysis, "well_ID",
+            tidyr::unite(analysis, "well_ID",
                   c("Well", "Experiment File Name"))$well_ID
     } else {
         analysis$well_ID <- manual_wells #manual well assignments

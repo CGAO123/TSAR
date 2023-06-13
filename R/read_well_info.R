@@ -6,6 +6,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom readxl read_excel
 #' @importFrom tidyr pivot_longer
+#' @importFrom dplyr mutate select left_join
 #'
 #' @param file_path string; file path to read in the file
 #' @param analysis_file data frame; data frame containing smoothed fluorescence
@@ -49,7 +50,7 @@ join_well_info <- function(
                                 nrow = nrows,
                                 file_path)
         well_info <- well_info %>%
-            dplyr::select(Well, Protein, Ligand)
+            dplyr::select(c("Well", "Protein", "Ligand"))
         #input by excel template
     }else if (type == "by_template") {
         #read file, specify column as texts

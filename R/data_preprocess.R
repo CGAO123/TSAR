@@ -5,6 +5,7 @@
 #'   for potential error
 #'
 #' @importFrom magrittr %>%
+#' @importFrom dplyr mutate select
 #'
 #' @param raw_data data frame; the raw data set input
 #' @param fluo integer; the Fluorescence variable column id
@@ -35,12 +36,14 @@ normalize <- function(
   norm_data <- raw_data %>%
     #make sure fluoresence and temperature variable is in double type
     #step to ensure that calculations do not return error
-    transform(Fluorescence = as.double(gsub(",", "", Fluorescence))) %>%
-    transform(Temperature = as.double(gsub(",", "", Temperature))) %>%
+    transform(Fluorescence =
+                  as.double(gsub(",", "", raw_data$Fluorescence))) %>%
+    transform(Temperature =
+                  as.double(gsub(",", "", raw_data$Temperature))) %>%
     transform(Well.Position = paste(
-        substr(Well.Position, 1, 1),
-        sprintf("%02s", substr(Well.Position, 2,
-                               nchar(Well.Position))), sep = ""))
+        substr(raw_data$Well.Position, 1, 1),
+        sprintf("%02s", substr(raw_data$Well.Position, 2,
+                               nchar(raw_data$Well.Position))), sep = ""))
 
   if (fluo == -1) {
     #assign min and max
@@ -48,15 +51,16 @@ normalize <- function(
     max_f <- max(norm_data$Fluorescence)
     norm_data <- norm_data %>%
       #normalize by max and min
-      mutate(Normalized = (Fluorescence - min_f) / (max_f - min_f)) %>%
+      mutate(Normalized =
+                 (norm_data$Fluorescence - min_f) / (max_f - min_f)) %>%
       #select only desired variables (e.g. drop raw derivative values)
       dplyr:: select(selected)
   } else {
     norm_data <- norm_data %>%
       #normalize by max and min
       mutate(Normalized =
-                 (.[[fluo]] - min(.[[fluo]])) /
-                    (max(.[[fluo]]) - min(.[[fluo]]))) %>%
+                 (norm_data[[fluo]] - min(norm_data[[fluo]])) /
+                    (max(norm_data[[fluo]]) - min(norm_data[[fluo]]))) %>%
       #select only desired variables (e.g. drop raw derivative values)
       dplyr:: select(selected)
   }
@@ -69,6 +73,7 @@ normalize <- function(
 #'
 #' @importFrom magrittr %>%
 #' @importFrom mgcv gam
+#' @importFrom dplyr mutate select
 #'
 #' @param norm_data data frame input
 #' @param x temperature column
@@ -94,6 +99,7 @@ model_gam <- function(norm_data, x, y) {
 #' Model_fit calculates derivatives by refitting model onto data
 #'
 #' @importFrom magrittr %>%
+#' @importFrom dplyr mutate select
 #'
 #' @param norm_data data frame; the raw data set input
 #' @param model fitted model containing fitted values
