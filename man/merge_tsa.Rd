@@ -21,7 +21,7 @@ merge_tsa(analysis_file_path, raw_data_path, protein = NA, ligand = NA)
   analysis_file_path must contain the term  \emph{AnalysisResults} as the
   TSA software automatically assigns this when exporting data. Data is loaded
   from the \code{\link{read_raw_data}} and \code{\link{read_analysis}}
-  functions within this merge_tsa function.}
+  functions within this merge_TSA function.}
 
 \item{protein}{can be used to select for an individual or multiple protein(s)
 as a character string matching protein names assigned in the TSA software.
@@ -87,7 +87,6 @@ for loading data.
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},
 \code{\link{Tm_difference}()},
-\code{\link{merge_norm}()},
 \code{\link{normalize_fluorescence}()},
 \code{\link{rescale}()},
 \code{\link{tsa_average}()}
