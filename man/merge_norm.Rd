@@ -35,3 +35,16 @@ This function merges data of experiment replicates across different dates.
   It merges and produces information variables used to group wells of same
   set up.
 }
+<<<<<<< HEAD
+=======
+\seealso{
+Other TSAR Formatting: 
+\code{\link{TSA_Tms}()},
+\code{\link{Tm_difference}()},
+\code{\link{merge_tsa}()},
+\code{\link{normalize_fluorescence}()},
+\code{\link{rescale}()},
+\code{\link{tsa_average}()}
+}
+\concept{TSAR Formatting}
+>>>>>>> main

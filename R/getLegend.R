@@ -2,15 +2,27 @@
 #'
 #' A function to enable separation of legends from plots within the TSAR package
 #'
+<<<<<<< HEAD
 #' @param input_plot a ggplot2 object
 #' @return two ggplots, one containing the legend and another containg all else.
+=======
+#' @import ggplot2
+#' @param input_plot a ggplot2 object
+#' @return two ggplots, one containing the legend and another containg all else.
+#' @family TSA Plots
+>>>>>>> main
 #' @export
 #'
 
 get_legend <- function(input_plot) {
     legend_plot <- input_plot
     legend_plot <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(legend_plot))
+<<<<<<< HEAD
     legend <- which(sapply(legend_plot$grobs, function(x) x$name) == "guide-box")
+=======
+    legend <- which(sapply(legend_plot$grobs, function(x) x$name)
+                    == "guide-box")
+>>>>>>> main
     if (length(legend) == 0) { #Prevents error
         warning("No Legend to Return")
     } else {
@@ -20,4 +32,7 @@ get_legend <- function(input_plot) {
         return(legend_plot)
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> main

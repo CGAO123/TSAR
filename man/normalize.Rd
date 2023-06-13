@@ -6,17 +6,28 @@
 \usage{
 normalize(
   raw_data,
+<<<<<<< HEAD
   Fluo = -1,
+=======
+  fluo = -1,
+>>>>>>> main
   selected = c("Well.Position", "Temperature", "Fluorescence", "Normalized")
 )
 }
 \arguments{
 \item{raw_data}{data frame; the raw data set input}
 
+<<<<<<< HEAD
 \item{Fluo}{integer; the Fluorescence variable column id
 (e.g. Fluo = 5 when 5th column of the data frame is the Fluorescence value)
   if fluorescence variable is named exactly as "Fluorescence", Fluo does not
   need to be specified. i.e. Fluo is set to -1 by default,
+=======
+\item{fluo}{integer; the Fluorescence variable column id
+(e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
+  if fluorescence variable is named exactly as "Fluorescence", fluo does not
+  need to be specified. i.e. fluo is set to -1 by default,
+>>>>>>> main
   suggesting the variable is named "Fluorescence"}
 
 \item{selected}{list of character strings;
@@ -28,7 +39,11 @@ differently, user needs to specify what column variables to keep}
 \value{
 cleaned up data framed with selected columns
 #examples
+<<<<<<< HEAD
 #normalized <-normalize(data = raw_data, Fluo = 5, selected =
+=======
+#normalized <-normalize(data = raw_data, fluo = 5, selected =
+>>>>>>> main
 #c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
 }
 \description{
@@ -36,3 +51,7 @@ Normalize reads in raw data. This function normalizes data by standardized
   them according to max and min. It also reformat data types by checking
   for potential error
 }
+<<<<<<< HEAD
+=======
+\concept{data_preprocess}
+>>>>>>> main

@@ -17,10 +17,19 @@ default set to "txt"}
 }
 \value{
 file output on the working directory where data was read in
+<<<<<<< HEAD
 
 #examples
 #write.tsar(output_data, name = "2022_03_18_test", file = "txt")
+=======
+>>>>>>> main
 }
 \description{
 writes output into csv or txt files
 }
+<<<<<<< HEAD
+=======
+\concept{read_write_analysis
+#examples
+#write.tsar(output_data, name = "2022_03_18_test", file = "txt")}
+>>>>>>> main

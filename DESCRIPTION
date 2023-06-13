@@ -1,11 +1,16 @@
 Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
+<<<<<<< HEAD
 Version: 0.0.0.9000
+=======
+Version: 0.1.0
+>>>>>>> main
 Authors@R: person(c("William", "M."), "McFadden", 
                 email = "wmm27@pitt.edu", 
                 role = c("cre", "aut"))
 Description: This package aims to automate a workflow for TSA analysis in R. 
+<<<<<<< HEAD
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -24,3 +29,21 @@ Imports:
     stringr (>= 1.4.0),
     tidyr (>= 1.2.0),
     utils (>= 4.2.0)
+=======
+License: LGPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr (>= 1.0.7),
+    ggplot2 (>= 3.3.5),
+    ggpubr (>= 0.4.0),
+    magrittr (>= 2.0.3),
+    methods (>= 4.1.0),
+    mgcv (>= 1.8.38),
+    readr (>= 2.1.1),
+    readxl (>= 1.4.0),
+    stringr (>= 1.4.0),
+    tidyr (>= 1.1.4),
+    utils
+>>>>>>> main

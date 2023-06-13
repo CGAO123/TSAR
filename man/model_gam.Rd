@@ -15,11 +15,22 @@ model_gam(norm_data, x, y)
 }
 \value{
 gam model fitted with formula set to y ~ s(x, bs = "cs")
+<<<<<<< HEAD
 #example
 #gammodel <- model_gam(Data = normalized,
                          x = normalized$temperature,
                          y = normalized$fluorescence)
+=======
+>>>>>>> main
 }
 \description{
 function finds fitted fluorescence values
 }
+<<<<<<< HEAD
+=======
+\concept{data_preprocess
+#example
+#gammodel <- model_gam(Data = normalized,
+                         x = normalized$temperature,
+                         y = normalized$fluorescence)}
+>>>>>>> main

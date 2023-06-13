@@ -4,19 +4,39 @@
 \alias{model_fit}
 \title{Refit and calculate derivative function}
 \usage{
+<<<<<<< HEAD
 model_fit(norm_data, model)
+=======
+model_fit(norm_data, model, smoothed)
+>>>>>>> main
 }
 \arguments{
 \item{norm_data}{data frame; the raw data set input}
 
 \item{model}{fitted model containing fitted values}
+<<<<<<< HEAD
 }
 \value{
 data frame; with calculated derivative columns
 
 #examples
 #fitted <- modelfit(data = gammodel, model = fitted)
+=======
+
+\item{smoothed}{inform whether data already contains smoothed model; set
+\code{smoothed = "Flourescence"} to calculate norm_deriv upon the
+existing model}
+}
+\value{
+data frame; with calculated derivative columns
+>>>>>>> main
 }
 \description{
 Model_fit calculates derivatives by refitting model onto data
 }
+<<<<<<< HEAD
+=======
+\concept{data_preprocess
+#examples
+#fitted <- modelfit(data = gammodel, model = fitted)}
+>>>>>>> main

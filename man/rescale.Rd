@@ -22,7 +22,12 @@ For a vector of numeric values, the minimum and maximum values are determined
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},
 \code{\link{Tm_difference}()},
+<<<<<<< HEAD
 \code{\link{merge_TSA}()},
+=======
+\code{\link{merge_norm}()},
+\code{\link{merge_tsa}()},
+>>>>>>> main
 \code{\link{normalize_fluorescence}()},
 \code{\link{tsa_average}()}
 }

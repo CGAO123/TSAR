@@ -14,14 +14,26 @@ code = 1 returns the data table with the fitted values
 code = 2 returns the combination of 0 and 1}
 }
 \value{
+<<<<<<< HEAD
 
+=======
+output files with select dataset
+>>>>>>> main
 }
 \description{
 reads previous pipeline output lists and organizes them into separate
   data frames
 }
 \examples{
+<<<<<<< HEAD
 #read.tsar(result, code = 0)
 #output_data <- read.tsar(result, code = 2)
 
 }
+=======
+#read_tsar(result, code = 0)
+#output_data <- read_tsar(result, code = 2)
+
+}
+\concept{read_write_analysis}
+>>>>>>> main

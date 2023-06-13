@@ -6,6 +6,10 @@
 #' @importFrom magrittr %>%
 #' @importFrom readxl read_excel
 #' @importFrom tidyr pivot_longer
+<<<<<<< HEAD
+=======
+#' @importFrom dplyr mutate select left_join
+>>>>>>> main
 #'
 #' @param file_path string; file path to read in the file
 #' @param analysis_file data frame; data frame containing smoothed fluorescence
@@ -24,11 +28,20 @@
 #'   format provided
 #' @return outputs data frame joining data information with well information
 #'
+<<<<<<< HEAD
+=======
+#' @family read_write_analysis
+>>>>>>> main
 #' examples
 #' #Analysis <- join.well_info("/Users/candygao/Desktop/qpcrresult/
 #'                            CA_IP_HCB_2_20220110_134917_AnalysisResults.txt",
 #'                            output_data, type = "by_well")
+<<<<<<< HEAD
 #' #Analysis <- join.well_info("~/Desktop/qpcrresult/Well Information Template.xlsx",
+=======
+#' #Analysis <- join.well_info("~/Desktop/qpcrresult/
+#' Well Information Template.xlsx",
+>>>>>>> main
 #'                          output_data,
 #'                          type = "by_template")
 #'
@@ -42,17 +55,27 @@ join_well_info <- function(
 
     #input by well
     if (type == "by_well") {
+<<<<<<< HEAD
         well_info <- read.delim(header = TRUE,
                                 skip = skips,
                                 nrow = nrows,
                                 file_path)
         well_info <- well_info%>%
             dplyr::select(Well, Protein, Ligand)
+=======
+        well_info <- utils::read.delim(header = TRUE,
+                                skip = skips,
+                                nrow = nrows,
+                                file_path)
+        well_info <- well_info %>%
+            dplyr::select(c("Well", "Protein", "Ligand"))
+>>>>>>> main
         #input by excel template
     }else if (type == "by_template") {
         #read file, specify column as texts
         well_info_table <- readxl:: read_excel(file_path,
                                       col_types =
+<<<<<<< HEAD
                                     c("text","text","text","text","text","text",
                                     "text","text","text","text","text","text",
                                     "text","text","text","text","text","text",
@@ -68,26 +91,60 @@ join_well_info <- function(
             c("Col","01","02","03","04","05","06","07","08","09","10","11","12")
         names(ligand) <-
             c("Col","01","02","03","04","05","06","07","08","09","10","11","12")
+=======
+                            c("text", "text", "text", "text", "text", "text",
+                            "text", "text", "text", "text", "text", "text",
+                            "text", "text", "text", "text", "text", "text",
+                            "text", "text", "text", "text", "text", "text",
+                            "text"))
+
+        #remove header row
+        well_info_table <- well_info_table[-c(1), ]
+        #seperate protein and ligand information into two data frames
+        protein <- well_info_table[, c(1, 2, 4, 6, 8, 10, 12,
+                                       14, 16, 18, 20, 22, 24)]
+        ligand <- well_info_table[, -c(2, 4, 6, 8, 10, 12, 14,
+                                       16, 18, 20, 22, 24)]
+        #rename information by well
+        names(protein) <-
+            c("Col", "01", "02", "03", "04", "05",
+              "06", "07", "08", "09", "10", "11", "12")
+        names(ligand) <-
+            c("Col", "01", "02", "03", "04", "05",
+              "06", "07", "08", "09", "10", "11", "12")
+>>>>>>> main
 
         #pivot table to place values into correct positions
         protein <- protein %>%
             tidyr::pivot_longer(cols = !Col,
                          names_to = "pos",
+<<<<<<< HEAD
                          values_to = "Protein")%>%
+=======
+                         values_to = "Protein") %>%
+>>>>>>> main
             mutate(Well = paste(Col, pos, sep = "")) %>%
             dplyr::select(Well, Protein)
 
         ligand <- ligand %>%
             tidyr::pivot_longer(cols = !Col,
                          names_to = "pos",
+<<<<<<< HEAD
                          values_to = "Ligand")%>%
+=======
+                         values_to = "Ligand") %>%
+>>>>>>> main
             mutate(Well  = paste(Col, pos, sep = "")) %>%
             dplyr::select(Well, Ligand)
 
         #join protein and ligand data frames by well
         well_info <- left_join(protein,
                                ligand,
+<<<<<<< HEAD
                                by = "Well" )
+=======
+                               by = "Well")
+>>>>>>> main
     }
 
     #join well information to big data frame
@@ -96,4 +153,7 @@ join_well_info <- function(
                           by = c("Well.Position" = "Well"))
     return(combined)
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> main

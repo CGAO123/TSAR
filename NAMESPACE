@@ -6,13 +6,21 @@ export(TSA_ligands)
 export(TSA_proteins)
 export(TSA_wells_plot)
 export(Tm_difference)
+<<<<<<< HEAD
 export(Tm_est)
+=======
+>>>>>>> main
 export(condition_IDs)
 export(gam_analysis)
 export(get_legend)
 export(join_well_info)
+<<<<<<< HEAD
 export(merge_TSA)
 export(merge_norm)
+=======
+export(merge_norm)
+export(merge_tsa)
+>>>>>>> main
 export(model_fit)
 export(model_gam)
 export(normalize)
@@ -21,14 +29,31 @@ export(read_analysis)
 export(read_raw_data)
 export(read_tsar)
 export(rescale)
+<<<<<<< HEAD
+=======
+export(tm_est)
+>>>>>>> main
 export(tsa_average)
 export(tsa_compare_plot)
 export(well_IDs)
 export(write_tsar)
+<<<<<<< HEAD
 importFrom(ggplot2,aes)
 importFrom(ggplot2,ggplot)
 importFrom(ggplot2,labs)
 importFrom(ggplot2,theme)
+=======
+import(ggplot2)
+import(utils)
+importFrom(dplyr,distinct)
+importFrom(dplyr,group_by)
+importFrom(dplyr,left_join)
+importFrom(dplyr,mutate)
+importFrom(dplyr,n_distinct)
+importFrom(dplyr,rename)
+importFrom(dplyr,select)
+importFrom(dplyr,summarize)
+>>>>>>> main
 importFrom(magrittr,"%>%")
 importFrom(mgcv,gam)
 importFrom(readxl,read_excel)

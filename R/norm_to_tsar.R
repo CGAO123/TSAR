@@ -3,6 +3,12 @@
 #' This function merges data of experiment replicates across different dates.
 #'   It merges and produces information variables used to group wells of same
 #'   set up.
+<<<<<<< HEAD
+=======
+#'
+#' @importFrom dplyr rename mutate
+#'
+>>>>>>> main
 #' @param norm_data1 data frame; normalized data outputted by read_tsar
 #'   following gam_analysis. Input data for experiment replication day 1
 #' @param norm_data2 data frame; normalized data outputted by read_tsar
@@ -14,6 +20,10 @@
 #' @param exp_date1 character string; input date of experiment
 #' @param exp_date2 character string; input date of experiment
 #'
+<<<<<<< HEAD
+=======
+#' @family TSAR Formatting
+>>>>>>> main
 #' @export
 #'
 merge_norm <- function(
@@ -35,11 +45,19 @@ merge_norm <- function(
                                tsar_data$Protein,
                                tsar_data$Ligand,
                                exp_date1
+<<<<<<< HEAD
                                , sep="_"))%>%
+=======
+                               , sep = "_")) %>%
+>>>>>>> main
         #add condition_ID column
         mutate(condition_ID = paste(tsar_data$Protein,
                                     tsar_data$Ligand,
                                     sep = "_")) %>%
+<<<<<<< HEAD
         rename(Tm = tm, Well = Well.Position)
+=======
+        dplyr::rename(Tm = tm, Well = Well.Position)
+>>>>>>> main
     return(tsar_data)
 }

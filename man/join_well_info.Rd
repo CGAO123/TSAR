@@ -29,6 +29,7 @@ format provided}
 }
 \value{
 outputs data frame joining data information with well information
+<<<<<<< HEAD
 
 examples
 #Analysis <- join.well_info("/Users/candygao/Desktop/qpcrresult/
@@ -37,8 +38,22 @@ examples
 #Analysis <- join.well_info("~/Desktop/qpcrresult/Well Information Template.xlsx",
                          output_data,
                          type = "by_template")
+=======
+>>>>>>> main
 }
 \description{
 reads in the ligand and protein information and joins them accordingly
 to the big data frame for graphing purposes
 }
+<<<<<<< HEAD
+=======
+\concept{read_write_analysis
+examples
+#Analysis <- join.well_info("/Users/candygao/Desktop/qpcrresult/
+                           CA_IP_HCB_2_20220110_134917_AnalysisResults.txt",
+                           output_data, type = "by_well")
+#Analysis <- join.well_info("~/Desktop/qpcrresult/
+Well Information Template.xlsx",
+                         output_data,
+                         type = "by_template")}
+>>>>>>> main

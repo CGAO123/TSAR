@@ -9,6 +9,10 @@ gam_analysis(
   keep = TRUE,
   fit = FALSE,
   smoothed = FALSE,
+<<<<<<< HEAD
+=======
+  fluo = -1,
+>>>>>>> main
   selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized")
 )
 }
@@ -24,6 +28,15 @@ of each model fit}
 \item{smoothed}{Boolean; set to false by default,
 if data is already smoothed, set smoothed to true}
 
+<<<<<<< HEAD
+=======
+\item{fluo}{integer; the Fluorescence variable column id
+(e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
+  if fluorescence variable is named exactly as "Fluorescence", fluo does not
+  need to be specified. i.e. fluo is set to -1 by default,
+  suggesting the variable is named "Fluorescence"}
+
+>>>>>>> main
 \item{selections}{list of characters; the variables in raw data user intends
 to keep. It is set, by default, to c("Well.Position", "Temperature",
 "Fluorescence", "Normalized").}
@@ -31,6 +44,7 @@ to keep. It is set, by default, to c("Well.Position", "Temperature",
 \value{
 list of data frames, list of three data frame outputs,
   tm estimation by well, data set, fit of model by well
+<<<<<<< HEAD
 
 #examples
 #raw_data <- read.delim(header = TRUE, skip = 0, nrow = 112976,
@@ -39,8 +53,21 @@ Thermal Shift_02_55.eds.txt")
 #Result_R <- gam_analysis(rawdata = raw_data, keep = T, fit = T, smoothed = F,
                  selections = c("Well.Position", "Temperature",
                  "Fluorescence", "Normalized"))
+=======
+>>>>>>> main
 }
 \description{
 function pipeline that combines separated functions and iterate through
   each well to find the tm estimation
 }
+<<<<<<< HEAD
+=======
+\concept{tsa_analysis
+#examples
+#raw_data <- utils::read.delim(header = TRUE, skip = 0, nrow = 112976,
+"/Users/candygao/Desktop/qpcrresult/CA_IP_HCB_2_20220110_134917_RawData_
+Thermal Shift_02_55.eds.txt")
+#Result_R <- gam_analysis(rawdata = raw_data, keep = T, fit = T,
+              smoothed = F, selections = c("Well.Position", "Temperature",
+                 "Fluorescence", "Normalized"))}
+>>>>>>> main

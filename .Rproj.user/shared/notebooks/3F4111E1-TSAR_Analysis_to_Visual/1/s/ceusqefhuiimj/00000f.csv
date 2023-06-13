@@ -1,0 +1,52 @@
+"0","control_ID <- ""CA121_Buffer"""
+"0","tsa_compare_plot(conclusion,"
+"0","                 y = ""Fluorescence"","
+"0","                 control_condition = control_ID)"
+"1","$`CA FL_Buffer`
+"
+"1","
+"
+"1","$`CA FL_50_IP6`
+"
+"1","
+"
+"1","$`CA FL_10_IP6`
+"
+"1","
+"
+"1","$`CA FL_50_HCB`
+"
+"1","
+"
+"1","$`CA FL_10_HCB`
+"
+"1","
+"
+"1","$CA121_50_IP6
+"
+"1","
+"
+"1","$CA121_10_IP6
+"
+"1","
+"
+"1","$CA121_50_HCB
+"
+"1","
+"
+"1","$CA121_10_HCB
+"
+"1","
+"
+"1","$Buffer_50_IP6
+"
+"1","
+"
+"1","$Buffer_50_HCB
+"
+"1","
+"
+"1","$`Control: CA121_Buffer`
+"
+"1","
+"

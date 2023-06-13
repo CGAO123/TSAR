@@ -1,7 +1,11 @@
 ---
 title: "TSAR Data Preprocessing and Analysis Workflow"
 author: "Candy Gao"
+<<<<<<< HEAD
 date: "4/8/2022"
+=======
+date: "9/16/2022"
+>>>>>>> main
 output: html_document
 ---
 
@@ -33,6 +37,7 @@ test <- raw_data %>%
 #section data by temperature to remove messy area
 #test <- subset(test, test$Temperature>40 & test$Temperature <50) 
 
+<<<<<<< HEAD
 test <- normalize(data = test, Fluo = 5, selected = c("Well.Position", "Temperature", "Fluorescence", "Normalized")) 
 head(test)
 gammodel <- model_gam(Data = test, x = test$Temperature, y = test$Normalized)
@@ -40,6 +45,13 @@ test <- model_fit(data = test, model = gammodel)
 
 #if dataset is already smoothed
 #test <- mutate(test, norm_deriv = c(diff(test$Fluorescence)/diff(test$Temperature),NA))
+=======
+test <- normalize(test, Fluo = 5, selected = c("Well.Position", "Temperature", "Fluorescence", "Normalized")) 
+head(test)
+gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+test <- model_fit(test, model = gammodel) #, smoothed="Fluorescence")
+
+>>>>>>> main
 
 Tm_est(test)
 
@@ -51,12 +63,19 @@ result <- ggplot(data = test, aes(x = Temperature, y = Normalized)) +
   geom_vline(xintercept = Tm_est(test), color = "red") #tm temperature value
 
 result
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 ```
 
 ## 96 well application
 
+<<<<<<< HEAD
 ```{r}
+=======
+```{r, echo = FALSE}
+>>>>>>> main
 #run analysis
 x <- gam_analysis(raw_data, smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
 
@@ -72,3 +91,11 @@ tail(output)
 norm_data <- join_well_info("/Users/candygao/Desktop/qpcrresult/Well Information Template.xlsx", output, type = "by_template")
 head(norm_data)
 ```
+<<<<<<< HEAD
+=======
+
+```{r}
+
+
+```
+>>>>>>> main

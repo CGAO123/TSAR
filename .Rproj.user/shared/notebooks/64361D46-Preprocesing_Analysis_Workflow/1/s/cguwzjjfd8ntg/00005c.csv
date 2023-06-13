@@ -1,0 +1,7 @@
+"0",""
+"0","test %>%"
+"0","    group_by(Well.Position) %>%"
+"0","    ggplot(aes(x = Temperature, y = Normalized)) +"
+"0","        geom_point(shape = 1)+"
+"0","        geom_point(aes(y=norm_deriv), color = ""blue"", alpha = 1/10)+"
+"0","        geom_vline(xintercept = test$Temperature[which.max(test$norm_deriv)], color = ""red"")"

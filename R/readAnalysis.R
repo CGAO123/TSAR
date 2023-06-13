@@ -12,6 +12,11 @@
 #'   The TSA software automatically assigns all wells to Analysis Group 1 by
 #'   default, and can be changed but not removed by the software.
 #'
+<<<<<<< HEAD
+=======
+#' @importFrom stringr str_detect str_replace_all
+#' @importFrom tidyr unite
+>>>>>>> main
 #'
 #' @param path a character string; the path or the name of the file which the
 #'  'AnalysisResults' data are to be read from. Either a .txt or .csv file.
@@ -87,15 +92,21 @@
 #'
 #' @family Read TSA Data
 #' @seealso \code{\link{read_raw_data}} for loading accompanying data.
+<<<<<<< HEAD
 #'   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
 #'   from the TSA software.
 #' @importFrom stringr str_detect str_replace_all
 #' @importFrom tidyr unite
+=======
+#'   \code{\link{merge_tsa}} for joining Analysis Results and Raw Data files
+#'   from the TSA software.
+>>>>>>> main
 #' @export
 #'
 #'
 read_analysis <- function(
     path,
+<<<<<<< HEAD
     type =  "derivative",   # c("boltzmann", "derivative") #To use the TmB or TmD values
     conditions = c("Protein", "Ligand"), #Conditions that vary between wells
     #Users can specify IDs needed for merging manually. Each AG needs a
@@ -103,6 +114,14 @@ read_analysis <- function(
     manual_wells = NA, #a user can specify a chr vector of IDs for each well assigned
     skip_flags = FALSE, #Remove wells that have flags reported by TSA software
     manual_file = NA #User can specify .eds for merging if needed for well_ID
+=======
+    type =  "derivative",
+    conditions = c("Protein", "Ligand"),
+    manual_conditions = NA,
+    manual_wells = NA,
+    skip_flags = FALSE,
+    manual_file = NA
+>>>>>>> main
 ) {
     #Note: Wells that do not have an Analysis Group assigned are removed
 
@@ -110,6 +129,7 @@ read_analysis <- function(
     #--- Loading and formatting
 
 
+<<<<<<< HEAD
     if (!str_detect(path, "AnalysisResults")) {
         warning('Check the input file,
                     The path name does not include "AnalysisResults"')
@@ -124,10 +144,27 @@ read_analysis <- function(
                                  na.strings=c("","NA", " "))
         }
         names(analysis) <- str_replace_all(names(analysis), "\\.", " ")
+=======
+    if (!stringr::str_detect(path, "AnalysisResults")) {
+        warning('Check the input file,
+                    The path name does not include "AnalysisResults"')
+    }
+    if (stringr::str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
+        if (stringr::str_detect(path, pattern = "(.*\\.txt$)")) {
+            analysis <- read.delim(path, skip = 2,
+                                   na.strings = c("", "NA", " "))
+        }
+        if (stringr::str_detect(path, pattern = "(.*\\.csv$)")) {
+            analysis <- read.csv(path, skip = 2,
+                                 na.strings = c("", "NA", " "))
+        }
+        names(analysis) <- stringr::str_replace_all(names(analysis), "\\.", " ")
+>>>>>>> main
         names(analysis)[names(analysis) == "Flag Indicator"] <- "Flags"
         analysis <- analysis[1:96, ] #Trim to 96 wells
         analysis$`Tm D` <- as.numeric(analysis$`Tm D`)
         analysis$`Tm B` <- as.numeric(analysis$`Tm B`)
+<<<<<<< HEAD
     } else { error("File type not .csv or .txt")}
     if (type == "boltzmann"){
         col_names <-
@@ -137,6 +174,20 @@ read_analysis <- function(
     if (type == "derivative"){
         col_names <-
             c("Well", conditions,"Tm D", "dTm D",
+=======
+
+    } else {
+        utils::error("File type not .csv or .txt")
+        }
+    if (type == "boltzmann") {
+        col_names <-
+            c("Well", conditions, "Tm B", "dTm B",
+              "Analysis Group", "Flags", "Experiment File Name")
+    }
+    if (type == "derivative") {
+        col_names <-
+            c("Well", conditions, "Tm D", "dTm D",
+>>>>>>> main
               "Analysis Group", "Flags", "Experiment File Name")
     }
     #Keep only rows with an analysis group and required+condition cols
@@ -144,9 +195,15 @@ read_analysis <- function(
     names(analysis)[names(analysis) %in% c("Tm D", "Tm B")] <- "Tm"
     #--- Generating ID codes for downstream functions
     #--- Making condition_ID-same for all equivalent wells (for well matching)
+<<<<<<< HEAD
     if (is.na(manual_conditions)){  #Default, auto generate condition IDs
         analysis$condition_ID <-
             unite(analysis, "condition_ID", conditions)$condition_ID
+=======
+    if (is.na(manual_conditions)) {  #Default, auto generate condition IDs
+        analysis$condition_ID <-
+            tidyr::unite(analysis, "condition_ID", conditions)$condition_ID
+>>>>>>> main
     } else {
         analysis$condition_ID <- manual_conditions #manual well assignments
     }
@@ -154,9 +211,15 @@ read_analysis <- function(
     if (!is.na(manual_file)) {
         analysis$`Experiment File Name` <- manual_file
     }
+<<<<<<< HEAD
     if (is.na(manual_wells)){  #Default, auto generate condition IDs
         analysis$well_ID <-
             unite(analysis, "well_ID",
+=======
+    if (is.na(manual_wells)) {  #Default, auto generate condition IDs
+        analysis$well_ID <-
+            tidyr::unite(analysis, "well_ID",
+>>>>>>> main
                   c("Well", "Experiment File Name"))$well_ID
     } else {
         analysis$well_ID <- manual_wells #manual well assignments

@@ -12,13 +12,18 @@
 #' @return a data frame of reformatted data with the \code{\link{tsa_average}}
 #'   data and the Tm.
 #' @family TSAR Formatting
+<<<<<<< HEAD
 #' @seealso \code{\link{merge_TSA}} for preparing data.
+=======
+#' @seealso \code{\link{merge_tsa}} for preparing data.
+>>>>>>> main
 #'   \code{\link{tsa_average}} for more information on the output data.
 #'   \code{\link{condition_IDs}} to get unique Condition IDs within the
 #'   input.
 #'   \code{\link{TSA_boxplot}} for application.
 #' @export
 
+<<<<<<< HEAD
 Tm_difference <-
     function(tsa_data,
              control_condition = "CA-FL_DMSO" #Cond. ID of Tms to compare
@@ -27,6 +32,20 @@ Tm_difference <-
 
         if(!is.na(control_condition)) {
             if(!control_condition %in% condition_IDs(tsa_data)) {
+=======
+
+
+
+
+Tm_difference <-
+    function(tsa_data,
+             control_condition = "CA-FL_DMSO" #Cond. ID of Tms to compare
+    ) {
+        TM_DF <- TSA_Tms(tsa_data)
+
+        if (!is.na(control_condition)) {
+            if (!control_condition %in% condition_IDs(tsa_data)) {
+>>>>>>> main
                 stop("control_condition is not found in tsa_data$condition_ID")
             }
             ctrl_avg <- TM_DF$Avg_Tm[TM_DF$condition_ID == control_condition]

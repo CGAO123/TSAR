@@ -9,7 +9,11 @@
 #'   automatically extracted from the loaded file; values must be assigned
 #'   within the TSA software for the automated workflow (See IDs Section Below).
 #'
+<<<<<<< HEAD
 #'
+=======
+#' @importFrom stringr str_extract
+>>>>>>> main
 #' @param path a character string; the path or the name of the file which the
 #'   'RawData' data are to be read from. Either a .txt or .csv file.
 #'   The path must contain the term \emph{RawData} as the TSA software
@@ -48,7 +52,11 @@
 #'   \strong{Condition IDs} are generated only in the
 #'   \code{\link{read_analysis}}, see that function's documentation for
 #'   more details. Condition IDs are assigned to raw data in the
+<<<<<<< HEAD
 #'   \code{\link{merge_TSA}} function.
+=======
+#'   \code{\link{merge_tsa}} function.
+>>>>>>> main
 #'    \cr\cr
 #'
 #'   \strong{Well IDs} are similar to Condition IDs, as they are
@@ -65,9 +73,14 @@
 #'
 #' @family Read TSA Data
 #' @seealso \code{\link{read_analysis}} for loading accompanying data.
+<<<<<<< HEAD
 #'   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
 #'   from the TSA software.
 #' @importFrom stringr str_extract str_detect
+=======
+#'   \code{\link{merge_tsa}} for joining Analysis Results and Raw Data files
+#'   from the TSA software.
+>>>>>>> main
 #' @export
 
 read_raw_data <- function(
@@ -95,6 +108,7 @@ read_raw_data <- function(
         derivative_start <- which(grepl("Derivative", raw_data$Fluorescence))
         boltzman_start <- which(grepl("Boltzmann", raw_data$Fluorescence))
 
+<<<<<<< HEAD
         if(type %in% c("fluorescence", "boltzmann", "derivative")){
             if (type ==  "fluorescence"){
                 data_start <- 1
@@ -105,6 +119,18 @@ read_raw_data <- function(
                 data_end <- boltzman_start - 1
             }
             if (type ==  "boltzmann"){
+=======
+        if (type %in% c("fluorescence", "boltzmann", "derivative")) {
+            if (type ==  "fluorescence") {
+                data_start <- 1
+                data_end <- derivative_start - 1
+            }
+            if (type ==  "derivative") {
+                data_start <- derivative_start + 1
+                data_end <- boltzman_start - 1
+            }
+            if (type ==  "boltzmann") {
+>>>>>>> main
                 data_start <- boltzman_start + 1
                 data_end <- length(raw_data)
             }
@@ -117,14 +143,24 @@ read_raw_data <- function(
         raw_data$Fluorescence <- as.numeric(raw_data$Fluorescence)
         #--- Get the file name from the path name
         if (is.na(manual_file)) {
+<<<<<<< HEAD
             file_name <- str_extract(path, "(?<=RawData\\_).*(\\.eds)")
+=======
+            file_name <- stringr::str_extract(path, "(?<=RawData\\_).*(\\.eds)")
+>>>>>>> main
         } else {
             file_name <- manual_file
         }
 
         #--- Generate well_ID to match w/ analysis file
         raw_data$well_ID <- paste0(raw_data$Well.Position, "_", file_name)
+<<<<<<< HEAD
     } else { error("File type not .csv or .txt")}
+=======
+    } else {
+        utils::error("File type not .csv or .txt")
+        }
+>>>>>>> main
 
     return(raw_data)
 }

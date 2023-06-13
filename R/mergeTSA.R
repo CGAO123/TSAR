@@ -24,7 +24,11 @@
 #'   analysis_file_path must contain the term  \emph{AnalysisResults} as the
 #'   TSA software automatically assigns this when exporting data. Data is loaded
 #'   from the \code{\link{read_raw_data}} and \code{\link{read_analysis}}
+<<<<<<< HEAD
 #'   functions within this merge_TSA function.
+=======
+#'   functions within this merge_tsa function.
+>>>>>>> main
 #'
 
 #' @param protein can be used to select for an individual or multiple protein(s)
@@ -57,7 +61,11 @@
 #'   \strong{Condition IDs} are generated only in the
 #'   \code{\link{read_analysis}}, see that function's documentation for
 #'   more details. Condition IDs are assigned to raw data in the
+<<<<<<< HEAD
 #'   \code{\link{merge_TSA}} function.
+=======
+#'   \code{\link{merge_tsa}} function.
+>>>>>>> main
 #'    \cr\cr
 #'
 #'   \strong{Well IDs} are similar to Condition IDs, as they are
@@ -78,7 +86,11 @@
 #' @export
 
 
+<<<<<<< HEAD
 merge_TSA <- function (
+=======
+merge_tsa <- function(
+>>>>>>> main
     analysis_file_path,
     raw_data_path,
     protein = NA, #can filter by protein, as character
@@ -86,7 +98,11 @@ merge_TSA <- function (
 ) {
     #--- check the files are uploaded in pairs.
     n_pairs <- length(analysis_file_path) #needed for loop below
+<<<<<<< HEAD
     if (!n_pairs == length(raw_data_path)){
+=======
+    if (!n_pairs == length(raw_data_path)) {
+>>>>>>> main
         stop("analysis_file_path and raw_data_path must be equal length")
     }
 
@@ -95,7 +111,12 @@ merge_TSA <- function (
         raw_data_i <- read_raw_data(path = raw_data_path[i]) #Load raw data
         raw_data_i <- raw_data_i[!names(raw_data_i) %in% c("Well", "Reading")]
         analysis_i <- read_analysis(path = analysis_file_path[i]) #load analysis
+<<<<<<< HEAD
         tsa_data_i <- merge(analysis_i, raw_data_i, by = "well_ID") #Merge .eds file
+=======
+        #Merge .eds file
+        tsa_data_i <- merge(analysis_i, raw_data_i, by = "well_ID")
+>>>>>>> main
         tsa_data <- rbind(tsa_data, tsa_data_i) #Add .eds to merged files
     }
 
