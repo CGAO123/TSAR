@@ -91,7 +91,7 @@ gam_analysis <- function(
     #iterate through each individual well
     for (i in unique(raw_data$Well.Position)) {
         by_well <- raw_data %>%
-            filter(Well.Position == i)
+            filter(raw_data$Well.Position == i)
         #normalize data
         by_well <- normalize(raw_data = by_well,
                              fluo = fluo,
@@ -115,7 +115,8 @@ gam_analysis <- function(
             #if data smoothing is already present, not further modeling required
             #calculate derivatives using smoothed data, append derivatives
             by_well <- by_well %>%
-                mutate(norm_deriv = c(diff(Normalized) / diff(Temperature), NA))
+                mutate(norm_deriv = c(diff(by_well$Normalized)
+                                      / diff(by_well$Temperature), NA))
         }
 
         #estimate tm values and concat them into one list

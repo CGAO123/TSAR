@@ -26,9 +26,9 @@ This function is used to output calculated Tm data from TSA analysis. The
   a new format that is helpful for user reading and automated analysis.
   The Tm values can be listed as a data frame of individual wells or the Tms
   from identical conditions can be averaged. When condition_average is TRUE
-  (the default), samples with identical condition IDs will be aggregted and
+  (the default), samples with identical condition IDs will be aggregated and
   the average / standard deviation will be calculated where appropriate.
-  To analyze mutliple TSA experiments, use merge_tsa() to make a single
+  To analyze multiple TSA experiments, use merge_tsa() to make a single
   data frame for analysis.
 }
 \seealso{
