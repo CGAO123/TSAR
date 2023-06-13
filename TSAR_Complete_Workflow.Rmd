@@ -7,7 +7,7 @@ output: html_document
 
 # TSAR Workflow
 
-Pipeline analysis from raw data reading to graphic visualization. :)
+Pipeline analysis from raw data reading to graphic visualization.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
