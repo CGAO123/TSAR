@@ -2,8 +2,13 @@
     "tempName": "Untitled1",
     "source_window_id": "",
     "Source": "Source",
+<<<<<<< HEAD
     "cursorPosition": "5,11",
     "scrollLine": "0",
+=======
+    "cursorPosition": "57,0",
+    "scrollLine": "50",
+>>>>>>> e57ef17 (//)
     "rmdVisualMode": "false",
     "rmdVisualWrapConfigured": "true",
     "docOutlineVisible": "1",

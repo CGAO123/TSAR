@@ -4,6 +4,7 @@
 %2FUsers%2Fcandygao%2FDesktop%2FTSAR-main%2FR%2Ftsa_curves.R="C1EFC7C6"
 ~%2FDesktop%2F329data.Rmd="DD0F9BE5"
 ~%2FDesktop%2FTF%20Analysis.Rmd="1236E214"
+~%2FDesktop%2FTSAR-main%2F.Rproj.user%2F7F3FB135%2Fsources%2Fprop%2F0EA039EC="0FCD0C8A"
 ~%2FDesktop%2FTSAR-main%2F0923%20Data%20analysis.Rmd="9D06CAB8"
 ~%2FDesktop%2FTSAR-main%2FPreprocesing_Analysis_Workflow.Rmd="862683FE"
 ~%2FDesktop%2FTSAR-main%2FR%2FTSA_Analysis.R="AF1CD6C8"
@@ -31,7 +32,11 @@
 ~%2FDesktop%2FTSAR-main%2FTSAR%20Complete%20Workflow.Rmd="2FB74EC6"
 ~%2FDesktop%2FTSAR-main%2FTSAR.Rmd="E010DB65"
 ~%2FDesktop%2FTSAR-main%2FTSAR_Analysis_to_Visual.Rmd="C4AC7E51"
+<<<<<<< HEAD
 ~%2FDesktop%2FTSAR-main%2FTSAR_Complete_Workflow.Rmd="6B6BC2E7"
+=======
+~%2FDesktop%2FTSAR-main%2FTSAR_Complete_Workflow.Rmd="DB64390F"
+>>>>>>> e57ef17 (//)
 ~%2FDesktop%2FTSAR-main%2FTSAR_Workflow.Rmd="FF467C8B"
 ~%2FDesktop%2FTSAR-main%2FTSAR_test.Rmd="054D62F4"
 ~%2FDesktop%2FTSAR-main%2Fman%2FTSA_wells_plot.Rd="C09A97A2"
