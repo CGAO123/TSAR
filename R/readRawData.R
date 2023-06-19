@@ -10,6 +10,7 @@
 #'   within the TSA software for the automated workflow (See IDs Section Below).
 #'
 #' @importFrom stringr str_extract
+#'
 #' @param path a character string; the path or the name of the file which the
 #'   'RawData' data are to be read from. Either a .txt or .csv file.
 #'   The path must contain the term \emph{RawData} as the TSA software
@@ -124,7 +125,7 @@ read_raw_data <- function(
         #--- Generate well_ID to match w/ analysis file
         raw_data$well_ID <- paste0(raw_data$Well.Position, "_", file_name)
     } else {
-        utils::error("File type not .csv or .txt")
+        error("File type not .csv or .txt")
         }
 
     return(raw_data)

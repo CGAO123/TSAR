@@ -1,0 +1,39 @@
+---
+title: "TSAR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{TSAR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TSAR)
+library(dplyr)
+library(ggplot2)
+```
+
+TSAR Package provides simple resolution to qPCR data processing, computing thermal shift analysis given either raw fluorescent data or smoothed ones. The functions provide users the protocol to conduct preliminary data checks and also expansive analysis on large scale of data. Furthermore, it showcases simple graphic presentation of analysis, generating clear box plot and line graphs given input of desired designs.
+
+# Data Structure
+
+TSAR segregates data structure into three tiers:
+
+-   `raw_data`, raw-readings of qPCR data
+-   `norm_data`, pre-processed and normalized data
+-   `tsar_data`, analyzed with ready for graphs
+
+To access the workflow of `TSAR`, user can input raw fluorescent readings through built in functions from utils: `read.delim()` or `read.csv()`. Built in data imports from RStudio UI is also appropriate given `raw_data` only needs to be saved as `dataframe` structure. Wrapping input in `data.frame()` will also ensure correct input type. Use `head()` and `tail()` to ensure excessive information is removed, i.e. blank lines, duplicate titles, etc.
+
+```{r}
+raw_data <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_162.eds.csv", header = TRUE, nrows = 118176)
+head(raw_data)
+tail(raw_data)
+```
