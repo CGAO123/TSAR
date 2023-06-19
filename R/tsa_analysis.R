@@ -37,7 +37,7 @@ tm_est <- function(norm_data, min, max) {
 }
 
 
-#' gam_analysis function run full board
+#' gam_analysis function runs on the full board
 #'
 #' function pipeline that combines separated functions and iterate through
 #'   each well to find the tm estimation

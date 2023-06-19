@@ -57,13 +57,15 @@ TSA_wells_plot <- function(
 
 
     if (y == "Fluorescence") { #When data supplied is not normalized
-        TSA_curve <- ggplot(tsa_data, aes(x = Temperature,  y = Fluorescence))
+        TSA_curve <- ggplot(tsa_data, aes(x = tsa_data$Temperature,
+                                          y = tsa_data$Fluorescence))
         tm_height <- max(tsa_data$Fluorescence) / 4 #y value for geom_label
         tsa_average_df <- tsa_average(tsa_data = tsa_data, y = "Fluorescence",
                                       sd_smooth = smooth)
     }
     if (y == "RFU") { #When data supplied is normalized
-        TSA_curve <- ggplot(tsa_data, aes(x = Temperature, y = Normalized))
+        TSA_curve <- ggplot(tsa_data, aes(x = tsa_data$Temperature,
+                                          y = tsa_data$Normalized))
         tm_height <- 0.4 #y value for geom_label
         tsa_average_df <- tsa_average(tsa_data = tsa_data, y = "RFU",
                                       sd_smooth = smooth)

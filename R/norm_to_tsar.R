@@ -32,18 +32,28 @@ merge_norm <- function(
         mutate(ExperimentFileName = file_name1)
     norm_data2 <- norm_data2 %>%
         mutate(ExperimentFileName = file_name2)
-    tsar_data <- data.frame(rbind(norm_data1, norm_data2))
-    tsar_data <- tsar_data %>%
+    #tsar_data <- data.frame(rbind(norm_data1, norm_data2))
+    tsar_data1 <- norm_data1 %>%
         #add well_ID column
-        mutate(well_ID = paste(tsar_data$Well.Position,
-                               tsar_data$Protein,
-                               tsar_data$Ligand,
+        mutate(well_ID = paste(norm_data1$Well.Position,
+                               norm_data1$Protein,
+                               norm_data1$Ligand,
                                exp_date1
-                               , sep = "_")) %>%
+                               , sep = "_"))
+    tsar_data2 <- norm_data2 %>%
+        #add well_ID column
+        mutate(well_ID = paste(norm_data2$Well.Position,
+                               norm_data2$Protein,
+                               norm_data2$Ligand,
+                               exp_date2
+                               , sep = "_"))
+    tsar_data <- data.frame(rbind(tsar_data1, tsar_data2))
+    tsar_data <- tsar_data %>%
         #add condition_ID column
         mutate(condition_ID = paste(tsar_data$Protein,
                                     tsar_data$Ligand,
                                     sep = "_")) %>%
         dplyr::rename(Tm = tm, Well = Well.Position)
+
     return(tsar_data)
 }

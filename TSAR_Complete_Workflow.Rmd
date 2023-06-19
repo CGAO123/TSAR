@@ -31,7 +31,7 @@ Read data in .txt or .csv format. Use read.delim function to input tab delimited
 Package defaults variable names as "Well.Position", "Temperature", "Fluorescence", "Normalized". Consider renaming data frame before proceding to following step.
 
 ```{r}
-raw_data <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_162.eds.csv", header = TRUE, nrows = 118177)
+raw_data <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_162.eds.csv", header = TRUE, nrows = 118176)
 ```
 
 ## 3. Data Pre-Processing
@@ -66,6 +66,20 @@ result <- ggplot(data = test, aes(x = Temperature, y = Normalized)) +
 
 result
 ```
+Screen all wells for curve shape on raw_data set and sift out corrupted data. This step is not required but may help remove data modeling errors.
+
+```{r}
+myApp <- weed_raw(raw_data, checkrange= c("A","C","1","12"))
+shiny::runApp(myApp)
+
+t_data <- remove_raw(raw_data, removelist = c('C04','B04','C03','C11','C09','C02','C12','C01',
+                                              'C10','C08','B11','C05','C07','C06','B10','B07',
+                                              'B09','B12','B06','B08','B05','B03','B02','B01'))
+
+t_data <- remove_raw(t_data, removerange = c("D","H","1","12"))
+screen(t_data,  checkrange= c("A","C","1","12"))
+```
+
 
 ## 4. 96-well Analysis Application
 
@@ -73,7 +87,7 @@ TSAR package excels in mass analysis by propagating identical protocols to all 9
 
 ```{r, echo = FALSE}
 #smoothed = T infers current data is smoothed and no separate gam modeling is needed. If modeling needed, input arguement as smoothed = F
-x <- gam_analysis(raw_data, smoothed = T, fluo = 5, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+x <- gam_analysis(t_data, smoothed = T, fluo = 5, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
 x <- na.omit(x)
 ```
 
@@ -108,7 +122,14 @@ write_tsar(norm_data, name = "vitamin_tm_val_norm", file = "csv")
 ## 7. Merge Data across Biological Replicates
 Repeat step 2 through 6 on replicate data set. A five step function call will complete all analysis.
 ```{r}
-raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118177)
+raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118176)
+screen(raw_data_rep)
+raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"))
+myApp <- weed_raw(raw_data_rep)
+shiny::runApp(myApp)
+raw_data_rep <- remove_raw(raw_data_rep, removelist = 'A12')
+
+
 analysis_rep <- gam_analysis(raw_data_rep , smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
 output_rep <- read_tsar(analysis_rep, code = 2)
 norm_data_rep <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx", output_rep, type = "by_template")
@@ -147,3 +168,17 @@ tsa_compare_plot(conclusion,
                  y = "RFU",
                  control_condition = control_ID)
 ```
+
+## 10. Data Correction
+
+```{r}
+test_outlier <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx", read_tsar(x, code = 0), type = "by_template")
+
+error <- conclusion %>% filter(condition_ID == 'CA FL_PyxINE HCl')
+TSA_wells_plot(error, separate_legend = FALSE)
+```
+
+
+
+
+

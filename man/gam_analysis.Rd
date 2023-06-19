@@ -2,7 +2,7 @@
 % Please edit documentation in R/tsa_analysis.R
 \name{gam_analysis}
 \alias{gam_analysis}
-\title{gam_analysis function run full board}
+\title{gam_analysis function runs on the full board}
 \usage{
 gam_analysis(
   raw_data,

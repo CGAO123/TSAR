@@ -7,7 +7,10 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate select
 #'
-#' @param raw_data data frame; the raw data set input
+#' @param raw_data data frame; raw dataset input, should be of only one well.
+#'   If multiple wells need to be normalized, use \code{\link{gam_analysis}} for
+#'   96 well application. If only preliminary screening is needed, use
+#'   \code{\link{screen}}
 #' @param fluo integer; the Fluorescence variable column id
 #' (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
 #'   if fluorescence variable is named exactly as "Fluorescence", fluo does not

@@ -19,4 +19,12 @@ Imports:
     readxl (>= 1.4.0),
     stringr (>= 1.4.0),
     tidyr (>= 1.1.4),
-    utils
+    utils,
+    shiny,
+    plotly,
+    shinyjs,
+    jsonlite
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
