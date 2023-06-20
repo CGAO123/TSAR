@@ -9,11 +9,22 @@ weed_raw(raw_data, checkrange = NULL, checklist = NULL)
 \arguments{
 \item{raw_data}{The raw data for screening.}
 
-\item{tobechecked}{The curves to be checked during screening.
+\item{checkrange}{list type input identifying specific selections of well.
+For example, if screening for only 6 wells of row A is needed, one can
+specify the row letters and column numbers like this:
+`checkrange = c("A", "C", "1", "8")`}
 
-#examples weed_raw(raw_data, tobechecked = c("A11", "A12"))}
+\item{checklist}{use this parameter to view selected Wells with full
+Well names. For example, `checklist = c('A01', 'D11')`}
+}
+\value{
+prompts separate app window for user interaction,
+  does not return specific value
+
+#examples myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
+#shiny::runApp(myApp)
 }
 \description{
-The weed_raw function allows users to interact with a screening graph and select
-curves to weed out before entering analysis.
+The weed_raw function allows users to interact with a screening graph
+  and select curves to weed out before entering analysis.
 }

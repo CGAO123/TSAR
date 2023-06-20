@@ -70,11 +70,13 @@ Screen all wells for curve shape on raw_data set and sift out corrupted data. Th
 
 ```{r}
 myApp <- weed_raw(raw_data, checkrange= c("A","C","1","12"))
-shiny::runApp(myApp)
+#shiny::runApp(myApp)
 
-t_data <- remove_raw(raw_data, removelist = c('C04','B04','C03','C11','C09','C02','C12','C01',
-                                              'C10','C08','B11','C05','C07','C06','B10','B07',
-                                              'B09','B12','B06','B08','B05','B03','B02','B01'))
+t_data <- remove_raw(raw_data, 
+                     removelist = c('C04','B04','C03','C11','C09','C02',
+                                    'C12','C01','C10','C08','B11','C05',
+                                    'C07','C06','B10','B07','B09','B12',
+                                    'B06','B08','B05','B03','B02','B01'))
 
 t_data <- remove_raw(t_data, removerange = c("D","H","1","12"))
 screen(t_data,  checkrange= c("A","C","1","12"))
@@ -120,17 +122,20 @@ write_tsar(norm_data, name = "vitamin_tm_val_norm", file = "csv")
 ```
 
 ## 7. Merge Data across Biological Replicates
-Repeat step 2 through 6 on replicate data set. A five step function call will complete all analysis.
+Repeat step 2 through 6 on replicate data set. A five step function call will complete all analysis. If additional screening is desired, a two step call will run the interactive window to allow selection of
 ```{r}
 raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118176)
 screen(raw_data_rep)
+
+
+#remove blank wells and weed out corrupted curves
 raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"))
 myApp <- weed_raw(raw_data_rep)
-shiny::runApp(myApp)
+#shiny::runApp(myApp)
 raw_data_rep <- remove_raw(raw_data_rep, removelist = 'A12')
 
 
-analysis_rep <- gam_analysis(raw_data_rep , smoothed = T, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+analysis_rep <- gam_analysis(raw_data_rep , smoothed = T)
 output_rep <- read_tsar(analysis_rep, code = 2)
 norm_data_rep <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx", output_rep, type = "by_template")
 norm_data_rep <- na.omit(norm_data_rep)
@@ -171,7 +176,7 @@ tsa_compare_plot(conclusion,
 
 ## 10. Data Correction
 
-```{r}
+```{r Data Correction}
 test_outlier <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx", read_tsar(x, code = 0), type = "by_template")
 
 error <- conclusion %>% filter(condition_ID == 'CA FL_PyxINE HCl')

@@ -2,7 +2,7 @@
 % Please edit documentation in R/screen.R
 \name{remove_raw}
 \alias{remove_raw}
-\title{remove_raw removes selected curves}
+\title{remove_raw}
 \usage{
 remove_raw(raw_data, removerange = NULL, removelist = NULL)
 }
@@ -17,5 +17,5 @@ remove_raw(raw_data, removerange = NULL, removelist = NULL)
 dataframe; data frame with specified well removed
 }
 \description{
-remove_raw removes selected curves
+removes selected curves with specified wells and range
 }

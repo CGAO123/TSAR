@@ -1,4 +1,4 @@
-#' screen function allows user to screen data for selection
+#' Screen
 #'
 #' screens multiple wells of data and prepares to assist identification of
 #'   corrupted wells and odd out behaviors
@@ -31,7 +31,7 @@ screen <- function(raw_data,
     #do the same for Temperature and fluorescence
 
 
-    if (is.null(checkrange) & (is.null(checklist))) {
+    if (is.null(checkrange) && (is.null(checklist))) {
         section <- raw_data
     } else {
         if (!(is.null(checklist))) {
@@ -44,9 +44,9 @@ screen <- function(raw_data,
             checkrange <- paste0(grid$Var1, grid$Var2)
         }
 
-        if ('Well.Position' %in% names(raw_data)){
+        if ("Well.Position" %in% names(raw_data)) {
             section <- filter(raw_data, Well.Position %in% checkrange)
-        } else if ('Well' %in% names(raw_data)){
+        } else if ("Well" %in% names(raw_data)) {
             section <- filter(raw_data, Well %in% checkrange) %>%
                 rename(Well.Position = Well)
         } else {
@@ -67,12 +67,14 @@ screen <- function(raw_data,
     ggplot(data = screened, aes(x = Temperature,
                                 y = Fluorescence,
                                 color = Well.Position)) +
-        geom_point(shape = 1)
-    #ggplotly(g)
+        geom_line(size = 0.2)
+
 
 }
 
-#' remove_raw removes selected curves
+#' remove_raw
+#'
+#' removes selected curves with specified wells and range
 #'
 #' @param raw_data dataframe; to be processed data
 #' @param removerange list; list of 4 string, specifying range of wells to be removed
@@ -86,7 +88,7 @@ remove_raw <- function(raw_data,
                        removerange = NULL,
                        removelist = NULL) {
 
-    if (is.null(removerange) & (is.null(removelist))) {
+    if (is.null(removerange) && (is.null(removelist))) {
         return(raw_data)
     } else if (!(is.null(removerange))) {
             grid <- expand.grid(LETTERS[match(removerange[1], LETTERS):
@@ -98,9 +100,9 @@ remove_raw <- function(raw_data,
     removerange <- c(removerange, removelist)
 
 
-    if ('Well.Position' %in% names(raw_data)) {
+    if ("Well.Position" %in% names(raw_data)) {
         return(filter(raw_data, !Well.Position %in% removerange))
-    } else if ('Well' %in% names(raw_data)) {
+    } else if ("Well" %in% names(raw_data)) {
         return(filter(raw_data, !Well %in% removerange))
     } else {
         error("No valid Well variable was found.

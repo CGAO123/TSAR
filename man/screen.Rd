@@ -2,7 +2,7 @@
 % Please edit documentation in R/screen.R
 \name{screen}
 \alias{screen}
-\title{screen function allows user to screen data for selection}
+\title{Screen}
 \usage{
 screen(raw_data, checkrange = NULL, checklist = NULL)
 }
