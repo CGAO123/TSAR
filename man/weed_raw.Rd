@@ -8,6 +8,7 @@ weed_raw(raw_data, checkrange = NULL, checklist = NULL)
 }
 \arguments{
 \item{raw_data}{The raw data for screening.}
+
 \item{checkrange}{list type input identifying range of wells to select.
 For example, if viewing first 8 wells from row A to C is needed, one can
 specify the row letters and column numbers like this:

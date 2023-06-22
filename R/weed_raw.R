@@ -55,7 +55,8 @@ weed_raw <- function(raw_data,
                 plotly::ggplotly(gg1, source = "Plot1")
             })
 
-            observeEvent(event_data("plotly_click", source = "Plot1"), {
+            observeEvent(event_data("plotly_click",
+                                            source = "Plot1"), {
                 d <- event_data("plotly_click", source = "Plot1")
                 gg1 <- screen(raw_data,
                               checkrange = checkrange,
