@@ -126,6 +126,7 @@ raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment f
 #remove blank wells and weed out corrupted curves
 raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"))
 myApp <- weed_raw(raw_data_rep) 
+
 #shiny::runApp(myApp)
 raw_data_rep <- remove_raw(raw_data_rep, removelist = 'A12')
 screen(raw_data_rep)
