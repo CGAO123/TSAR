@@ -72,20 +72,9 @@ screen <- function(raw_data,
     ggplot(data = screened, aes(x = Temperature,
                                 y = Fluorescence,
                                 color = Well.Position)) +
-<<<<<<< HEAD
-<<<<<<< HEAD
         geom_line(size = 0.2) +
         theme_bw() +
-        theme(panel.grid.major = element_blank())
-=======
-        geom_line(size = 0.2)
->>>>>>> 3aa823a (//)
-=======
-        geom_line(size = 0.2) +
-        theme_bw() +
-        theme(panel.grid.major = element_blank())
->>>>>>> 57796f2 (update)
-
+        theme(panel.grid.major = element_blank()
 
 }
 
