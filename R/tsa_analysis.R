@@ -98,7 +98,7 @@ gam_analysis <- function(
                              selected = selections)
 
         #check is data is already smooth
-        #fit model is not smoothed
+        #fit model if not smoothed
         if (smoothed == FALSE) {
             gammodel <- model_gam(norm_data = by_well,
                                   x = by_well$Temperature,

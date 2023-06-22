@@ -1,4 +1,0 @@
-"0",""
-"0","raw_data <- read.csv(file = ""/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_162.eds.csv"", header = TRUE)"
-"0","raw_data_rep <- read.csv(file = ""/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv"", header = TRUE)"
-"0","raw_data2 <- read.csv(file = ""/Users/candygao/Desktop/qpcrresult/experiment file/vitamin2_17_RawData_Thermal Shift_02_171.eds.csv"", header = TRUE)"

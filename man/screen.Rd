@@ -9,13 +9,13 @@ screen(raw_data, checkrange = NULL, checklist = NULL)
 \arguments{
 \item{raw_data}{input raw_data}
 
-\item{checkrange}{list type input identifying specific selections of well.
-For example, if screening for only 6 wells of row A is needed, one can
+\item{checkrange}{list type input identifying range of wells to select.
+For example, if viewing first 8 wells from row A to C is needed, one can
 specify the row letters and column numbers like this:
 `checkrange = c("A", "C", "1", "8")`}
 
 \item{checklist}{use this parameter to view selected Wells with full
-Well names}
+Well names. For example, `checklist = c('A01', 'D11')`}
 }
 \value{
 returns a ggplot graph colors by well IDs

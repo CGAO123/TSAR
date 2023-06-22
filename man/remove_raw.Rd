@@ -9,9 +9,13 @@ remove_raw(raw_data, removerange = NULL, removelist = NULL)
 \arguments{
 \item{raw_data}{dataframe; to be processed data}
 
-\item{removerange}{list; list of 4 string, specifying range of wells to be removed}
+\item{removerange}{list type input identifying range of wells to select.
+For example, if removing all 12 wells from row D to H is needed, one can
+specify the row letters and column numbers like this:
+`removerange = c("D", "H", "1", "12")`}
 
-\item{removelist}{list; list of indiviudal well numbers that need to be removed}
+\item{removelist}{use this parameter to remove selected Wells with full
+Well names. For example, `removelist = c('A01', 'D11')`}
 }
 \value{
 dataframe; data frame with specified well removed

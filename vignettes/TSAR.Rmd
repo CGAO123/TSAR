@@ -30,10 +30,176 @@ TSAR segregates data structure into three tiers:
 -   `norm_data`, pre-processed and normalized data
 -   `tsar_data`, analyzed with ready for graphs
 
+Users may access TSAR workflow from either `raw_data` or `norm_data` as long as data achieves proper qualities.
+
+# From `raw_data` to `norm_data`
+
 To access the workflow of `TSAR`, user can input raw fluorescent readings through built in functions from utils: `read.delim()` or `read.csv()`. Built in data imports from RStudio UI is also appropriate given `raw_data` only needs to be saved as `dataframe` structure. Wrapping input in `data.frame()` will also ensure correct input type. Use `head()` and `tail()` to ensure excessive information is removed, i.e. blank lines, duplicate titles, etc.
 
 ```{r}
 raw_data <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_162.eds.csv", header = TRUE, nrows = 118176)
 head(raw_data)
 tail(raw_data)
+```
+
+## Data Prepossessing
+
+From raw data to ready-for-analysis data, there are few functions to assist the selection and normalization of data.
+
+Functions `screen()` and `remove_raw()` helps screen and remove data of selection. This save time and space by remove unwanted data such as blank wells and corrupted curves. Aside from `data` param input, both functions share similar parameters of `checkrange`, `checklist` or `removerange`, `removelist`.
+
+-   `checkrange`, `removerange` : a range of wells, e.g. wells from A01 to B08 is `c("A","B","1","8")`
+
+-   `checklist`, `removelist`: a list of wells, e.g. `c("A01","C03")`
+
+If no wells are specified, `screen()` will default to screening every well and `reomve_raw()` will default to not removing an well.
+
+```{r}
+screen(raw_data)
+raw_data <- remove_raw(raw_data, removerange = c("C","H","1","12"))
+```
+
+Both functions above are wrapped inside an interactive window through function`weed_raw()`. It is implemented through r Shiny application where users can select curves using cursor and remove selected curves easily.
+
+```{r}
+myApp <- weed_raw(raw_data)
+#shiny::runApp(myApp)
+```
+
+Running the window, we can spot that curve at A12 has an abnormally high initial fluorescence and should be removed for data accuracy. We can make sure of correct selection through `View Selected` button and remove using `Remove Data` button. Beware that all data edits are made inside the interactive window. To translate the change permanently downstream, click `Copy Selected` and paste information to `remove_raw()`. To avoid error, close window proper through `Close Window` instead of the cross mark on top left corner.
+
+```{r}
+raw_data <- remove_raw(raw_data, 
+                       removelist = c('B04','B11','B09','B05','B10','B03',
+                                      'B02','B01','B08','B12','B07','B06'))
+```
+
+## Data Analysis
+
+Normalizing data is prompted through `normalize()`. Although individual calls are not necessary as they are wrapped together in `gam_analysis()`, if viewing the validity of model is desired, one can prompt analysis of one well.
+
+TSAR package performs derivative analysis using a generalized additive model through package `mgcv`.
+
+### Individual Well Application
+
+Refer to these following functions:
+
+-   `normalize()`
+
+-   `model_gam()`
+
+-   `model_fit()`
+
+-   `view_model()`
+
+-   `tm_est()`
+
+```{r}
+test <- filter(raw_data, raw_data$Well.Position == "A01")
+test <- normalize(test) 
+gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+test <- model_fit(test, model = gammodel)
+view_model(test)
+tm_est(test)
+```
+
+### 96 Well Application
+
+All analysis necessary if formatted in function `gam_analysis()`. Parameters are inherited from functions noted in section "Individual Well Application". Hence, if any errors are prompted, check through individual well application for correct parameter input and other potential errors.
+
+-   model_fit(): `smoothed`
+-   normalize(): `fluo` and `selections`
+
+```{r}
+x <- gam_analysis(raw_data, 
+                  smoothed = T, 
+                  fluo = 5, 
+                  selections = c("Well.Position", "Temperature", 
+                                 "Fluorescence", "Normalized"))
+```
+
+## Data Summary
+
+Data summary offers an exit point from the workflow if no further graphic outputs are required. Output are allowed in three formats: - `code = 0`, only Tm values by well - `code = 1`, all data analysis by each temperature reading. If previously called `smoothed = T`, analysis will not run gam modeling, thus will not have `fitted` data. - `code = 2`, combination of the above two data set.
+
+To associate ligand and protein conditions with each individual well, call function `join_well_info()`. One may specify using the template excel or separate csv file containing a table of three variables, "Well", "Protein", and "Ligand".
+
+```{r}
+template_dir <- "/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx"
+output <- join_well_info(template_dir, read_tsar(x, code = 0), type = "by_template")
+write_tsar(output, name = "vitamin_analysis", file = "csv")
+```
+
+To streamline to the following graphic analysis, make sure `code = 2` to maintain all necessary data.
+
+```{r}
+norm_data <- join_well_info(template_dir, read_tsar(x, code = 2), type = "by_template")
+```
+
+# From `norm_data` to `tsar_data`
+
+`norm_data` contains normalized fluorescent data on a scale of 0 to 1 based on the maximum and minimum fluorescence reading. `norm_data` also contains a first derivative column. `tsar_data` is the final format of project data encapsulating all replication. Therefore, it contains all condition data including experiment date and analysis file source.
+
+## Merge Replicates
+
+Use `merge_norm()` to merge all norm_data and specify original data file name and experiment date for latter tracking purposes.
+
+```{r}
+#analyze replicate data 
+raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118176)
+raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"), 
+                                         removelist = c("A12"))
+analysis_rep <- gam_analysis(raw_data_rep , smoothed = T)
+norm_data_rep <- join_well_info(template_dir, read_tsar(analysis_rep, code = 2), type = "by_template")
+
+#merge data
+Bigdata <- merge_norm(norm_data, norm_data_rep, 
+                      "Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
+                      "Vitamin_RawData_Thermal Shift_02_168.eds.csv", 
+                      "20230203", "20230209")
+```
+
+### Jumpstart to Graph
+
+If outputted data from qPCR already contains analysis and data necessary, enter TSAR workflow from here, using function `merge_tsa()`
+
+```{r}
+#insert documentation of merge_tsa()
+#...
+```
+
+After merging, use assisting functions to check and trace data. Use these two functions to guide graphics analysis for error identification, selective graphing and graph comparisons.
+
+-   `condition_IDs()` list all conditions in data
+-   `well_IDs()` list all IDs of individual well
+
+```{r}
+condition_IDs(Bigdata)
+well_IDs(Bigdata)
+
+conclusion <- Bigdata%>%
+  filter(condition_ID != "NA_NA") %>%
+  filter(condition_ID != "CA FL_Riboflavin")
+```
+
+## Graphic Analysis
+
+### Tm Boxplot
+
+Use `TSA_boxplot()` to generate comparison boxplot graphs. Stylistics choices include coloring by protein or ligand, and legend separation. Function returns ggplot object, thus further stylistic changes are allowed.
+
+```{r}
+TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand", separate_legend = FALSE)
+```
+
+### TSA Curve Visualization
+
+`tsa_compare_plot()` generates multiple line graphs for comparison. Specify Control condition by assigning condition_ID to control. Functions allows graphing by both: - raw fluorescent readings `y = 'Fluorescence'` - normalized readings `y = 'RFU'`.
+
+```{r}
+control_ID <- "CA FL_DMSO"
+
+tsa_compare_plot(conclusion,
+                 y = "RFU",
+                 control_condition = control_ID)
 ```

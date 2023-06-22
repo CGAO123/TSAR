@@ -8,12 +8,12 @@
 #'
 #'
 #' @param raw_data input raw_data
-#' @param checkrange list type input identifying specific selections of well.
-#'   For example, if screening for only 6 wells of row A is needed, one can
+#' @param checkrange list type input identifying range of wells to select.
+#'   For example, if viewing first 8 wells from row A to C is needed, one can
 #'   specify the row letters and column numbers like this:
 #'   `checkrange = c("A", "C", "1", "8")`
 #' @param checklist use this parameter to view selected Wells with full
-#'   Well names
+#'   Well names. For example, `checklist = c('A01', 'D11')`
 #'
 #'
 #' @return returns a ggplot graph colors by well IDs
@@ -50,7 +50,7 @@ screen <- function(raw_data,
             section <- filter(raw_data, Well %in% checkrange) %>%
                 rename(Well.Position = Well)
         } else {
-            error("No valid Well variable was found.
+            stop("Error: No valid Well variable was found.
                   Make sure it is named 'Well.Position' or 'Well'")
         }
     }
@@ -64,10 +64,17 @@ screen <- function(raw_data,
         screened <- rbind(screened, by_well)
     }
 
+    if (nrow(screened) == 0) {
+        stop("Error: Select of Wells do not exist or are already removed.")
+        return()
+    }
+
     ggplot(data = screened, aes(x = Temperature,
                                 y = Fluorescence,
                                 color = Well.Position)) +
-        geom_line(size = 0.2)
+        geom_line(size = 0.2) +
+        theme_bw() +
+        theme(panel.grid.major = element_blank())
 
 
 }
@@ -77,8 +84,12 @@ screen <- function(raw_data,
 #' removes selected curves with specified wells and range
 #'
 #' @param raw_data dataframe; to be processed data
-#' @param removerange list; list of 4 string, specifying range of wells to be removed
-#' @param removelist list; list of indiviudal well numbers that need to be removed
+#' @param removerange list type input identifying range of wells to select.
+#'   For example, if removing all 12 wells from row D to H is needed, one can
+#'   specify the row letters and column numbers like this:
+#'   `removerange = c("D", "H", "1", "12")`
+#' @param removelist use this parameter to remove selected Wells with full
+#'   Well names. For example, `removelist = c('A01', 'D11')`
 #'
 #' @return dataframe; data frame with specified well removed
 #'
@@ -105,8 +116,29 @@ remove_raw <- function(raw_data,
     } else if ("Well" %in% names(raw_data)) {
         return(filter(raw_data, !Well %in% removerange))
     } else {
-        error("No valid Well variable was found.
+        stop("Error: No valid Well variable was found.
                   Make sure it is named 'Well.Position' or 'Well'")
     }
 
+}
+
+
+#' View Model
+#'
+#' @import ggplot2
+#' @param norm_data dataset input, data should match the needs of norm_data
+#'
+#' @return ggplot
+#'
+#' @export
+#'
+view_model <- function(norm_data){
+    ggplot(data = norm_data, aes(x = Temperature, y = Normalized)) +
+        geom_point(shape = 1, alpha = 0.5,
+                   aes(color = "Normalized FLuorescence"))+
+        geom_line(aes(y=fitted, color = "Fitted Model"), size = 0.5)+
+        geom_vline(xintercept = tm_est(test), color = "red")+
+        labs(color = "Curves")+
+        theme_bw() +
+        theme(panel.grid.major = element_blank())
 }

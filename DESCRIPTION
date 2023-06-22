@@ -2,10 +2,16 @@ Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
 Version: 0.1.0
-Authors@R: person(c("William", "M."), "McFadden", 
-                email = "wmm27@pitt.edu", 
-                role = c("cre", "aut"))
-Description: This package aims to automate a workflow for TSA analysis in R. 
+Authors@R: c(person(c("William", "M."), 
+			"McFadden", 
+			email = "wmm27@pitt.edu", 
+			role = c("cre", "aut")),
+	   	person("Xinlin", 
+			"Gao", 
+			email = "xgao76@emory.edu", 
+			role = c("aut"))
+		)
+Description: This package automates analysis workflow for TSA qPCR data. 
 License: LGPL-3
 Encoding: UTF-8
 LazyData: true

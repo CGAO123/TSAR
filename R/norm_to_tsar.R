@@ -32,7 +32,6 @@ merge_norm <- function(
         mutate(ExperimentFileName = file_name1)
     norm_data2 <- norm_data2 %>%
         mutate(ExperimentFileName = file_name2)
-    #tsar_data <- data.frame(rbind(norm_data1, norm_data2))
     tsar_data1 <- norm_data1 %>%
         #add well_ID column
         mutate(well_ID = paste(norm_data1$Well.Position,

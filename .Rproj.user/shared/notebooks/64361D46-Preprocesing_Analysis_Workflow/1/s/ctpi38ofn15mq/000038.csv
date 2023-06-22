@@ -1,6 +1,0 @@
-"0","test %>%"
-"0","    group_by(Well.Position) %>%"
-"0","    ggplot(aes(x = Temperature, y = norm_deriv)) +"
-"0","        geom_point(shape = 1)+"
-"0","        geom_point(aes(y=Normalized), color = ""blue"", alpha = 1/10)"
-"0",""

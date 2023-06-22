@@ -81,7 +81,7 @@ normalize <- function(
 #' @param norm_data data frame input
 #' @param x temperature column
 #' @param y normalized fluorescence column
-#' @return gam model fitted with formula set to y ~ s(x, bs = "cs")
+#' @return gam model fitted with formula set to y ~ s(x, bs = "ad")
 #'
 #' @family data_preprocess
 #' #example
@@ -91,7 +91,7 @@ normalize <- function(
 #'
 #' @export
 model_gam <- function(norm_data, x, y) {
-    mgcv::gam(formula = y ~ s(x, bs = "cs"),
+    mgcv::gam(formula = y ~ s(x, bs = "ad"),
               data = norm_data,
               method = "GACV.Cp")
 }

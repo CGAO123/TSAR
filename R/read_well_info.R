@@ -102,5 +102,7 @@ join_well_info <- function(
     combined <- left_join(analysis_file,
                           well_info,
                           by = c("Well.Position" = "Well"))
+
+    combined <- na.omit(combined)
     return(combined)
 }

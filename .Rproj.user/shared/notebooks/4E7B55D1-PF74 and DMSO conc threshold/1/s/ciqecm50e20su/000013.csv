@@ -1,8 +1,0 @@
-"0","raw_data1 <- read.delim(header = TRUE, skip = 144, nrow = 118272, ""/Users/candygao/Desktop/qpcrresult/experiment file/Thermal Shift_143_1007.txt"")"
-"0","x <- gam_analysis(raw_data1, smoothed = T, selections = c(""Well.Position"", ""Temperature"", ""Fluorescence"", ""Normalized""))"
-"0","#write.tsar(read.tsar(x, code = 2), name = ""tm_val"", file = ""csv"")"
-"0","output <- read_tsar(x, code = 2)"
-"0",""
-"0","tmresult <- join_well_info(""/Users/candygao/Desktop/qpcrresult/experiment file/1007Well Information Template.xlsx"", output, type = ""by_template"")"
-"2","New names:"
-"0","head(tmresult)"

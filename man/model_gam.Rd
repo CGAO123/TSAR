@@ -14,7 +14,7 @@ model_gam(norm_data, x, y)
 \item{y}{normalized fluorescence column}
 }
 \value{
-gam model fitted with formula set to y ~ s(x, bs = "cs")
+gam model fitted with formula set to y ~ s(x, bs = "ad")
 }
 \description{
 function finds fitted fluorescence values
