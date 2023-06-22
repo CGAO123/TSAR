@@ -3,19 +3,7 @@
 #' The weed_raw function allows users to interact with a screening graph
 #'   and select curves to weed out before entering analysis.
 #'
-<<<<<<< HEAD
 #' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-#' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
-=======
-#' @importFrom plotly ggplotly plotlyOutput
->>>>>>> 3aa823a (//)
-=======
-#' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
->>>>>>> 57796f2 (update)
->>>>>>> 275e88a (.)
 #' @import shiny
 #' @importFrom shinyjs runjs useShinyjs
 #' @importFrom jsonlite toJSON
@@ -23,23 +11,8 @@
 #' @export
 #'
 #' @param raw_data The raw data for screening.
-<<<<<<< HEAD
 #' @param checkrange list type input identifying range of wells to select.
 #'   For example, if viewing first 8 wells from row A to C is needed, one can
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-#' @param checkrange list type input identifying range of wells to select.
-#'   For example, if viewing first 8 wells from row A to C is needed, one can
-=======
-#' @param checkrange list type input identifying specific selections of well.
-#'   For example, if screening for only 6 wells of row A is needed, one can
->>>>>>> 3aa823a (//)
-=======
-#' @param checkrange list type input identifying range of wells to select.
-#'   For example, if viewing first 8 wells from row A to C is needed, one can
->>>>>>> 57796f2 (update)
->>>>>>> 275e88a (.)
 #'   specify the row letters and column numbers like this:
 #'   `checkrange = c("A", "C", "1", "8")`
 #' @param checklist use this parameter to view selected Wells with full
@@ -75,45 +48,18 @@ weed_raw <- function(raw_data,
 
             clicked_points <- reactiveValues(data = NULL, legend_text = NULL)
 
-<<<<<<< HEAD
+
             output$distPlot <- plotly::renderPlotly({
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-            output$distPlot <- plotly::renderPlotly({
-=======
-            output$distPlot <- renderPlotly({
->>>>>>> 3aa823a (//)
-=======
-            output$distPlot <- plotly::renderPlotly({
->>>>>>> 57796f2 (update)
->>>>>>> 275e88a (.)
                 gg1 <- screen(raw_data,
                               checkrange = checkrange,
                               checklist = checklist)
                 plotly::ggplotly(gg1, source = "Plot1")
             })
 
-<<<<<<< HEAD
+
             observeEvent(plotly::event_data("plotly_click",
                                             source = "Plot1"), {
                 d <- plotly::event_data("plotly_click", source = "Plot1")
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-            observeEvent(plotly::event_data("plotly_click",
-                                            source = "Plot1"), {
-                d <- plotly::event_data("plotly_click", source = "Plot1")
-=======
-            observeEvent(event_data("plotly_click", source = "Plot1"), {
-                d <- event_data("plotly_click", source = "Plot1")
->>>>>>> 3aa823a (//)
-=======
-            observeEvent(plotly::event_data("plotly_click",
-                                            source = "Plot1"), {
-                d <- plotly::event_data("plotly_click", source = "Plot1")
->>>>>>> 57796f2 (update)
->>>>>>> 275e88a (.)
                 gg1 <- screen(raw_data,
                               checkrange = checkrange,
                               checklist = checklist)
@@ -167,19 +113,7 @@ weed_raw <- function(raw_data,
 
             # Remove selected data
             observeEvent(input$refreshButton, {
-<<<<<<< HEAD
                 output$distPlot <- plotly::renderPlotly({
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-                output$distPlot <- plotly::renderPlotly({
-=======
-                output$distPlot <- renderPlotly({
->>>>>>> 3aa823a (//)
-=======
-                output$distPlot <- plotly::renderPlotly({
->>>>>>> 57796f2 (update)
->>>>>>> 275e88a (.)
                     gg1 <- screen(raw_data,
                                   checkrange = checkrange,
                                   checklist = checklist)
@@ -187,27 +121,9 @@ weed_raw <- function(raw_data,
                 })
                 output$refreshedMessage <- renderPrint({
                     cat("Successfully Refreshed: ",
-<<<<<<< HEAD
                         "All edits to dataframe are temporary.
                         Copy wells and call function remove_raw() in console",
                         "or in script to store change permanently")
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        "All edits to dataframe are temporary.
-                        Copy wells and call function remove_raw() in console",
-                        "or in script to store change permanently")
-=======
-                        "All edits to dataframe are temporary. ",
-                        "Copy wells and call function remove_raw() in console ",
-                        "or script to store change permanently")
->>>>>>> 3aa823a (//)
-=======
-                        "All edits to dataframe are temporary.
-                        Copy wells and call function remove_raw() in console",
-                        "or in script to store change permanently")
->>>>>>> 57796f2 (update)
->>>>>>> 275e88a (.)
                 })
                 output$removedMessage <- renderPrint({
                     message(NULL)
