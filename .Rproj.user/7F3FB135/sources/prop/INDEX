@@ -29,6 +29,21 @@
 ~%2FDesktop%2FTSAR-main%2FR%2Ftsa_curves.R="2B729C65"
 ~%2FDesktop%2FTSAR-main%2FR%2Fweed_raw.R="44109A0D"
 ~%2FDesktop%2FTSAR-main%2FTSAR_Complete_Workflow.Rmd="C3186939"
+<<<<<<< HEAD
+=======
+~%2FDesktop%2FTSAR-main%2FTSAR_Workflow.Rmd="FF467C8B"
+~%2FDesktop%2FTSAR-main%2FTSAR_test.Rmd="054D62F4"
+~%2FDesktop%2FTSAR-main%2Fman%2FTSA_wells_plot.Rd="C09A97A2"
+~%2FDesktop%2FTSAR-main%2Fman%2Fgam_analysis.Rd="CFEF728C"
+<<<<<<< HEAD
+~%2FDesktop%2FTSAR-main%2Fman%2Fweed_raw.Rd="681965CB"
+=======
+~%2FDesktop%2FTSAR-main%2Fman%2Fweed_raw.Rd="E0F1882F"
+>>>>>>> 64e2670 (.)
+~%2FDesktop%2FTSAR-main%2Fman%2Fwrite_tsar.Rd="0F703959"
+~%2FDesktop%2FTSAR-main%2Freadme.Rmd="0849B45F"
+~%2FDesktop%2FTSAR-main%2Ftsar_model_test.Rmd="C193B603"
+>>>>>>> d461a2b (.)
 ~%2FDesktop%2FTSAR-main%2Fvignettes%2FTSAR.Rmd="806A40DE"
 ~%2FDesktop%2Fpackage%20test%20files%2Ftest.Rmd="F7388134"
 ~%2FDesktop%2Fpackage%20test%20files%2Ftsar_model_test.Rmd="18C67E2F"
