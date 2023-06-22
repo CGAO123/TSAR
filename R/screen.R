@@ -74,8 +74,7 @@ screen <- function(raw_data,
                                 color = Well.Position)) +
         geom_line(size = 0.2) +
         theme_bw() +
-        theme(panel.grid.major = element_blank()
-
+        theme(panel.grid.major = element_blank())
 }
 
 #' remove_raw

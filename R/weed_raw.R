@@ -48,7 +48,6 @@ weed_raw <- function(raw_data,
 
             clicked_points <- reactiveValues(data = NULL, legend_text = NULL)
 
-
             output$distPlot <- plotly::renderPlotly({
                 gg1 <- screen(raw_data,
                               checkrange = checkrange,
@@ -56,10 +55,8 @@ weed_raw <- function(raw_data,
                 plotly::ggplotly(gg1, source = "Plot1")
             })
 
-
-            observeEvent(plotly::event_data("plotly_click",
-                                            source = "Plot1"), {
-                d <- plotly::event_data("plotly_click", source = "Plot1")
+            observeEvent(event_data("plotly_click", source = "Plot1"), {
+                d <- event_data("plotly_click", source = "Plot1")
                 gg1 <- screen(raw_data,
                               checkrange = checkrange,
                               checklist = checklist)
@@ -121,41 +118,15 @@ weed_raw <- function(raw_data,
                 })
                 output$refreshedMessage <- renderPrint({
                     cat("Successfully Refreshed: ",
-                        "All edits to dataframe are temporary.
-                        Copy wells and call function remove_raw() in console",
-                        "or in script to store change permanently")
-                })
-                output$removedMessage <- renderPrint({
-                    message(NULL)
-                })
-                output$copiedMessage <- renderPrint({
-                    message(NULL)
-                })
-                output$info <- renderPrint({
-                    cat("Selected Curve: ", unique(clicked_points$legend_text))
-                })
-            })
+                        "All edits to dataframe are temporary. ",
+                        "Copy wells and call function remove_raw() in console ",
+                        "or script to store change permanently")
 
-            # View selected data
-            observeEvent(input$viewRemovedButton, {
-                output$distPlot <- plotly::renderPlotly({
-                    gg1 <- screen(raw_data, checklist =
-                                      unique(clicked_points$legend_text))
-                    plotly::ggplotly(gg1, source = "Plot1")
-                })
-                output$viewRemovedMessage <- renderPrint({
-                    cat("Viewing Selected Curves Only: ",
-                        "Click remove if selections are correct. Else refresh",
-                        "screening to select more or close-reopen window",
-                        "to reselect.")
                 })
                 output$removedMessage <- renderPrint({
                     message(NULL)
                 })
                 output$copiedMessage <- renderPrint({
-                    message(NULL)
-                })
-                output$refreshedMessage <- renderPrint({
                     message(NULL)
                 })
                 output$info <- renderPrint({

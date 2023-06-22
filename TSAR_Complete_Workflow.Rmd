@@ -69,10 +69,10 @@ myApp <- weed_raw(raw_data, checkrange= c("A","C","1","12"))
 #shiny::runApp(myApp)
 
 t_data <- remove_raw(raw_data, 
-                     removelist = c('C04','B04','C03','C10','B11','C11','C02',
-                                    'C12','C01','B06','C07','C09','C08','B05',
-                                    'B07','C06','B12','C05','B08','B02','B01',
-                                    'B03','B09','B10'))
+                     removelist = c('C04','B04','C03','C11','C09','C02',
+                                    'C12','C01','C10','C08','B11','C05',
+                                    'C07','C06','B10','B07','B09','B12',
+                                    'B06','B08','B05','B03','B02','B01'))
 
 t_data <- remove_raw(t_data, removerange = c("D","H","1","12"))
 screen(t_data)
@@ -119,13 +119,14 @@ write_tsar(norm_data, name = "vitamin_tm_val_norm", file = "csv")
 ## 7. Merge Data across Biological Replicates
 
 Repeat step 2 through 6 on replicate data set. A five step function call will complete all analysis. If additional screening is desired, a two step call will run the interactive window to allow selection of
-
 ```{r}
 raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118176)
+screen(raw_data_rep)
+
 
 #remove blank wells and weed out corrupted curves
 raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"))
-myApp <- weed_raw(raw_data_rep) 
+myApp <- weed_raw(raw_data_rep)
 #shiny::runApp(myApp)
 raw_data_rep <- remove_raw(raw_data_rep, removelist = 'A12')
 screen(raw_data_rep)
