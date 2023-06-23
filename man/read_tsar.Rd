@@ -9,9 +9,9 @@ read_tsar(result, code)
 \arguments{
 \item{result}{list; input uses resulting output of gam_analysis() function}
 
-\item{code}{integer; code = 0 returns only the tm value by wells
-code = 1 returns the data table with the fitted values
-code = 2 returns the combination of 0 and 1}
+\item{code}{integer; \code{code = 0} returns only the tm value by wells
+\code{code = 1} returns data table with fitted values
+\code{code = 2} returns the combination of 0 and 1}
 }
 \value{
 output files with select dataset
@@ -24,5 +24,10 @@ reads previous pipeline output lists and organizes them into separate
 #read_tsar(result, code = 0)
 #output_data <- read_tsar(result, code = 2)
 
+}
+\seealso{
+Other read_write_analysis: 
+\code{\link{join_well_info}()},
+\code{\link{write_tsar}()}
 }
 \concept{read_write_analysis}

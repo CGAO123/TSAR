@@ -91,7 +91,7 @@ screen <- function(raw_data,
 #'   Well names. For example, `removelist = c('A01', 'D11')`
 #'
 #' @return dataframe; data frame with specified well removed
-#'
+#' @family data_preprocess
 #' @export
 #'
 remove_raw <- function(raw_data,
@@ -128,14 +128,14 @@ remove_raw <- function(raw_data,
 #' @param norm_data dataset input, data should match the needs of norm_data
 #'
 #' @return ggplot
-#'
+#' @family data_preprocess
 #' @export
 #'
 view_model <- function(norm_data){
     ggplot(data = norm_data, aes(x = Temperature, y = Normalized)) +
         geom_point(shape = 1, alpha = 0.5,
-                   aes(color = "Normalized FLuorescence"))+
-        geom_line(aes(y=fitted, color = "Fitted Model"), size = 0.5)+
+                   aes(color = "Normalized Fluorescence"))+
+        geom_line(aes(y = fitted, color = "Fitted Model"), size = 0.5)+
         geom_vline(xintercept = tm_est(test), color = "red")+
         labs(color = "Curves")+
         theme_bw() +

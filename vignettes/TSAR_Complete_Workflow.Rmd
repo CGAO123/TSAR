@@ -1,8 +1,10 @@
 ---
 title: "TSAR Complete Workflow"
-author: "Candy Gao"
-date: "`r Sys.Date()`"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{TSAR Complete Workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # TSAR Workflow
@@ -178,9 +180,8 @@ tsa_compare_plot(conclusion,
 
 ## 10. Data Correction
 
+If data correction is needed, select by condition or well IDs to view curves and estimated Tm values. Assess the validity of analysis and edit with caution.
 ```{r Data Correction}
-test_outlier <- join_well_info("/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx", read_tsar(x, code = 0), type = "by_template")
-
 error <- conclusion %>% filter(condition_ID == 'CA FL_PyxINE HCl')
 TSA_wells_plot(error, separate_legend = FALSE)
 ```

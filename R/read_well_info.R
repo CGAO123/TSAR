@@ -26,14 +26,14 @@
 #' @return outputs data frame joining data information with well information
 #'
 #' @family read_write_analysis
-#' examples
+#' @examples
 #' #Analysis <- join.well_info("/Users/candygao/Desktop/qpcrresult/
-#'                            CA_IP_HCB_2_20220110_134917_AnalysisResults.txt",
-#'                            output_data, type = "by_well")
+#' #                           CA_IP_HCB_2_20220110_134917_AnalysisResults.txt",
+#' #                           output_data, type = "by_well")
 #' #Analysis <- join.well_info("~/Desktop/qpcrresult/
-#' Well Information Template.xlsx",
-#'                          output_data,
-#'                          type = "by_template")
+#' #Well Information Template.xlsx",
+#' #                         output_data,
+#' #                         type = "by_template")
 #'
 #' @export
 join_well_info <- function(

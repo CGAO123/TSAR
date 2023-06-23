@@ -22,5 +22,6 @@ data frame; with calculated derivative columns
 Model_fit calculates derivatives by refitting model onto data
 }
 \concept{data_preprocess
+
 #examples
-#fitted <- modelfit(data = gammodel, model = fitted)}
+#fitted <- model_fit(data = gammodel, model = fitted)}

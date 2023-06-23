@@ -26,6 +26,9 @@ screens multiple wells of data and prepares to assist identification of
 }
 \seealso{
 Other data_preprocess: 
-\code{\link{normalize}()}
+\code{\link{normalize}()},
+\code{\link{remove_raw}()},
+\code{\link{view_model}()},
+\code{\link{weed_raw}()}
 }
 \concept{data_preprocess}

@@ -17,7 +17,7 @@
 #'
 #' @family tsa_analysis
 #'
-#' #examples
+#' @examples
 #' #well <- fitted %>%
 #' #   filter(Well.Position == "A1")
 #' #tm_est(A1)
@@ -52,18 +52,18 @@ tm_est <- function(norm_data, min, max) {
 #' @param fit Boolean; set to F by default, T returns access to information
 #'   of each model fit
 #' @param selections list of characters; the variables in raw data user intends
-#'   to keep. It is set, by default, to c("Well.Position", "Temperature",
-#'   "Fluorescence", "Normalized").
+#'   to keep. It is set, by default, to \code{c("Well.Position", "Temperature",
+#'   "Fluorescence", "Normalized")}.
 #' @param fluo integer; the Fluorescence variable column id
-#' (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
+#'   (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
 #'   if fluorescence variable is named exactly as "Fluorescence", fluo does not
-#'   need to be specified. i.e. fluo is set to -1 by default,
-#'   suggesting the variable is named "Fluorescence"
+#'   need to be specified.
 #'
 #' @return list of data frames, list of three data frame outputs,
-#'   tm estimation by well, data set, fit of model by well
+#'   Tm estimation by well, data set, fit of model by well
 #'
 #' @family tsa_analysis
+#'
 #' #examples
 #' #raw_data <- utils::read.delim(header = TRUE, skip = 0, nrow = 112976,
 #' "/Users/candygao/Desktop/qpcrresult/CA_IP_HCB_2_20220110_134917_RawData_
@@ -141,7 +141,7 @@ gam_analysis <- function(
     #typify all return values into data frames
     tm <- data.frame(tm)
     kept <- data.frame(kept)
-    #prepare intial list of output
+    #prepare initial list of output
     tobereturned <- list(tm)
 
     #concat by users' specifications

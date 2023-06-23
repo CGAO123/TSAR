@@ -23,3 +23,11 @@ dataframe; data frame with specified well removed
 \description{
 removes selected curves with specified wells and range
 }
+\seealso{
+Other data_preprocess: 
+\code{\link{normalize}()},
+\code{\link{screen}()},
+\code{\link{view_model}()},
+\code{\link{weed_raw}()}
+}
+\concept{data_preprocess}

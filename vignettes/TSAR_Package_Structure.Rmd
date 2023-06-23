@@ -1,8 +1,8 @@
 ---
-title: "TSAR"
+title: "TSAR Package Structure"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{TSAR}
+  %\VignetteIndexEntry{TSAR Package Structure}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,10 +15,12 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+knitr::opts_chunk$set(warning = FALSE)
 library(TSAR)
 library(dplyr)
 library(ggplot2)
 ```
+![TSAR Logo](TSAR_logo.png)
 
 TSAR Package provides simple resolution to qPCR data processing, computing thermal shift analysis given either raw fluorescent data or smoothed ones. The functions provide users the protocol to conduct preliminary data checks and also expansive analysis on large scale of data. Furthermore, it showcases simple graphic presentation of analysis, generating clear box plot and line graphs given input of desired designs.
 
@@ -42,7 +44,7 @@ head(raw_data)
 tail(raw_data)
 ```
 
-## Data Prepossessing
+## Data Preprocessing
 
 From raw data to ready-for-analysis data, there are few functions to assist the selection and normalization of data.
 
@@ -55,7 +57,12 @@ Functions `screen()` and `remove_raw()` helps screen and remove data of selectio
 If no wells are specified, `screen()` will default to screening every well and `reomve_raw()` will default to not removing an well.
 
 ```{r}
-screen(raw_data)
+screen(raw_data) + theme(aspect.ratio = 0.7,
+                         legend.position = "bottom",
+                         legend.text = element_text(size = 4), 
+                         legend.key.size = unit(0.1, "cm"),
+                         legend.title = element_text(size = 6)) +
+                    guides(color=guide_legend(nrow=4, byrow=TRUE)) 
 raw_data <- remove_raw(raw_data, removerange = c("C","H","1","12"))
 ```
 
@@ -99,7 +106,8 @@ test <- filter(raw_data, raw_data$Well.Position == "A01")
 test <- normalize(test) 
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 test <- model_fit(test, model = gammodel)
-view_model(test)
+view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
+                    guides(color=guide_legend(nrow=2, byrow=TRUE)) 
 tm_est(test)
 ```
 
@@ -124,7 +132,7 @@ Data summary offers an exit point from the workflow if no further graphic output
 
 To associate ligand and protein conditions with each individual well, call function `join_well_info()`. One may specify using the template excel or separate csv file containing a table of three variables, "Well", "Protein", and "Ligand".
 
-```{r}
+```{r message=FALSE}
 template_dir <- "/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx"
 output <- join_well_info(template_dir, read_tsar(x, code = 0), type = "by_template")
 write_tsar(output, name = "vitamin_analysis", file = "csv")
@@ -132,7 +140,7 @@ write_tsar(output, name = "vitamin_analysis", file = "csv")
 
 To streamline to the following graphic analysis, make sure `code = 2` to maintain all necessary data.
 
-```{r}
+```{r message=FALSE}
 norm_data <- join_well_info(template_dir, read_tsar(x, code = 2), type = "by_template")
 ```
 
@@ -144,7 +152,7 @@ norm_data <- join_well_info(template_dir, read_tsar(x, code = 2), type = "by_tem
 
 Use `merge_norm()` to merge all norm_data and specify original data file name and experiment date for latter tracking purposes.
 
-```{r}
+```{r message=FALSE}
 #analyze replicate data 
 raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118176)
 raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"), 
@@ -161,10 +169,10 @@ Bigdata <- merge_norm(norm_data, norm_data_rep,
 
 ### Jumpstart to Graph
 
-If outputted data from qPCR already contains analysis and data necessary, enter TSAR workflow from here, using function `merge_tsa()`
+If outputted data from qPCR already contains analysis and data necessary, enter TSAR workflow from here, using functions `merge_tsa()`, `read_raw_data()`, `read_analysis()`.
 
 ```{r}
-#insert documentation of merge_tsa()
+#insert documentation of merge_tsa(), read_raw_data(), read_analysis()
 #...
 ```
 
@@ -176,6 +184,8 @@ After merging, use assisting functions to check and trace data. Use these two fu
 ```{r}
 condition_IDs(Bigdata)
 well_IDs(Bigdata)
+TSA_proteins(Bigdata)
+TSA_ligands(Bigdata)
 
 conclusion <- Bigdata%>%
   filter(condition_ID != "NA_NA") %>%
@@ -189,7 +199,7 @@ conclusion <- Bigdata%>%
 Use `TSA_boxplot()` to generate comparison boxplot graphs. Stylistics choices include coloring by protein or ligand, and legend separation. Function returns ggplot object, thus further stylistic changes are allowed.
 
 ```{r}
-TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand", separate_legend = FALSE)
+TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand", separate_legend = TRUE)
 ```
 
 ### TSA Curve Visualization
@@ -202,4 +212,13 @@ control_ID <- "CA FL_DMSO"
 tsa_compare_plot(conclusion,
                  y = "RFU",
                  control_condition = control_ID)
+```
+
+### Graph by condition
+
+Users may also graph by condition IDs or well IDs using function `TSA_wells_plot()`.
+
+```{r}
+ABA_Cond <- conclusion %>% filter(condition_ID == 'CA FL_4-ABA')
+TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```

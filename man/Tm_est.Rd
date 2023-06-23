@@ -26,10 +26,10 @@ looks for Tm temperature values by finding the inflection point in the
   normalized fluorescence data. The inflection point is approximated by
   locating the maximum first derivative
 }
-\concept{tsa_analysis
-
-#examples
-#well <- fitted %>%
+\examples{
+#well <- fitted \%>\%
 #   filter(Well.Position == "A1")
 #tm_est(A1)
-#tm_est(A1, min = 30, max= 35)}
+#tm_est(A1, min = 30, max= 35)
+}
+\concept{tsa_analysis}

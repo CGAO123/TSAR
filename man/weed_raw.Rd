@@ -12,19 +12,32 @@ weed_raw(raw_data, checkrange = NULL, checklist = NULL)
 \item{checkrange}{list type input identifying range of wells to select.
 For example, if viewing first 8 wells from row A to C is needed, one can
 specify the row letters and column numbers like this:
-`checkrange = c("A", "C", "1", "8")`}
+\code{checkrange = c("A", "C", "1", "8")}}
 
 \item{checklist}{use this parameter to view selected Wells with full
-Well names. For example, `checklist = c('A01', 'D11')`}
+Well names. For example, \code{checklist = c('A01', 'D11')}}
 }
 \value{
 prompts separate app window for user interaction,
   does not return specific value
-
-#examples myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
-#shiny::runApp(myApp)
 }
 \description{
 The weed_raw function allows users to interact with a screening graph
-  and select curves to weed out before entering analysis.
+  and select curves to weed out before entering analysis. Function wraps
+  together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 }
+\examples{
+myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
+#shiny::runApp(myApp)
+
+}
+\seealso{
+\code{\link[TSAR]{screen}} and \code{\link{remove_raw}}
+
+Other data_preprocess: 
+\code{\link{normalize}()},
+\code{\link{remove_raw}()},
+\code{\link{screen}()},
+\code{\link{view_model}()}
+}
+\concept{data_preprocess}

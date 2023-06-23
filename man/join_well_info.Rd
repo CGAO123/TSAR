@@ -34,12 +34,19 @@ outputs data frame joining data information with well information
 reads in the ligand and protein information and joins them accordingly
 to the big data frame for graphing purposes
 }
-\concept{read_write_analysis
-examples
+\examples{
 #Analysis <- join.well_info("/Users/candygao/Desktop/qpcrresult/
-                           CA_IP_HCB_2_20220110_134917_AnalysisResults.txt",
-                           output_data, type = "by_well")
+#                           CA_IP_HCB_2_20220110_134917_AnalysisResults.txt",
+#                           output_data, type = "by_well")
 #Analysis <- join.well_info("~/Desktop/qpcrresult/
-Well Information Template.xlsx",
-                         output_data,
-                         type = "by_template")}
+#Well Information Template.xlsx",
+#                         output_data,
+#                         type = "by_template")
+
+}
+\seealso{
+Other read_write_analysis: 
+\code{\link{read_tsar}()},
+\code{\link{write_tsar}()}
+}
+\concept{read_write_analysis}

@@ -14,7 +14,7 @@ normalize(
 \item{raw_data}{data frame; raw dataset input, should be of only one well.
 If multiple wells need to be normalized, use \code{\link{gam_analysis}} for
 96 well application. If only preliminary screening is needed, use
-\code{\link{screen}}}
+\code{\link[TSAR]{screen}}}
 
 \item{fluo}{integer; the Fluorescence variable column id
 (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
@@ -41,6 +41,9 @@ Normalize reads in raw data. This function normalizes data by standardized
 }
 \seealso{
 Other data_preprocess: 
-\code{\link{screen}()}
+\code{\link{remove_raw}()},
+\code{\link{screen}()},
+\code{\link{view_model}()},
+\code{\link{weed_raw}()}
 }
 \concept{data_preprocess}
