@@ -29,7 +29,8 @@ Imports:
     shiny,
     plotly,
     shinyjs,
-    jsonlite
+    jsonlite,
+    devtools
 Suggests: 
     knitr,
     rmarkdown
