@@ -136,7 +136,7 @@ view_model <- function(norm_data){
         geom_point(shape = 1, alpha = 0.5,
                    aes(color = "Normalized Fluorescence"))+
         geom_line(aes(y = fitted, color = "Fitted Model"), size = 0.5)+
-        geom_vline(xintercept = tm_est(test), color = "red")+
+        geom_vline(xintercept = tm_est(norm_data), color = "red")+
         labs(color = "Curves")+
         theme_bw() +
         theme(panel.grid.major = element_blank())
