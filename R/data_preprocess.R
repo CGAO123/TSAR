@@ -10,7 +10,7 @@
 #' @param raw_data data frame; raw dataset input, should be of only one well.
 #'   If multiple wells need to be normalized, use \code{\link{gam_analysis}} for
 #'   96 well application. If only preliminary screening is needed, use
-#'   \code{\link{screen}}
+#'   \code{\link[TSAR]{screen}}
 #' @param fluo integer; the Fluorescence variable column id
 #' (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
 #'   if fluorescence variable is named exactly as "Fluorescence", fluo does not
@@ -37,7 +37,7 @@ normalize <- function(
                  "Normalized")) {
 
   norm_data <- raw_data %>%
-    #make sure fluoresence and temperature variable is in double type
+    #make sure fluorescence and temperature variable is in double type
     #step to ensure that calculations do not return error
     transform(Fluorescence =
                   as.double(gsub(",", "", raw_data$Fluorescence))) %>%
@@ -112,8 +112,9 @@ model_gam <- function(norm_data, x, y) {
 #' @return data frame; with calculated derivative columns
 #'
 #' @family data_preprocess
+#'
 #' #examples
-#' #fitted <- modelfit(data = gammodel, model = fitted)
+#' #fitted <- model_fit(data = gammodel, model = fitted)
 #'
 #' @export
 #'

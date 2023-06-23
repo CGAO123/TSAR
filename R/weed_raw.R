@@ -1,7 +1,8 @@
 #' Weed Raw
 #'
 #' The weed_raw function allows users to interact with a screening graph
-#'   and select curves to weed out before entering analysis.
+#'   and select curves to weed out before entering analysis. Function wraps
+#'   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 #'
 #' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
 #' @import shiny
@@ -14,14 +15,18 @@
 #' @param checkrange list type input identifying range of wells to select.
 #'   For example, if viewing first 8 wells from row A to C is needed, one can
 #'   specify the row letters and column numbers like this:
-#'   `checkrange = c("A", "C", "1", "8")`
+#'   \code{checkrange = c("A", "C", "1", "8")}
 #' @param checklist use this parameter to view selected Wells with full
-#'   Well names. For example, `checklist = c('A01', 'D11')`
+#'   Well names. For example, \code{checklist = c('A01', 'D11')}
 #'
 #' @return prompts separate app window for user interaction,
 #'   does not return specific value
 #'
-#' #examples myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
+#' @family data_preprocess
+#'
+#' @seealso \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}
+#'
+#' @examples myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
 #' #shiny::runApp(myApp)
 #'
 weed_raw <- function(raw_data,
@@ -49,7 +54,7 @@ weed_raw <- function(raw_data,
             clicked_points <- reactiveValues(data = NULL, legend_text = NULL)
 
             output$distPlot <- plotly::renderPlotly({
-                gg1 <- screen(raw_data,
+                gg1 <- TSAR::screen(raw_data,
                               checkrange = checkrange,
                               checklist = checklist)
                 plotly::ggplotly(gg1, source = "Plot1")
@@ -58,7 +63,7 @@ weed_raw <- function(raw_data,
             observeEvent(event_data("plotly_click",
                                             source = "Plot1"), {
                 d <- event_data("plotly_click", source = "Plot1")
-                gg1 <- screen(raw_data,
+                gg1 <- TSAR::screen(raw_data,
                               checkrange = checkrange,
                               checklist = checklist)
                 legend_text <- gg1$data$Well.Position[gg1$data$Fluorescence
@@ -112,7 +117,7 @@ weed_raw <- function(raw_data,
             # Remove selected data
             observeEvent(input$refreshButton, {
                 output$distPlot <- plotly::renderPlotly({
-                    gg1 <- screen(raw_data,
+                    gg1 <- TSAR::screen(raw_data,
                                   checkrange = checkrange,
                                   checklist = checklist)
                     plotly::ggplotly(gg1, source = "Plot1")
@@ -138,7 +143,7 @@ weed_raw <- function(raw_data,
             # View selected data
             observeEvent(input$viewRemovedButton, {
                 output$distPlot <- plotly::renderPlotly({
-                    gg1 <- screen(raw_data, checklist =
+                    gg1 <- TSAR::screen(raw_data, checklist =
                                       unique(clicked_points$legend_text))
                     plotly::ggplotly(gg1, source = "Plot1")
                 })

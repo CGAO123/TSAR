@@ -15,3 +15,11 @@ ggplot
 \description{
 View Model
 }
+\seealso{
+Other data_preprocess: 
+\code{\link{normalize}()},
+\code{\link{remove_raw}()},
+\code{\link{screen}()},
+\code{\link{weed_raw}()}
+}
+\concept{data_preprocess}

@@ -27,23 +27,23 @@ if data is already smoothed, set smoothed to true}
 
 \item{fluo}{integer; the Fluorescence variable column id
 (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
-  if fluorescence variable is named exactly as "Fluorescence", fluo does not
-  need to be specified. i.e. fluo is set to -1 by default,
-  suggesting the variable is named "Fluorescence"}
+if fluorescence variable is named exactly as "Fluorescence", fluo does not
+need to be specified.}
 
 \item{selections}{list of characters; the variables in raw data user intends
-to keep. It is set, by default, to c("Well.Position", "Temperature",
-"Fluorescence", "Normalized").}
+to keep. It is set, by default, to \code{c("Well.Position", "Temperature",
+"Fluorescence", "Normalized")}.}
 }
 \value{
 list of data frames, list of three data frame outputs,
-  tm estimation by well, data set, fit of model by well
+  Tm estimation by well, data set, fit of model by well
 }
 \description{
 function pipeline that combines separated functions and iterate through
   each well to find the tm estimation
 }
 \concept{tsa_analysis
+
 #examples
 #raw_data <- utils::read.delim(header = TRUE, skip = 0, nrow = 112976,
 "/Users/candygao/Desktop/qpcrresult/CA_IP_HCB_2_20220110_134917_RawData_

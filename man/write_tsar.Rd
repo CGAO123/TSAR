@@ -11,9 +11,9 @@ write_tsar(data, name, file = "txt")
 
 \item{name}{naming for file}
 
-\item{file}{"txt" writes txt output files;
-"csv" writes csv output files;
-default set to "txt"}
+\item{file}{\code{file = "txt"} writes txt output files;
+\code{file = "csv"} writes csv output files;
+default set to \code{file = "txt"}}
 }
 \value{
 file output on the working directory where data was read in
@@ -21,6 +21,13 @@ file output on the working directory where data was read in
 \description{
 writes output into csv or txt files
 }
-\concept{read_write_analysis
-#examples
-#write.tsar(output_data, name = "2022_03_18_test", file = "txt")}
+\examples{
+#write.tsar(output_data, name = "2022_03_18_test", file = "txt")
+
+}
+\seealso{
+Other read_write_analysis: 
+\code{\link{join_well_info}()},
+\code{\link{read_tsar}()}
+}
+\concept{read_write_analysis}

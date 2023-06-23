@@ -4,12 +4,13 @@
 #'   data frames
 #'
 #' @param result list; input uses resulting output of gam_analysis() function
-#' @param code integer; code = 0 returns only the tm value by wells
-#'                      code = 1 returns the data table with the fitted values
-#'                      code = 2 returns the combination of 0 and 1
+#' @param code integer; \code{code = 0} returns only the tm value by wells
+#'                      \code{code = 1} returns data table with fitted values
+#'                      \code{code = 2} returns the combination of 0 and 1
 #' @return output files with select dataset
 #'
 #' @family read_write_analysis
+#'
 #' @examples
 #' #read_tsar(result, code = 0)
 #' #output_data <- read_tsar(result, code = 2)
@@ -55,13 +56,13 @@ read_tsar <- function(result, code) {
 #'
 #' @param data input data frame
 #' @param name naming for file
-#' @param file "txt" writes txt output files;
-#'             "csv" writes csv output files;
-#'             default set to "txt"
+#' @param file \code{file = "txt"} writes txt output files;
+#'             \code{file = "csv"} writes csv output files;
+#'             default set to \code{file = "txt"}
 #' @return file output on the working directory where data was read in
 #'
 #' @family read_write_analysis
-#' #examples
+#' @examples
 #' #write.tsar(output_data, name = "2022_03_18_test", file = "txt")
 #'
 #' @export
