@@ -26,7 +26,8 @@
 #'
 #' @seealso \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}
 #'
-#' @examples myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
+#' @examples
+#' #myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
 #' #shiny::runApp(myApp)
 #'
 weed_raw <- function(raw_data,
