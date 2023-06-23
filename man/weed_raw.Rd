@@ -27,7 +27,7 @@ The weed_raw function allows users to interact with a screening graph
   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 }
 \examples{
-myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
+#myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
 #shiny::runApp(myApp)
 
 }
