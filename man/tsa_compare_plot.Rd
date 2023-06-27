@@ -34,7 +34,7 @@ is displayed on the plot. When FALSE, the Tm is not added to the plot.}
 \item{title_by}{character string; c("ligand", "protein", "both").
 Automatically names the plots by the specified condition category.}
 
-\item{digits}{integer; the numer of decimal places to round for change in Tm
+\item{digits}{integer; the number of decimal places to round for change in Tm
 calculations displayed in the subtitle of each plot..}
 }
 \value{
@@ -56,6 +56,7 @@ control condition. To see all conditions use \code{condition_IDs(tsa_data)}.
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},
 \code{\link{TSA_wells_plot}()},
-\code{\link{get_legend}()}
+\code{\link{get_legend}()},
+\code{\link{graph_tsar}()}
 }
 \concept{TSA Plots}

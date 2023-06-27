@@ -68,6 +68,7 @@ Generates the individual curves for each well in the merged tsa data input.
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},
 \code{\link{get_legend}()},
+\code{\link{graph_tsar}()},
 \code{\link{tsa_compare_plot}()}
 }
 \concept{TSA Plots}

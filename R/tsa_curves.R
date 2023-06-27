@@ -57,15 +57,15 @@ TSA_wells_plot <- function(
 
 
     if (y == "Fluorescence") { #When data supplied is not normalized
-        TSA_curve <- ggplot(tsa_data, aes(x = tsa_data$Temperature,
-                                          y = tsa_data$Fluorescence))
+        TSA_curve <- ggplot(tsa_data, aes(x = Temperature,
+                                          y = Fluorescence))
         tm_height <- max(tsa_data$Fluorescence) / 4 #y value for geom_label
         tsa_average_df <- tsa_average(tsa_data = tsa_data, y = "Fluorescence",
                                       sd_smooth = smooth)
     }
     if (y == "RFU") { #When data supplied is normalized
-        TSA_curve <- ggplot(tsa_data, aes(x = tsa_data$Temperature,
-                                          y = tsa_data$Normalized))
+        TSA_curve <- ggplot(tsa_data, aes(x = Temperature,
+                                          y = Normalized))
         tm_height <- 0.4 #y value for geom_label
         tsa_average_df <- tsa_average(tsa_data = tsa_data, y = "RFU",
                                       sd_smooth = smooth)
@@ -307,7 +307,7 @@ TSA_boxplot <- function(
 #'   is displayed on the plot. When FALSE, the Tm is not added to the plot.
 #' @param title_by character string; c("ligand", "protein", "both").
 #'  Automatically names the plots by the specified condition category.
-#' @param digits integer; the numer of decimal places to round for change in Tm
+#' @param digits integer; the number of decimal places to round for change in Tm
 #'  calculations displayed in the subtitle of each plot..
 #' @return Generates a number of ggplot objects equal to the number of unique
 #'  Condition IDs present in the input data.

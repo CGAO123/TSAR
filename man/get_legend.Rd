@@ -19,6 +19,7 @@ A function to enable separation of legends from plots within the TSAR package
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},
 \code{\link{TSA_wells_plot}()},
+\code{\link{graph_tsar}()},
 \code{\link{tsa_compare_plot}()}
 }
 \concept{TSA Plots}

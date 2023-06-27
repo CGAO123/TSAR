@@ -34,8 +34,7 @@ weed_raw <- function(raw_data,
                      checkrange = NULL,
                      checklist = NULL) {
 
-    shinyApp(
-        ui = fluidPage(
+        ui <- fluidPage(
             useShinyjs(),
             plotlyOutput("distPlot"),
             verbatimTextOutput("info"),
@@ -48,8 +47,8 @@ weed_raw <- function(raw_data,
             actionButton("stopButton", "Close Window"),
             actionButton("viewRemovedButton", "View Selected"),
             verbatimTextOutput("viewRemovedMessage"),
-        ),
-        server = function(input, output) {
+        )
+        server <- function(input, output) {
             clicked_points_legend_text <- NULL
 
             clicked_points <- reactiveValues(data = NULL, legend_text = NULL)
@@ -173,5 +172,5 @@ weed_raw <- function(raw_data,
                 stopApp()
             })
         }
-    )
+    shinyApp(ui = ui, server = server)
 }

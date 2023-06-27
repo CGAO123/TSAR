@@ -69,8 +69,7 @@ raw_data <- remove_raw(raw_data, removerange = c("C","H","1","12"))
 Both functions above are wrapped inside an interactive window through function`weed_raw()`. It is implemented through r Shiny application where users can select curves using cursor and remove selected curves easily.
 
 ```{r}
-myApp <- weed_raw(raw_data)
-#shiny::runApp(myApp)
+#weed_raw(raw_data)
 ```
 
 Running the window, we can spot that curve at A12 has an abnormally high initial fluorescence and should be removed for data accuracy. We can make sure of correct selection through `View Selected` button and remove using `Remove Data` button. Beware that all data edits are made inside the interactive window. To translate the change permanently downstream, click `Copy Selected` and paste information to `remove_raw()`. To avoid error, close window proper through `Close Window` instead of the cross mark on top left corner.
@@ -161,7 +160,7 @@ analysis_rep <- gam_analysis(raw_data_rep , smoothed = T)
 norm_data_rep <- join_well_info(template_dir, read_tsar(analysis_rep, code = 2), type = "by_template")
 
 #merge data
-Bigdata <- merge_norm(norm_data, norm_data_rep, 
+tsar_data <- merge_norm(norm_data, norm_data_rep, 
                       "Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
                       "Vitamin_RawData_Thermal Shift_02_168.eds.csv", 
                       "20230203", "20230209")
@@ -182,12 +181,12 @@ After merging, use assisting functions to check and trace data. Use these two fu
 -   `well_IDs()` list all IDs of individual well
 
 ```{r}
-condition_IDs(Bigdata)
-well_IDs(Bigdata)
-TSA_proteins(Bigdata)
-TSA_ligands(Bigdata)
+condition_IDs(tsar_data)
+well_IDs(tsar_data)
+TSA_proteins(tsar_data)
+TSA_ligands(tsar_data)
 
-conclusion <- Bigdata%>%
+conclusion <- tsar_data%>%
   filter(condition_ID != "NA_NA") %>%
   filter(condition_ID != "CA FL_Riboflavin")
 ```
@@ -222,3 +221,10 @@ Users may also graph by condition IDs or well IDs using function `TSA_wells_plot
 ABA_Cond <- conclusion %>% filter(condition_ID == 'CA FL_4-ABA')
 TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```
+
+All of the above functions are also wrapped in an interactive window call through graph_tsar(). Simply call function on merged tsar_data and access all graphing features in one window.
+
+```{r}
+#graph_tsar(tsar_data)
+```
+

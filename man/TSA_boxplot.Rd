@@ -51,6 +51,7 @@ See \code{\link{Tm_difference}} for details.
 Other TSA Plots: 
 \code{\link{TSA_wells_plot}()},
 \code{\link{get_legend}()},
+\code{\link{graph_tsar}()},
 \code{\link{tsa_compare_plot}()}
 }
 \concept{TSA Plots}
