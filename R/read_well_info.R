@@ -9,6 +9,8 @@
 #' @importFrom dplyr mutate select left_join
 #'
 #' @param file_path string; file path to read in the file
+#' @param file object; use file to override the need of file_path if
+#'   information is already read in
 #' @param analysis_file data frame; data frame containing smoothed fluorescence
 #'   data and tm values
 #' @param skips integer; number indicating the number of headers present in
@@ -38,6 +40,7 @@
 #' @export
 join_well_info <- function(
     file_path,
+    file = NULL,
     analysis_file,
     skips = 2,
     nrows = 95,
@@ -54,13 +57,17 @@ join_well_info <- function(
         #input by excel template
     }else if (type == "by_template") {
         #read file, specify column as texts
-        well_info_table <- readxl:: read_excel(file_path,
+        if (!is.null(file)) {
+            well_info_table <- file
+        } else {
+            well_info_table <- readxl:: read_excel(file_path,
                                       col_types =
                             c("text", "text", "text", "text", "text", "text",
                             "text", "text", "text", "text", "text", "text",
                             "text", "text", "text", "text", "text", "text",
                             "text", "text", "text", "text", "text", "text",
                             "text"))
+        }
 
         #remove header row
         well_info_table <- well_info_table[-c(1), ]

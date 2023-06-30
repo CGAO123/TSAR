@@ -81,6 +81,7 @@ screen <- function(raw_data,
 #' remove_raw
 #'
 #' removes selected curves with specified wells and range
+#' @import dplyr
 #'
 #' @param raw_data dataframe; to be processed data
 #' @param removerange list type input identifying range of wells to select.
@@ -98,28 +99,25 @@ remove_raw <- function(raw_data,
                        removerange = NULL,
                        removelist = NULL) {
 
-    if (is.null(removerange) && (is.null(removelist))) {
-        return(raw_data)
-    } else if (!(is.null(removerange))) {
-            grid <- expand.grid(LETTERS[match(removerange[1], LETTERS):
-                                            match(removerange[2], LETTERS)],
-                                sprintf("%02d", removerange[3]:
-                                            removerange[4]))
-            removerange <- paste0(grid$Var1, grid$Var2)
-        }
-    removerange <- c(removerange, removelist)
+  if (is.null(removerange) && is.null(removelist)) {
+    return(raw_data)
+  } else if (!is.null(removerange)) {
+    grid <- expand.grid(LETTERS[match(removerange[1], LETTERS):match(
+        removerange[2], LETTERS)],
+                        sprintf("%02d", removerange[3]:removerange[4]))
+    removerange <- paste0(grid$Var1, grid$Var2)
+  }
+  removerange <- c(removerange, removelist)
 
-
-    if ("Well.Position" %in% names(raw_data)) {
-        return(filter(raw_data, !Well.Position %in% removerange))
-    } else if ("Well" %in% names(raw_data)) {
-        return(filter(raw_data, !Well %in% removerange))
-    } else {
-        stop("Error: No valid Well variable was found.
-                  Make sure it is named 'Well.Position' or 'Well'")
-    }
-
+  if ("Well.Position" %in% names(raw_data)) {
+    return(filter(raw_data, !Well.Position %in% removerange))
+  } else if ("Well" %in% names(raw_data)) {
+    return(filter(raw_data, !Well %in% removerange))
+  } else {
+    stop("Error: No valid Well variable was found. Make sure it is named 'Well.Position' or 'Well'")
+  }
 }
+
 
 
 #' View Model

@@ -127,11 +127,11 @@ gam_analysis <- function(
             if (smoothed == FALSE) {
                 #keep selected variables, fitted values, and derivatives
                 by_well <- by_well %>%
-                    dplyr:: select(selections, fitted)
+                    dplyr:: select(all_of(c(unlist(selections), "fitted")))
             } else {
                 #keep selected variables and derivatives
                 by_well <- by_well %>%
-                    dplyr:: select(selections)
+                    dplyr:: select(all_of(selections))
             }
             #concat data frame of each well into one big data frame
             kept <- rbind(kept, by_well)

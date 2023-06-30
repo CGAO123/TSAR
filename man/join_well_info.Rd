@@ -4,10 +4,20 @@
 \alias{join_well_info}
 \title{well information input function}
 \usage{
-join_well_info(file_path, analysis_file, skips = 2, nrows = 95, type)
+join_well_info(
+  file_path,
+  file = NULL,
+  analysis_file,
+  skips = 2,
+  nrows = 95,
+  type
+)
 }
 \arguments{
 \item{file_path}{string; file path to read in the file}
+
+\item{file}{object; use file to override the need of file_path if
+information is already read in}
 
 \item{analysis_file}{data frame; data frame containing smoothed fluorescence
 data and tm values}
