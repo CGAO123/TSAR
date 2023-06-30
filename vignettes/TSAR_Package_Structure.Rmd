@@ -24,7 +24,7 @@ library(ggplot2)
 
 TSAR Package provides simple resolution to qPCR data processing, computing thermal shift analysis given either raw fluorescent data or smoothed ones. The functions provide users the protocol to conduct preliminary data checks and also expansive analysis on large scale of data. Furthermore, it showcases simple graphic presentation of analysis, generating clear box plot and line graphs given input of desired designs.
 
-# Data Structure
+#1. Data Structure
 
 TSAR segregates data structure into three tiers:
 
@@ -34,17 +34,17 @@ TSAR segregates data structure into three tiers:
 
 Users may access TSAR workflow from either `raw_data` or `norm_data` as long as data achieves proper qualities.
 
-# From `raw_data` to `norm_data`
+#2. From `raw_data` to `norm_data`
 
 To access the workflow of `TSAR`, user can input raw fluorescent readings through built in functions from utils: `read.delim()` or `read.csv()`. Built in data imports from RStudio UI is also appropriate given `raw_data` only needs to be saved as `dataframe` structure. Wrapping input in `data.frame()` will also ensure correct input type. Use `head()` and `tail()` to ensure excessive information is removed, i.e. blank lines, duplicate titles, etc.
 
 ```{r}
-raw_data <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_162.eds.csv", header = TRUE, nrows = 118176)
+raw_data <- qPCR_data1
 head(raw_data)
 tail(raw_data)
 ```
 
-## Data Preprocessing
+##2.1 Data Preprocessing
 
 From raw data to ready-for-analysis data, there are few functions to assist the selection and normalization of data.
 
@@ -80,13 +80,13 @@ raw_data <- remove_raw(raw_data,
                                       'B02','B01','B08','B12','B07','B06'))
 ```
 
-## Data Analysis
+##2.2 Data Analysis
 
 Normalizing data is prompted through `normalize()`. Although individual calls are not necessary as they are wrapped together in `gam_analysis()`, if viewing the validity of model is desired, one can prompt analysis of one well.
 
 TSAR package performs derivative analysis using a generalized additive model through package `mgcv`.
 
-### Individual Well Application
+###2.2.1 Individual Well Application
 
 Refer to these following functions:
 
@@ -110,7 +110,7 @@ view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
 tm_est(test)
 ```
 
-### 96 Well Application
+###2.2.2 96 Well Application
 
 All analysis necessary if formatted in function `gam_analysis()`. Parameters are inherited from functions noted in section "Individual Well Application". Hence, if any errors are prompted, check through individual well application for correct parameter input and other potential errors.
 
@@ -125,39 +125,43 @@ x <- gam_analysis(raw_data,
                                  "Fluorescence", "Normalized"))
 ```
 
-## Data Summary
+##2.3 Data Summary
 
 Data summary offers an exit point from the workflow if no further graphic outputs are required. Output are allowed in three formats: - `code = 0`, only Tm values by well - `code = 1`, all data analysis by each temperature reading. If previously called `smoothed = T`, analysis will not run gam modeling, thus will not have `fitted` data. - `code = 2`, combination of the above two data set.
 
 To associate ligand and protein conditions with each individual well, call function `join_well_info()`. One may specify using the template excel or separate csv file containing a table of three variables, "Well", "Protein", and "Ligand".
 
 ```{r message=FALSE}
-template_dir <- "/Users/candygao/Desktop/qpcrresult/experiment file/0203Well Information.xlsx"
-output <- join_well_info(template_dir, read_tsar(x, code = 0), type = "by_template")
+output <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x, code = 0), type = "by_template")
 write_tsar(output, name = "vitamin_analysis", file = "csv")
 ```
 
 To streamline to the following graphic analysis, make sure `code = 2` to maintain all necessary data.
 
 ```{r message=FALSE}
-norm_data <- join_well_info(template_dir, read_tsar(x, code = 2), type = "by_template")
+norm_data <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x, code = 2), type = "by_template")
 ```
 
-# From `norm_data` to `tsar_data`
+All of the function above in chapter 2 are wrapped together in a shiny application named `analyze_norm()`. Refer to separate vignette, "Interactive Usage", and readme.md file for more documentation.
+```{r}
+#analyze_norm(raw_data)
+```
+
+#3. From `norm_data` to `tsar_data`
 
 `norm_data` contains normalized fluorescent data on a scale of 0 to 1 based on the maximum and minimum fluorescence reading. `norm_data` also contains a first derivative column. `tsar_data` is the final format of project data encapsulating all replication. Therefore, it contains all condition data including experiment date and analysis file source.
 
-## Merge Replicates
+##3.1 Merge Replicates
 
 Use `merge_norm()` to merge all norm_data and specify original data file name and experiment date for latter tracking purposes.
 
 ```{r message=FALSE}
 #analyze replicate data 
-raw_data_rep <- read.csv(file = "/Users/candygao/Desktop/qpcrresult/experiment file/Vitamin_RawData_Thermal Shift_02_168.eds.csv", header = TRUE, nrows = 118176)
+raw_data_rep <- qPCR_data2
 raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"), 
                                          removelist = c("A12"))
 analysis_rep <- gam_analysis(raw_data_rep , smoothed = T)
-norm_data_rep <- join_well_info(template_dir, read_tsar(analysis_rep, code = 2), type = "by_template")
+norm_data_rep <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(analysis_rep, code = 2), type = "by_template")
 
 #merge data
 tsar_data <- merge_norm(norm_data, norm_data_rep, 
@@ -166,7 +170,7 @@ tsar_data <- merge_norm(norm_data, norm_data_rep,
                       "20230203", "20230209")
 ```
 
-### Jumpstart to Graph
+###3.1.1 Jumpstart to Graph
 
 If outputted data from qPCR already contains analysis and data necessary, enter TSAR workflow from here, using functions `merge_tsa()`, `read_raw_data()`, `read_analysis()`.
 
@@ -191,17 +195,18 @@ conclusion <- tsar_data%>%
   filter(condition_ID != "CA FL_Riboflavin")
 ```
 
-## Graphic Analysis
+##3.2 Graphic Analysis
 
-### Tm Boxplot
+###3.2.1 Tm Boxplot
 
 Use `TSA_boxplot()` to generate comparison boxplot graphs. Stylistics choices include coloring by protein or ligand, and legend separation. Function returns ggplot object, thus further stylistic changes are allowed.
 
 ```{r}
-TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand", separate_legend = TRUE)
+TSA_boxplot(conclusion, color_by = "Protein", 
+            label_by = "Ligand", separate_legend = TRUE)
 ```
 
-### TSA Curve Visualization
+###3.2.2 TSA Curve Visualization
 
 `tsa_compare_plot()` generates multiple line graphs for comparison. Specify Control condition by assigning condition_ID to control. Functions allows graphing by both: - raw fluorescent readings `y = 'Fluorescence'` - normalized readings `y = 'RFU'`.
 
@@ -213,7 +218,7 @@ tsa_compare_plot(conclusion,
                  control_condition = control_ID)
 ```
 
-### Graph by condition
+###3.2.3 Curves by Condition
 
 Users may also graph by condition IDs or well IDs using function `TSA_wells_plot()`.
 
@@ -222,8 +227,7 @@ ABA_Cond <- conclusion %>% filter(condition_ID == 'CA FL_4-ABA')
 TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```
 
-All of the above functions are also wrapped in an interactive window call through graph_tsar(). Simply call function on merged tsar_data and access all graphing features in one window.
-
+All of the above functions are also wrapped in an interactive window call through `graph_tsar()`. Simply call function on merged tsar_data and access all graphing features in one window. Refer to separate vignette, "Interactive Usage", and readme.md file for more documentation.
 ```{r}
 #graph_tsar(tsar_data)
 ```

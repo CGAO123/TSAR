@@ -35,3 +35,7 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+DataRaw: data/qPCR_data1.rda
+DataRaw2: data/qPCR_data2.rda
+Depends: 
+    R (>= 2.10)
