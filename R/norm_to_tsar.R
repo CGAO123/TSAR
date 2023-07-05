@@ -6,49 +6,54 @@
 #'
 #' @importFrom dplyr rename mutate
 #'
-#' @param norm_data1 data frame; normalized data outputted by read_tsar
-#'   following gam_analysis. Input data for experiment replication day 1
-#' @param norm_data2 data frame; normalized data outputted by read_tsar
-#'   following gam_analysis. Input data for experiment replication day 2
-#' @param file_name1 character string; input file name of experiment day 1
-#'   for data tracing purpose
-#' @param file_name2 character string; input file name of experiment day 2
-#'   for data tracing purpose
-#' @param exp_date1 character string; input date of experiment
-#' @param exp_date2 character string; input date of experiment
+#' @param data A character vector specifying the file paths of the data files
+#'   or data frame objects of analysis data set.
+#' @param name A character vector specifying the experiment names.
+#' @param date A character vector specifying the dates.
+#'
+#' @details This function merges and normalizes test data from multiple files.
+#'   The lengths of the \code{data}, \code{name}, and \code{date} vectors
+#'   must match, otherwise an error is thrown.
 #'
 #' @family TSAR Formatting
+#'
 #' @export
 #'
-merge_norm <- function(
-    norm_data1,
-    norm_data2,
-    file_name1,
-    file_name2,
-    exp_date1,
-    exp_date2) {
 
-    norm_data1 <- norm_data1 %>%
-        mutate(ExperimentFileName = file_name1)
-    norm_data2 <- norm_data2 %>%
-        mutate(ExperimentFileName = file_name2)
-    tsar_data1 <- norm_data1 %>%
-        #add well_ID column
-        mutate(well_ID = paste(norm_data1$Well.Position,
-                               norm_data1$Protein,
-                               norm_data1$Ligand,
-                               exp_date1
-                               , sep = "_"))
-    tsar_data2 <- norm_data2 %>%
-        #add well_ID column
-        mutate(well_ID = paste(norm_data2$Well.Position,
-                               norm_data2$Protein,
-                               norm_data2$Ligand,
-                               exp_date2
-                               , sep = "_"))
-    tsar_data <- data.frame(rbind(tsar_data1, tsar_data2))
+merge_norm <- function(
+        data,
+        name,
+        date) {
+
+    if (length(data) != length(name) || length(date) != length(name)) {
+        stop("Data, name, and date counts do not match.")
+    }
+
+    tsar_data <- c()
+    dataset <- c()
+
+
+    for (i in 1:length(data)){
+        if (is.data.frame(data[[i]]) == FALSE) {
+            dataset[[i]] <- data.frame(read.csv(file = toString(data[i]),
+                                                header = TRUE))
+        } else {
+            dataset[[i]] <- data.frame(data[[i]])
+        }
+    }
+
+
+    for (i in 1:length(dataset)){
+        cur <- dataset[[i]]
+        cur <- mutate(cur, ExperimentFileName = name[i])
+        tsar_cur <- cur %>%
+            mutate(well_ID = paste(cur$Well.Position, cur$Protein, cur$Ligand,
+                                   date[i], sep = "_"))
+        tsar_data <- rbind(tsar_data, tsar_cur)
+    }
+
+    tsar_data <- data.frame(tsar_data)
     tsar_data <- tsar_data %>%
-        #add condition_ID column
         mutate(condition_ID = paste(tsar_data$Protein,
                                     tsar_data$Ligand,
                                     sep = "_")) %>%

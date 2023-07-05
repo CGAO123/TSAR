@@ -43,7 +43,7 @@ weed_raw <- function(raw_data,
             plotlyOutput("distPlot"),
             verbatimTextOutput("info"),
             fluidRow(
-                column(width=2,
+                column(width=3,
                        actionButton("myButton", "Copy Selected Wells")),
                 column(width=4,
                        actionButton("removeCall",

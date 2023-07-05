@@ -20,7 +20,10 @@ library(TSAR)
 library(dplyr)
 library(ggplot2)
 ```
-![TSAR Logo](TSAR_logo.png)
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/TSAR_logo.png")
+```
 
 TSAR Package provides simple resolution to qPCR data processing, computing thermal shift analysis given either raw fluorescent data or smoothed ones. The functions provide users the protocol to conduct preliminary data checks and also expansive analysis on large scale of data. Furthermore, it showcases simple graphic presentation of analysis, generating clear box plot and line graphs given input of desired designs.
 
@@ -38,7 +41,7 @@ Users may access TSAR workflow from either `raw_data` or `norm_data` as long as 
 
 To access the workflow of `TSAR`, user can input raw fluorescent readings through built in functions from utils: `read.delim()` or `read.csv()`. Built in data imports from RStudio UI is also appropriate given `raw_data` only needs to be saved as `dataframe` structure. Wrapping input in `data.frame()` will also ensure correct input type. Use `head()` and `tail()` to ensure excessive information is removed, i.e. blank lines, duplicate titles, etc.
 
-```{r}
+```{r, results = 'hide'}
 raw_data <- qPCR_data1
 head(raw_data)
 tail(raw_data)
@@ -56,7 +59,7 @@ Functions `screen()` and `remove_raw()` helps screen and remove data of selectio
 
 If no wells are specified, `screen()` will default to screening every well and `reomve_raw()` will default to not removing an well.
 
-```{r}
+```{r, out.width = "400px"}
 screen(raw_data) + theme(aspect.ratio = 0.7,
                          legend.position = "bottom",
                          legend.text = element_text(size = 4), 
@@ -68,8 +71,8 @@ raw_data <- remove_raw(raw_data, removerange = c("C","H","1","12"))
 
 Both functions above are wrapped inside an interactive window through function`weed_raw()`. It is implemented through r Shiny application where users can select curves using cursor and remove selected curves easily.
 
-```{r}
-#weed_raw(raw_data)
+```{r, eval=FALSE}
+weed_raw(raw_data)
 ```
 
 Running the window, we can spot that curve at A12 has an abnormally high initial fluorescence and should be removed for data accuracy. We can make sure of correct selection through `View Selected` button and remove using `Remove Data` button. Beware that all data edits are made inside the interactive window. To translate the change permanently downstream, click `Copy Selected` and paste information to `remove_raw()`. To avoid error, close window proper through `Close Window` instead of the cross mark on top left corner.
@@ -133,6 +136,9 @@ To associate ligand and protein conditions with each individual well, call funct
 
 ```{r message=FALSE}
 output <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x, code = 0), type = "by_template")
+```
+
+```{r, eval = FALSE}
 write_tsar(output, name = "vitamin_analysis", file = "csv")
 ```
 
@@ -143,8 +149,9 @@ norm_data <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x
 ```
 
 All of the function above in chapter 2 are wrapped together in a shiny application named `analyze_norm()`. Refer to separate vignette, "Interactive Usage", and readme.md file for more documentation.
-```{r}
-#analyze_norm(raw_data)
+
+```{r, eval=FALSE}
+analyze_norm(raw_data)
 ```
 
 #3. From `norm_data` to `tsar_data`
@@ -164,10 +171,10 @@ analysis_rep <- gam_analysis(raw_data_rep , smoothed = T)
 norm_data_rep <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(analysis_rep, code = 2), type = "by_template")
 
 #merge data
-tsar_data <- merge_norm(norm_data, norm_data_rep, 
-                      "Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
-                      "Vitamin_RawData_Thermal Shift_02_168.eds.csv", 
-                      "20230203", "20230209")
+tsar_data <- merge_norm(data = list(norm_data, norm_data_rep), 
+                        name = c("Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
+                                "Vitamin_RawData_Thermal Shift_02_168.eds.csv"), 
+                        date = c("20230203", "20230209"))
 ```
 
 ###3.1.1 Jumpstart to Graph
@@ -228,7 +235,7 @@ TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```
 
 All of the above functions are also wrapped in an interactive window call through `graph_tsar()`. Simply call function on merged tsar_data and access all graphing features in one window. Refer to separate vignette, "Interactive Usage", and readme.md file for more documentation.
-```{r}
-#graph_tsar(tsar_data)
-```
 
+```{r, eval=FALSE}
+graph_tsar(tsar_data)
+```

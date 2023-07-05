@@ -99,9 +99,9 @@ TSA_proteins <- function(
     n = FALSE #c("T", "F") F = List, T = number summary
 ) {
     if (n) {
-        return(length(unique(tsa_data$Protein)))
+        return(length(levels(factor(tsa_data$Protein))))
     } else {
-        return(unique(tsa_data$Protein))
+        return(levels(factor(tsa_data$Protein)))
     }
 }
 
@@ -129,8 +129,8 @@ TSA_ligands <- function(
     n = FALSE #c("T", "F") F = List, T = number summary
 ) {
     if (n) {
-        return(length(unique(tsa_data$Ligand)))
+        return(length(levels(factor(tsa_data$Ligand))))
     } else {
-        return(unique(tsa_data$Ligand))
+        return(levels(factor(tsa_data$Ligand)))
     }
 }
