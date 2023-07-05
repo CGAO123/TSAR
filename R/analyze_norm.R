@@ -253,7 +253,7 @@ analyze_norm <- function(raw_data) {
         shiny::observeEvent(input$write, {
             if (analyzed_done == FALSE) {
                 output$test <- renderPrint({
-                    cat("Anlysis is incomplete.",
+                    cat("Analysis is incomplete.",
                         "Please analyze all data before saving.")
                 })
             } else {
@@ -283,8 +283,8 @@ analyze_norm <- function(raw_data) {
                     output$test <- renderPrint({
                         cat("If you are saving data for tsar_graphing",
                             "functions, make sure to save all fluorescence",
-                            "data (i.e. 'both') to output compare plots and", "
-                            conditions plot.")
+                            "data \n(i.e. 'both') to output compare plots and",
+                            "conditions plot.")
                     })
                     if (imported == TRUE && withCondition_option == TRUE) {
                         output_data <<- join_well_info(
@@ -320,11 +320,21 @@ analyze_norm <- function(raw_data) {
             }
         })
         shiny::observeEvent(input$join, {
-            if (imported == FALSE) {
-                output$test <- renderPrint({
-                    cat("Conditions are not specified.",
-                        "Please upload condition excel file using template.")
-                })
+            if ((imported == FALSE) || (analyzed_done == FALSE)) {
+                if (analyzed_done == FALSE) {
+                    output$test <- renderPrint({
+                        cat("Analysis is incomplete.",
+                            "Please analyze all data before merging.")
+                    })
+                } else {
+                    output$test <- renderPrint({
+                        cat("Conditions are not specified.",
+                            "Please upload condition excel file using template."
+                            ,"\n(if file is uploaded and error persists, try",
+                            "clicking preview and hide button few times",
+                            "before setting conditions.")
+                    })
+                }
             } else {
                 joined <<- join_well_info(file_path = inFile$datapath,
                                           file=NULL,
@@ -335,6 +345,9 @@ analyze_norm <- function(raw_data) {
                 output$table <- renderDataTable({
                     data.frame(joined)
                 }, options = list(pageLength = 7))
+                output$test <- renderPrint({
+                    cat("Conditions are specified. Proceede to following steps.")
+                })
                 output$table_title <- renderText({
                     "Complete Data: tsar_data"
                 })

@@ -1,13 +1,11 @@
 ---
-title: "TSAR Complete Workflow"
+title: "TSAR Workflow by Command"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{TSAR Complete Workflow}
+  %\VignetteIndexEntry{TSAR Workflow by Command}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
-# TSAR Workflow
 
 Pipeline analysis from raw data reading to graphic visualization
 
@@ -20,8 +18,6 @@ knitr::opts_chunk$set(echo = TRUE)
 Install package using devtools. Usage of dplyr and ggplot2 along with TSAR package is recommended for enhanced analysis.
 
 ```{r}
-library(devtools)
-#devtools::install_local("/Users/candygao/Desktop/TSAR_0.1.0.tar.gz")
 library(TSAR)
 library(dplyr)
 library(ggplot2)
@@ -100,7 +96,9 @@ Read analysis using read_tsar() function and view head and tail to ensure approp
 output <- read_tsar(x, code = 0)
 head(output)
 tail(output)
+```
 
+```{r, eval = FALSE}
 #write output data file
 write_tsar(read_tsar(x, code = 2), name = "0923_tm_val", file = "csv")
 ```
@@ -115,7 +113,9 @@ norm_data <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x
 norm_data <- na.omit(norm_data)
 head(norm_data)
 tail(norm_data)
+```
 
+```{r, eval = FALSE}
 write_tsar(norm_data, name = "vitamin_tm_val_norm", file = "csv")
 ```
 
@@ -147,10 +147,10 @@ Merge data by content. All data are marked its source file name and experiment d
 ```{r}
 norm_data <- na.omit(norm_data)
 norm_data_rep <- na.omit(norm_data_rep)
-tsar_data <- merge_norm(norm_data, norm_data_rep, 
-                      "Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
-                      "Vitamin_RawData_Thermal Shift_02_168.eds.csv", 
-                      "20230203", "20230209")
+tsar_data <- merge_norm(data = list(norm_data, norm_data_rep), 
+                      name = c("Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
+                      "Vitamin_RawData_Thermal Shift_02_168.eds.csv"), 
+                      date = c("20230203", "20230209"))
 
 ```
 

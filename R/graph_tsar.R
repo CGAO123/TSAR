@@ -25,9 +25,26 @@
 #' graph_tsar(tsar_data)
 #'
 #'
-graph_tsar <- function(tsar_data) {
+graph_tsar <- function(tsar_data = data.frame()) {
 
     ui <- fluidPage(
+        useShinyjs(),  # Enable shinyjs
+        actionButton("toggleButton", "Upload and Merge Data"),
+        shinyjs::hidden(
+            div(
+                id = "myPanel",
+                h3("This is a hidden panel"),
+                h3("Merge Data across Replicate Trials"),
+                fileInput("file", label = "Upload All Analysis Files",
+                          multiple = TRUE),
+                tableOutput("table"),
+                uiOutput("date_boxes"),
+                actionButton("generate","Merge Data"),
+                actionButton("save_dates", "Save Dates"),
+                verbatimTextOutput("output")
+            )
+        ),
+        br(),
         plotOutput("Plot"),
         verbatimTextOutput("Plot_Message"),
         h3("Boxplot"),
@@ -55,13 +72,15 @@ graph_tsar <- function(tsar_data) {
         fluidRow(
             column(width = 2,
                    selectInput("y_axis", label = "Graph y as:",
-                               choices = c("Fluorescence", "RFU"), selected = "RFU")),
+                               choices = c("Fluorescence", "RFU"),
+                               selected = "RFU")),
             column(width = 2,
                    selectInput("Show_tm", label = "Show Tm:",
                                choices = c(TRUE, FALSE))),
             column(width = 2,
                    selectInput("title_by", label = "Title by:",
-                               choices = c("ligand", "protein", "both"), selected = "both" )),
+                               choices = c("ligand", "protein", "both"),
+                               selected = "both" )),
             column(width = 3,
                    selectInput("Control_s", label = "Control Condition",
                                choices = c(condition_IDs(tsar_data)))),
@@ -75,15 +94,18 @@ graph_tsar <- function(tsar_data) {
         fluidRow(
             column(width = 2,
                    selectInput("y_axis_c", label = "Graph y as: ",
-                               choices = c("Fluorescence", "RFU"), selected = "RFU" )),
+                               choices = c("Fluorescence", "RFU"),
+                               selected = "RFU" )),
             column(width = 2,
                    selectInput("show_tm_c", label = "Show Tm: ",
                                choices = c(TRUE, FALSE))),
             column(width = 2,
-                   selectInput("separate_legend", label = "Separate legend: ",
+                   selectInput("separate_legend",
+                               label = "Separate legend: ",
                                choices = c(TRUE, FALSE), selected = FALSE)),
             column(width = 3,
-                   selectInput("Selected_condition", label = "Select condition: ",
+                   selectInput("Selected_condition",
+                               label = "Select condition: ",
                                choices = c(condition_IDs(tsar_data)))),
             column(
                 br(),
@@ -114,7 +136,7 @@ graph_tsar <- function(tsar_data) {
 
     )
 
-    server <- function(input, output) {
+    server <- function(input, output, session) {
         color_option <- "Protein"
         label_option <- "Ligand"
         legend_option <- FALSE
@@ -129,6 +151,88 @@ graph_tsar <- function(tsar_data) {
         average_option <- TRUE
         show_tm_c_option <- TRUE
         nudge <- 7.5
+        filepath <- c()
+        namelist <- c()
+        datelist <- c()
+        options(shiny.maxRequestSize=30*1024^2)
+        dated <- FALSE
+
+        observeEvent(input$toggleButton, {
+            shinyjs::toggle(id = "myPanel")
+        })
+
+        observe({
+            filepath <<- input$file$datapath
+            namelist <<- input$file$name
+            if (length(tsar_data) == 0) {
+                output$Plot_Message <- renderPrint({
+                    cat("No data input: Please upload analysis files to merge",
+                        "or close window \nand call function with data ",
+                        "included as parameter. e.g. graph_tsar(tsar_data)")
+                })
+            }
+        })
+
+        observeEvent(input$file, {
+            output$date_boxes <- renderUI({
+                date_boxes <- lapply(namelist, function(i) {
+                    dateInput(inputId = paste0("Date for file", i),
+                              label = paste0("Date for file", i))
+                })
+                do.call(tagList, date_boxes)
+            })
+        })
+        observeEvent(input$save_dates, {
+            # Save the input values of the date boxes as a list of strings
+            saved_dates <- sapply(namelist, function(i) {
+                as.character(input[[paste0("Date for file", i)]])
+            })
+            # Print the saved dates
+            datelist <<- saved_dates
+            if (length(datelist) > 0){
+                output$output <- renderPrint({
+                    cat("Dates saved! Confirm if correct and proceede to merging data.
+                  ")
+                    saved_dates
+                })
+                dated <<- TRUE
+            } else {
+                output$output <- renderPrint({
+                    cat("Please upload analysis files first before setting dates.")
+                })
+            }
+        })
+
+        observeEvent(input$generate, {
+            if (dated == FALSE) {
+                output$output <- renderPrint({
+                    "Dates are not saved, please review and save dates of experiment!"
+                })
+            } else {
+                tsar_data <<- merge_norm(data = filepath,
+                                     name = namelist,
+                                     date = datelist)
+                tsar_data <<- na.omit(tsar_data)
+                output$table <- renderTable({
+                    data.frame(head(tsar_data))
+                })
+                output$Plot_Message <- renderPrint({
+                    cat("Select one of the following graph options and",
+                        "click generate.",
+                        "\nGraphing takes few seconds to load, please wait :)")
+                })
+
+                updateSelectInput(session, "Control",
+                                  label = "Control Condition",
+                                  choices = c("NA", condition_IDs(tsar_data)))
+                updateSelectInput(session, "Control_s",
+                                  label = "Control Condition",
+                                  choices = c(condition_IDs(tsar_data)))
+                updateSelectInput(session, "Selected_condition",
+                                  label = "Select condition: ",
+                                  choices = c(condition_IDs(tsar_data)))
+            }
+        })
 
         observeEvent(input$Color, {
             color_option <<- as.character(input$Color)
@@ -148,20 +252,28 @@ graph_tsar <- function(tsar_data) {
         })
 
         observeEvent(input$Boxplot, {
-            box <- TSA_boxplot(tsar_data,
-                               color_by = color_option,
-                               label_by = label_option,
-                               separate_legend = legend_option,
-                               control_condition = control_option_b)
-            output$Plot <- renderPlot({
-                if (legend_option == FALSE) {
-                    box + theme(text=element_text(size=18))
-                }else {
-                    box[[1]] <- box[[1]] + theme(text=element_text(size=18))
-                    ggarrange(plotlist = box,
-                              font.label = list(size = 20))
-                }
-            })
+            if (length(tsar_data) == 0) {
+                output$Plot_Message <- renderPrint({
+                    cat("No data input: Please upload analysis files to merge",
+                        "or close window \nand call function with data ",
+                        "included as parameter. e.g. graph_tsar(tsar_data)")
+                })
+            } else {
+                box <- TSA_boxplot(tsar_data,
+                                   color_by = color_option,
+                                   label_by = label_option,
+                                   separate_legend = legend_option,
+                                   control_condition = control_option_b)
+                output$Plot <- renderPlot({
+                    if (legend_option == FALSE) {
+                        box + theme(text=element_text(size=18))
+                    }else {
+                        box[[1]] <- box[[1]] + theme(text=element_text(size=18))
+                        ggarrange(plotlist = box,
+                                  font.label = list(size = 20))
+                    }
+                })
+            }
         })
 
         observeEvent(input$y_axis, {
@@ -178,15 +290,23 @@ graph_tsar <- function(tsar_data) {
         })
 
         observeEvent(input$Compareplot, {
-            compare <- tsa_compare_plot(tsar_data,
-                                        y = y_axis_option,
-                                        title_by = title_by_option,
-                                        show_Tm = Show_tm_option,
-                                        control_condition = control_option_s)
+            if (length(tsar_data) == 0) {
+                output$Plot_Message <- renderPrint({
+                    cat("No data input: Please upload analysis files to merge",
+                        "or close window \nand call function with data ",
+                        "included as parameter. e.g. graph_tsar(tsar_data)")
+                })
+            } else {
+                compare <- tsa_compare_plot(tsar_data,
+                                            y = y_axis_option,
+                                            title_by = title_by_option,
+                                            show_Tm = Show_tm_option,
+                                            control_condition = control_option_s)
 
-            output$Plot <- renderPlot({
-                ggarrange(plotlist = compare, common.legend = TRUE)
-            })
+                output$Plot <- renderPlot({
+                    ggarrange(plotlist = compare, common.legend = TRUE)
+                })
+            }
         })
 
         observeEvent(input$Selected_condition, {
@@ -215,23 +335,33 @@ graph_tsar <- function(tsar_data) {
         })
 
         observeEvent(input$curves, {
-            selected_curves <- filter(tsar_data,
-                                      condition_ID == selected_curves)
-            curve_graph <- TSA_wells_plot(selected_curves,
-                                          show_Tm = show_tm_c_option,
-                                          y = y_axis_c_option,
-                                          show_average = average_option,
-                                          smooth = smooth_option,
-                                          Tm_label_nudge = nudge,
-                                          separate_legend = separate_legend_option)
-            output$Plot <- renderPlot({
-                if (separate_legend_option == FALSE) {
-                    curve_graph + theme(text=element_text(size=18))
-                }else {
-                    curve_graph[[1]] <- curve_graph[[1]] + theme(text=element_text(size=18))
-                    ggarrange(plotlist = curve_graph)
-                }
-            })
+            if (length(tsar_data) == 0) {
+                output$Plot_Message <- renderPrint({
+                    cat("No data input: Please upload analysis files to merge",
+                        "or close window \nand call function with data ",
+                        "included as parameter. e.g. graph_tsar(tsar_data)")
+                })
+            } else {
+                selected_curves <- filter(tsar_data,
+                                          condition_ID == selected_curves)
+                curve_graph <- TSA_wells_plot(selected_curves,
+                                              show_Tm = show_tm_c_option,
+                                              y = y_axis_c_option,
+                                              show_average = average_option,
+                                              smooth = smooth_option,
+                                              Tm_label_nudge = nudge,
+                                              separate_legend =
+                                                  separate_legend_option)
+                output$Plot <- renderPlot({
+                    if (separate_legend_option == FALSE) {
+                        curve_graph + theme(text=element_text(size=18))
+                    }else {
+                        curve_graph[[1]] <- curve_graph[[1]] +
+                            theme(text=element_text(size=18))
+                        ggarrange(plotlist = curve_graph)
+                    }
+                })
+            }
         })
 
         observeEvent(input$condition, {
@@ -247,7 +377,8 @@ graph_tsar <- function(tsar_data) {
         })
 
         output$Plot_Message <- renderPrint({
-            cat("Select one of the following graph options and click generate. \nGraphing takes few seconds to load, please wait :)")
+            cat("Select one of the following graph options and click generate.",
+                "\nGraphing takes few seconds to load, please wait :)")
         })
 
         observeEvent(input$stopButton, {

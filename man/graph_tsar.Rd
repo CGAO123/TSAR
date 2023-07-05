@@ -4,7 +4,7 @@
 \alias{graph_tsar}
 \title{Graph tsar_data}
 \usage{
-graph_tsar(tsar_data)
+graph_tsar(tsar_data = data.frame())
 }
 \arguments{
 \item{tsar_data}{tsar data outputted by norm_to_tsar or merge_tsa}

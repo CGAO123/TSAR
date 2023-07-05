@@ -4,36 +4,25 @@
 \alias{merge_norm}
 \title{Merge and format data for sequential applications of graphing functions}
 \usage{
-merge_norm(
-  norm_data1,
-  norm_data2,
-  file_name1,
-  file_name2,
-  exp_date1,
-  exp_date2
-)
+merge_norm(data, name, date)
 }
 \arguments{
-\item{norm_data1}{data frame; normalized data outputted by read_tsar
-following gam_analysis. Input data for experiment replication day 1}
+\item{data}{A character vector specifying the file paths of the data files
+or data frame objects of analysis data set.}
 
-\item{norm_data2}{data frame; normalized data outputted by read_tsar
-following gam_analysis. Input data for experiment replication day 2}
+\item{name}{A character vector specifying the experiment names.}
 
-\item{file_name1}{character string; input file name of experiment day 1
-for data tracing purpose}
-
-\item{file_name2}{character string; input file name of experiment day 2
-for data tracing purpose}
-
-\item{exp_date1}{character string; input date of experiment}
-
-\item{exp_date2}{character string; input date of experiment}
+\item{date}{A character vector specifying the dates.}
 }
 \description{
 This function merges data of experiment replicates across different dates.
   It merges and produces information variables used to group wells of same
   set up.
+}
+\details{
+This function merges and normalizes test data from multiple files.
+  The lengths of the \code{data}, \code{name}, and \code{date} vectors
+  must match, otherwise an error is thrown.
 }
 \seealso{
 Other TSAR Formatting: 
