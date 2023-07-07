@@ -36,11 +36,7 @@ raw_data <- qPCR_data1
 Select data of individual cell for pre-analysis screening. e.g. select well A1
 
 ```{r}
-test <- raw_data %>%
-  filter(Well.Position == "A01") # select data for one well by well ID
-
-#section data by temperature to remove messy area
-#test <- subset(test, test$Temperature>40 & test$Temperature <50) 
+test <- raw_data %>% filter(Well.Position == "A01")
 ```
 
 Run example analysis on one well to screen potential errors and enhancement of model.
@@ -64,26 +60,24 @@ view_model(test)
 Screen all wells for curve shape on raw_data set and sift out corrupted data. This step is not required but may help remove data modeling errors.
 
 ```{r}
-myApp <- weed_raw(raw_data, checkrange= c("A","C","1","12"))
-#shiny::runApp(myApp)
-
-t_data <- remove_raw(raw_data, 
-                     removelist = c('C04','B04','C03','C10','B11','C11','C02',
-                                    'C12','C01','B06','C07','C09','C08','B05',
-                                    'B07','C06','B12','C05','B08','B02','B01',
-                                    'B03','B09','B10'))
-
-t_data <- remove_raw(t_data, removerange = c("D","H","1","12"))
-screen(t_data)
+myApp <- weed_raw(raw_data, checkrange = c("A", "C", "1", "12"))
+```
+```{r, eval = FALSE}
+shiny::runApp(myApp)
+```
+```{r}
+raw_data <- remove_raw(raw_data, removerange = c("B", "H", "1", "12"))
+screen(raw_data)
 ```
 
 ## 4. 96-well Analysis Application
 
-TSAR package excels in mass analysis by propagating identical protocols to all 96 wells.
+TSAR package excels in mass analysis by propagating identical protocols to all 96 wells. `smoothed = T` infers current data is smoothed and no separate modeling is needed. If modeling is needed, input argument as `smoothed = F`.
 
 ```{r, echo = FALSE}
-#smoothed = T infers current data is smoothed and no separate gam modeling is needed. If modeling needed, input argument as smoothed = F
-x <- gam_analysis(t_data, smoothed = T, fluo = 5, selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+x <- gam_analysis(raw_data, smoothed = TRUE, fluo = 5, 
+                  selections = c("Well.Position", "Temperature", 
+                                 "Fluorescence", "Normalized"))
 x <- na.omit(x)
 ```
 
@@ -109,7 +103,9 @@ For downstream analysis, data need to be mapped towards specific ligand and comp
 
 ```{r, echo = FALSE}
 #join protein and ligand information 
-norm_data <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x, code = 2), type = "by_template")
+norm_data <- join_well_info(file_path = NULL, 
+                            file=Well_Information, 
+                            read_tsar(x, code = 2), type = "by_template")
 norm_data <- na.omit(norm_data)
 head(norm_data)
 tail(norm_data)
@@ -126,18 +122,21 @@ Repeat step 2 through 6 on replicate data set. A five step function call will co
 ```{r}
 raw_data_rep <- qPCR_data2
 
-#remove blank wells and weed out corrupted curves
-raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"))
-myApp <- weed_raw(raw_data_rep) 
-
-#shiny::runApp(myApp)
+raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B", "H", "1", "12"))
+```
+```{r, eval = FALSE}
+myApp <- weed_raw(raw_data_rep)
+shiny::runApp(myApp)
+```
+```{r}
 raw_data_rep <- remove_raw(raw_data_rep, removelist = 'A12')
 screen(raw_data_rep)
 
-
-analysis_rep <- gam_analysis(raw_data_rep , smoothed = T)
+analysis_rep <- gam_analysis(raw_data_rep , smoothed = TRUE)
 output_rep <- read_tsar(analysis_rep, code = 2)
-norm_data_rep <- join_well_info(file_path = NULL, file=Well_Information, output_rep, type = "by_template")
+norm_data_rep <- join_well_info(file_path = NULL, 
+                                file = Well_Information, 
+                                output_rep, type = "by_template")
 norm_data_rep <- na.omit(norm_data_rep)
 
 ```
@@ -183,6 +182,6 @@ tsa_compare_plot(conclusion,
 
 If data correction is needed, select by condition or well IDs to view curves and estimated Tm values. Assess the validity of analysis and edit with caution.
 ```{r Data Correction}
-error <- conclusion %>% filter(condition_ID == 'CA FL_PyxINE HCl')
+error <- conclusion %>% filter(condition_ID == "CA FL_PyxINE HCl")
 TSA_wells_plot(error, separate_legend = FALSE)
 ```

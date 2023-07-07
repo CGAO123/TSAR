@@ -6,6 +6,7 @@
 #'
 #' @import shiny
 #' @import ggplot2
+#' @importFrom shinyjs toggle hidden
 #' @importFrom ggpubr ggarrange
 #'
 #' @export
@@ -25,21 +26,30 @@
 #' graph_tsar(tsar_data)
 #'
 #'
-graph_tsar <- function(tsar_data = data.frame()) {
+graph_tsar <- function(
+        tsar_data = data.frame()) {
 
     ui <- fluidPage(
         useShinyjs(),  # Enable shinyjs
-        actionButton("toggleButton", "Upload and Merge Data"),
+
+        actionButton("toggleButton",
+                     "Upload and Merge Data"),
         shinyjs::hidden(
             div(
                 id = "myPanel",
-                h3("This is a hidden panel"),
-                h3("Merge Data across Replicate Trials"),
-                fileInput("file", label = "Upload All Analysis Files",
-                          multiple = TRUE),
-                tableOutput("table"),
+                h5("I'm a toggle button! Click me again to hide :)"),
+                h3("Merge Replicate Trials"),
+                fluidRow(
+                    column(width = 6,
+                            fileInput("file",
+                                      label = "Upload All Analysis Files",
+                                      multiple = TRUE)),
+                    column(width = 6,
+                           actionButton("generate", "Merge and Save Data"))
+                ),
+                div(style = "font-size: 11px;",
+                    tableOutput("table")),
                 uiOutput("date_boxes"),
-                actionButton("generate","Merge Data"),
                 actionButton("save_dates", "Save Dates"),
                 verbatimTextOutput("output")
             )
@@ -75,12 +85,12 @@ graph_tsar <- function(tsar_data = data.frame()) {
                                choices = c("Fluorescence", "RFU"),
                                selected = "RFU")),
             column(width = 2,
-                   selectInput("Show_tm", label = "Show Tm:",
+                   selectInput("show_tm", label = "Show Tm:",
                                choices = c(TRUE, FALSE))),
             column(width = 2,
                    selectInput("title_by", label = "Title by:",
                                choices = c("ligand", "protein", "both"),
-                               selected = "both" )),
+                               selected = "both")),
             column(width = 3,
                    selectInput("Control_s", label = "Control Condition",
                                choices = c(condition_IDs(tsar_data)))),
@@ -88,14 +98,15 @@ graph_tsar <- function(tsar_data = data.frame()) {
                 br(),
                 width = 2,
                 actionButton("Compareplot", "Generate Compare Plots")
-            )
+            ),
+            column(width = 2, uiOutput("plot_select"))
         ),
         h3("Condition Plot"),
         fluidRow(
             column(width = 2,
                    selectInput("y_axis_c", label = "Graph y as: ",
                                choices = c("Fluorescence", "RFU"),
-                               selected = "RFU" )),
+                               selected = "RFU")),
             column(width = 2,
                    selectInput("show_tm_c", label = "Show Tm: ",
                                choices = c(TRUE, FALSE))),
@@ -132,18 +143,19 @@ graph_tsar <- function(tsar_data = data.frame()) {
         verbatimTextOutput("Condition_ID"),
         verbatimTextOutput("Well_ID"),
         br(),
-        actionButton("stopButton", "Close Window"),
-
+        actionButton("stopButton", "Close Window")
     )
 
-    server <- function(input, output, session) {
+    server <- function(
+        input, output, session) {
+
         color_option <- "Protein"
         label_option <- "Ligand"
         legend_option <- FALSE
         control_option_b <- NA
         control_option_s <- NA
         y_axis_option <- "RFU"
-        Show_tm_option <- TRUE
+        show_tm_option <- TRUE
         title_by_option <- "both"
         selected_curves <- c()
         y_axis_c_option <- "RFU"
@@ -154,7 +166,7 @@ graph_tsar <- function(tsar_data = data.frame()) {
         filepath <- c()
         namelist <- c()
         datelist <- c()
-        options(shiny.maxRequestSize=30*1024^2)
+        options(shiny.maxRequestSize = 30 * 1024 ^ 2)
         dated <- FALSE
 
         observeEvent(input$toggleButton, {
@@ -165,49 +177,56 @@ graph_tsar <- function(tsar_data = data.frame()) {
             filepath <<- input$file$datapath
             namelist <<- input$file$name
             if (length(tsar_data) == 0) {
-                output$Plot_Message <- renderPrint({
-                    cat("No data input: Please upload analysis files to merge",
-                        "or close window \nand call function with data ",
-                        "included as parameter. e.g. graph_tsar(tsar_data)")
-                })
+                showModal(modalDialog(
+                    title = "No data input :(",
+                    "No data input: Please upload analysis files to merge
+                    or close window \nand call function with data
+                    included as parameter. e.g. graph_tsar(tsar_data)"
+                ))
             }
         })
 
         observeEvent(input$file, {
             output$date_boxes <- renderUI({
                 date_boxes <- lapply(namelist, function(i) {
-                    dateInput(inputId = paste0("Date for file", i),
-                              label = paste0("Date for file", i))
+                    dateInput(inputId = paste0("Date for file ", i),
+                              label = paste0("Date for file ", i))
                 })
                 do.call(tagList, date_boxes)
             })
         })
+
         observeEvent(input$save_dates, {
             # Save the input values of the date boxes as a list of strings
             saved_dates <- sapply(namelist, function(i) {
-                as.character(input[[paste0("Date for file", i)]])
+                as.character(input[[paste0("Date for file ", i)]])
             })
             # Print the saved dates
             datelist <<- saved_dates
-            if (length(datelist) > 0){
+            if (length(datelist) > 0) {
+                showModal(modalDialog(
+                    title = "Dates saved",
+                    "Confirm in the textbox below if saved dates are
+                    correct and proceede to merging data."
+                ))
                 output$output <- renderPrint({
-                    cat("Dates saved! Confirm if correct and proceede to merging data.
-                  ")
                     saved_dates
                 })
                 dated <<- TRUE
             } else {
-                output$output <- renderPrint({
-                    cat("Please upload analysis files first before setting dates.")
-                })
+                showModal(modalDialog(
+                    title = ":(",
+                    "Please upload analysis files first before setting dates."
+                ))
             }
         })
 
         observeEvent(input$generate, {
             if (dated == FALSE) {
-                output$output <- renderPrint({
-                    "Dates are not saved, please review and save dates of experiment!"
-                })
+                showModal(modalDialog(
+                    title = "Dates are not saved",
+                    "please review and save dates of experiment!"
+                ))
             } else {
                 tsar_data <<- merge_norm(data = filepath,
                                      name = namelist,
@@ -244,7 +263,7 @@ graph_tsar <- function(tsar_data = data.frame()) {
             legend_option <<- as.character(input$Legend)
         })
         observeEvent(input$Control, {
-            if (input$Control == "NA"){
+            if (input$Control == "NA") {
                 control_option_b <<- NA
             } else {
                 control_option_b <<- as.character(input$Control)
@@ -253,11 +272,12 @@ graph_tsar <- function(tsar_data = data.frame()) {
 
         observeEvent(input$Boxplot, {
             if (length(tsar_data) == 0) {
-                output$Plot_Message <- renderPrint({
-                    cat("No data input: Please upload analysis files to merge",
-                        "or close window \nand call function with data ",
-                        "included as parameter. e.g. graph_tsar(tsar_data)")
-                })
+                showModal(modalDialog(
+                    title = "No data input",
+                    "No data input: Please upload analysis files to merge
+                    or close window \nand call function with data
+                    included as parameter. e.g. graph_tsar(tsar_data)"
+                ))
             } else {
                 box <- TSA_boxplot(tsar_data,
                                    color_by = color_option,
@@ -266,9 +286,10 @@ graph_tsar <- function(tsar_data = data.frame()) {
                                    control_condition = control_option_b)
                 output$Plot <- renderPlot({
                     if (legend_option == FALSE) {
-                        box + theme(text=element_text(size=18))
+                        box + theme(text = element_text(size = 18))
                     }else {
-                        box[[1]] <- box[[1]] + theme(text=element_text(size=18))
+                        box[[1]] <- box[[1]] + theme(
+                            text = element_text(size = 18))
                         ggarrange(plotlist = box,
                                   font.label = list(size = 20))
                     }
@@ -279,8 +300,8 @@ graph_tsar <- function(tsar_data = data.frame()) {
         observeEvent(input$y_axis, {
             y_axis_option <<- as.character(input$y_axis)
         })
-        observeEvent(input$Show_tm, {
-            Show_tm_option <<- input$Show_tm
+        observeEvent(input$show_tm, {
+            show_tm_option <<- input$show_tm
         })
         observeEvent(input$title_by, {
             title_by_option <<- as.character(input$title_by)
@@ -291,20 +312,36 @@ graph_tsar <- function(tsar_data = data.frame()) {
 
         observeEvent(input$Compareplot, {
             if (length(tsar_data) == 0) {
-                output$Plot_Message <- renderPrint({
-                    cat("No data input: Please upload analysis files to merge",
-                        "or close window \nand call function with data ",
-                        "included as parameter. e.g. graph_tsar(tsar_data)")
-                })
+                showModal(modalDialog(
+                    title = "No data input",
+                    "No data input: Please upload analysis files to merge
+                    or close window \nand call function with data
+                    included as parameter. e.g. graph_tsar(tsar_data)"
+                ))
             } else {
-                compare <- tsa_compare_plot(tsar_data,
+                compare <<- tsa_compare_plot(tsar_data,
                                             y = y_axis_option,
                                             title_by = title_by_option,
-                                            show_Tm = Show_tm_option,
-                                            control_condition = control_option_s)
+                                            show_Tm = show_tm_option,
+                                            control_condition =
+                                                control_option_s)
 
                 output$Plot <- renderPlot({
                     ggarrange(plotlist = compare, common.legend = TRUE)
+                })
+                output$plot_select <- renderUI({
+                    selectInput("plot_selected",
+                                label = "View Only:",
+                                choices = c("Select Option..", names(compare)))
+                })
+            }
+        })
+
+        observeEvent(input$plot_selected,{
+            plot_selected_option <<- input$plot_selected
+            if (plot_selected_option != "Select Option..") {
+                output$Plot <- renderPlot({
+                    compare[[plot_selected_option]]
                 })
             }
         })
@@ -328,19 +365,17 @@ graph_tsar <- function(tsar_data = data.frame()) {
             separate_legend_option <<- input$separate_legend
         })
         observeEvent(input$num, {
-            output$value <- renderPrint({
-                input$num
-            })
             nudge <<- input$num
         })
 
         observeEvent(input$curves, {
             if (length(tsar_data) == 0) {
-                output$Plot_Message <- renderPrint({
-                    cat("No data input: Please upload analysis files to merge",
-                        "or close window \nand call function with data ",
-                        "included as parameter. e.g. graph_tsar(tsar_data)")
-                })
+                showModal(modalDialog(
+                    title = "No data input",
+                    "No data input: Please upload analysis files to merge
+                    or close window \nand call function with data
+                    included as parameter. e.g. graph_tsar(tsar_data)"
+                ))
             } else {
                 selected_curves <- filter(tsar_data,
                                           condition_ID == selected_curves)
@@ -354,10 +389,10 @@ graph_tsar <- function(tsar_data = data.frame()) {
                                                   separate_legend_option)
                 output$Plot <- renderPlot({
                     if (separate_legend_option == FALSE) {
-                        curve_graph + theme(text=element_text(size=18))
+                        curve_graph + theme(text = element_text(size = 18))
                     }else {
                         curve_graph[[1]] <- curve_graph[[1]] +
-                            theme(text=element_text(size=18))
+                            theme(text = element_text(size = 18))
                         ggarrange(plotlist = curve_graph)
                     }
                 })

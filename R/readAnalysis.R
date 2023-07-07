@@ -129,7 +129,7 @@ read_analysis <- function(
         analysis$`Tm B` <- as.numeric(analysis$`Tm B`)
 
     } else {
-        error("File type not .csv or .txt")
+        stop("File type not .csv or .txt")
         }
     if (type == "boltzmann") {
         col_names <-

@@ -57,7 +57,7 @@ join_well_info <- function(
         #input by excel template
     }else if (type == "by_template") {
         #read file, specify column as texts
-        if (!is.null(file)) {
+        if (!is.null(file) && length(file) != 0) {
             well_info_table <- file
         } else {
             well_info_table <- readxl:: read_excel(file_path,
