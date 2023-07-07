@@ -8,7 +8,7 @@
 #' download_file()
 #' }
 #' @export
-download_template <- function(){
+download_template <- function() {
     download.file(Well_Information_Template, method = "auto")
 
 }

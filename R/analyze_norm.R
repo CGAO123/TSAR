@@ -39,7 +39,6 @@ analyze_norm <- function(raw_data) {
             column(width = 6,
                    h3("Fit Model"),
                    plotOutput("Plot"))),
-        verbatimTextOutput("test"),
         h3("Test fit"),
         fluidRow(
             column(width = 2,
@@ -84,35 +83,37 @@ analyze_norm <- function(raw_data) {
             column(
                 br(),
                 width = 4,
-                actionButton("analyze", "Analyze all 96 Wells")
+                actionButton("analyze", "Analyze all Wells")
             )),
         h3("Input Well Conditions"),
         fluidRow(
-            column(width=4,
+            column(width = 3,
                    fileInput("excelFile", "Upload Well Information Template")),
-            column(width=3, br(),
+            column(width = 3, br(),
                    actionButton("previewBtn", "Preview Condition Setup")),
-            column(width=2, br(),
+            column(width = 1, br(),
                    actionButton("hideBtn", "Hide")),
-            column(width=2, br(),
+            column(width = 2, br(),
+                   actionButton("saveBtn", "Save Changes")),
+            column(width = 1, br(),
                    actionButton("join", "Set Conditions")),
         ),
         div(
             style = "font-size: 11px;",
-            tableOutput("excelTable")
+            rHandsontableOutput("excelTable")
         ),
         h3("Save Data Locally"),
         fluidRow(
-            column(width=5,
+            column(width = 5,
                    radioButtons("radio", label = "Choose dataset",
                                 choices = list("Only Tm" = 0,
                                                "Fluorescence and Model" = 1,
                                                "Both" = 2),
                                 inline = TRUE,
                                 selected = 2)),
-            column(width=2,
+            column(width = 2,
                    radioButtons("file_type", label = "file type: ",
-                                choices = list("txt","csv"),
+                                choices = list("txt", "csv"),
                                 inline = TRUE,
                                 selected = "csv")),
             column(width = 3,
@@ -147,10 +148,8 @@ analyze_norm <- function(raw_data) {
         fit_option <- FALSE
         smooth_option <- TRUE
         y_col_option_a <- 5
-        selection_option <- c("Well.Position",
-                              "Temperature",
-                              "Fluorescence",
-                              "Normalized")
+        selection_option <- c("Well.Position", "Temperature",
+                              "Fluorescence", "Normalized")
         analysis <- c()
         write_option <- 2
         file_type_option <- "txt"
@@ -161,6 +160,7 @@ analyze_norm <- function(raw_data) {
         imported <- FALSE
         withCondition_option <- TRUE
         output_data <- c()
+        well_info <- data.frame()
 
         output$table <- renderDataTable({
             data.frame(raw_data)
@@ -184,7 +184,7 @@ analyze_norm <- function(raw_data) {
             gg <- view_model(test)
             output$Plot <- renderPlot({
                 gg + theme(aspect.ratio = 0.7, legend.position = "bottom") +
-                    guides(color=guide_legend(nrow=2, byrow=TRUE))
+                    guides(color = guide_legend(nrow = 2, byrow = TRUE))
             })
         })
 
@@ -207,6 +207,7 @@ analyze_norm <- function(raw_data) {
 
         shiny::observeEvent(input$analyze, {
             analysis <<- gam_analysis(raw_data,
+                                      fluo = y_col_option_a,
                                       keep = keep_option,
                                       fit = fit_option,
                                       smoothed = smooth_option,
@@ -214,16 +215,17 @@ analyze_norm <- function(raw_data) {
                                                      "Normalized")
             )
             output$table <- renderDataTable({
-                data.frame(read_tsar(analysis, code=2))
+                data.frame(read_tsar(analysis, code = 2))
             }, options = list(pageLength = 7))
             output$table_title <- renderText({
                 "Analyzed Data: norm_data"
             })
             analyzed_done <<- TRUE
-            output$test <- renderPrint({
-                cat("Analysis is complete.",
-                "Proceede to saving data before closing window.")
-            })
+            showModal(modalDialog(
+                title = "Analysis is complete",
+                "Proceede to inputting conditions and saving data
+                before closing window."
+            ))
             output_data <<- read_tsar(analysis, code = write_option)
         })
 
@@ -236,7 +238,7 @@ analyze_norm <- function(raw_data) {
             withCondition_option <<- input$withCondition
             if (imported == TRUE && withCondition_option == TRUE) {
                 output_data <<- join_well_info(file_path = inFile$datapath,
-                                               file = NULL,
+                                               file = well_info,
                                                analysis_file =
                                                    read_tsar(analysis,
                                                         code = write_option),
@@ -252,44 +254,45 @@ analyze_norm <- function(raw_data) {
 
         shiny::observeEvent(input$write, {
             if (analyzed_done == FALSE) {
-                output$test <- renderPrint({
-                    cat("Analysis is incomplete.",
-                        "Please analyze all data before saving.")
-                })
+                showModal(modalDialog(
+                    title = "Analysis is Incomplete!",
+                    "Please analyze all data before saving."
+                ))
             } else {
                 write_tsar(output_data,
                            name = name_option,
                            file = file_type_option)
-                output$test <- renderPrint({
-                    cat("Successfully Saved.",
-                        "Check your working directory for data file.")
-                })
+                showModal(modalDialog(
+                    title = "Successfully Saved",
+                    "Check your working directory for data file."
+                ))
             }
         })
         shiny::observeEvent(input$preview, {
             if (analyzed_done == FALSE) {
-                output$test <- renderPrint({
-                    cat("Anlysis is incomplete.",
-                        "Please analyze all data before saving.")
-                })
+                showModal(modalDialog(
+                    title = "Analysis is Incomplete!",
+                    "Please analyze all data before saving."
+                ))
             } else {
-                if (imported == FALSE && withCondition_option == TRUE){
-                    output$test <- renderPrint({
-                        cat("Conditions are not specified.",
-                            "Consider input information first",
-                            "or set 'With Conditions' as fasle.")
-                    })
+                if (imported == FALSE && withCondition_option == TRUE) {
+                    showModal(modalDialog(
+                        title = "Conditions are not specified!",
+                        "Please input condition information first
+                        or set 'With Conditions' as fasle."
+                    ))
                 }else {
-                    output$test <- renderPrint({
-                        cat("If you are saving data for tsar_graphing",
-                            "functions, make sure to save all fluorescence",
-                            "data \n(i.e. 'both') to output compare plots and",
-                            "conditions plot.")
-                    })
+                    showModal(modalDialog(
+                        title = "Hint :)",
+                        "If you are saving data for tsar_graphing
+                        functions, make sure to save all fluorescence
+                        data (i.e. 'both') to output compare plots and
+                        conditions plot."
+                    ))
                     if (imported == TRUE && withCondition_option == TRUE) {
                         output_data <<- join_well_info(
                             file_path = inFile$datapath,
-                            file=NULL,
+                            file = well_info,
                             analysis_file = read_tsar(analysis,
                                                       code = write_option),
                                                       type = "by_template")
@@ -318,26 +321,25 @@ analyze_norm <- function(raw_data) {
             if (!is.null(inFile)) {
                 read.xlsx(inFile$datapath, sheet = 1)
             }
+
         })
         shiny::observeEvent(input$join, {
             if ((imported == FALSE) || (analyzed_done == FALSE)) {
                 if (analyzed_done == FALSE) {
-                    output$test <- renderPrint({
-                        cat("Analysis is incomplete.",
-                            "Please analyze all data before merging.")
-                    })
+                    showModal(modalDialog(
+                        title = "Analysis is Incomplete!",
+                        "Please analyze all data before saving."
+                    ))
                 } else {
-                    output$test <- renderPrint({
-                        cat("Conditions are not specified.",
-                            "Please upload condition excel file using template."
-                            ,"\n(if file is uploaded and error persists, try",
-                            "clicking preview and hide button few times",
-                            "before setting conditions.")
-                    })
+                    showModal(modalDialog(
+                        title = "Conditions are not specified!",
+                        "Please input condition information first
+                        or set 'With Conditions' as fasle."
+                    ))
                 }
             } else {
                 joined <<- join_well_info(file_path = inFile$datapath,
-                                          file=NULL,
+                                          file = well_info,
                                           analysis_file =
                                               read_tsar(analysis,
                                                         code = write_option),
@@ -345,27 +347,34 @@ analyze_norm <- function(raw_data) {
                 output$table <- renderDataTable({
                     data.frame(joined)
                 }, options = list(pageLength = 7))
-                output$test <- renderPrint({
-                    cat("Conditions are specified. Proceede to following steps.")
-                })
+                showModal(modalDialog(
+                    title = "Conditions Saved",
+                    "Proceede to preview output and save data."
+                ))
                 output$table_title <- renderText({
                     "Complete Data: tsar_data"
                 })
             }
         })
-
         shiny::observeEvent(input$previewBtn, {
-            output$excelTable <- renderTable({
-                head(data(), 9)
+            output$excelTable <- renderRHandsontable({
+                if (!is.null(data())) {
+                    rhandsontable(data.frame(head(data(), 9)))
+                }
             })
         })
-
         shiny::observeEvent(input$hideBtn, {
-            output$excelTable <- renderTable({
+            output$excelTable <- renderRHandsontable({
                 NULL
             })
         })
-
+        shiny::observeEvent(input$saveBtn, {
+            well_info <<- hot_to_r(input$excelTable)
+            showModal(modalDialog(
+                title = "Success",
+                "Changes saved successfully."
+            ))
+        })
 
         shiny::observeEvent(input$stopButton, {
             stopApp()

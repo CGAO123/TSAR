@@ -43,18 +43,18 @@ weed_raw <- function(raw_data,
             plotlyOutput("distPlot"),
             verbatimTextOutput("info"),
             fluidRow(
-                column(width=3,
+                column(width = 3,
                        actionButton("myButton", "Copy Selected Wells")),
-                column(width=4,
+                column(width = 4,
                        actionButton("removeCall",
                                     "Copy Selected in Full Function Call")),
             ),
             verbatimTextOutput("copiedMessage"),
             br(),
             fluidRow(
-                column(width=2,
+                column(width = 2,
                        actionButton("removeButton", "Remove Data")),
-                column(width=2,
+                column(width = 2,
                        actionButton("viewRemovedButton", "View Selected"))
             ),
             verbatimTextOutput("removedMessage"),
@@ -117,10 +117,10 @@ weed_raw <- function(raw_data,
                     jsonlite::toJSON(tobecopied)
                 )
                 shinyjs::runjs(jscode)
-                output$copiedMessage <- renderPrint({
-                    cat("Successfully Copied: ",
-                        "Review using screen() and remove data with caution.")
-                })
+                showModal(modalDialog(
+                    title = "Successfully Copied",
+                    "Review using screen() and remove data with caution."
+                ))
             })
 
             shiny::observeEvent(input$removeCall, {
@@ -142,21 +142,22 @@ weed_raw <- function(raw_data,
                     jsonlite::toJSON(tobecopied)
                 )
                 shinyjs::runjs(jscode)
-                output$copiedMessage <- renderPrint({
-                    cat("Successfully Copied: ",
-                        "Paste function call to script and run directly to",
-                        "remove selected wells.")
-                })
+                showModal(modalDialog(
+                    title = "Successfully Copied",
+                    "Paste function call to script and run directly to
+                    remove selected wells."
+                ))
             })
 
             # Remove selected data
             shiny::observeEvent(input$removeButton, {
                 raw_data <<- remove_raw(raw_data,
                                        removelist = clicked_points_legend_text)
-                output$removedMessage <- renderPrint({
-                    cat("Successfully Removed: ",
-                "Review new data with screen() in console or within window.")
-                })
+                showModal(modalDialog(
+                    title = "Successfully Removed",
+                    "Review new data with screen() in console or
+                    click 'Refresh Screening' to view change within window."
+                ))
             })
 
             # Remove selected data
@@ -167,19 +168,12 @@ weed_raw <- function(raw_data,
                                   checklist = checklist)
                     plotly::ggplotly(gg1, source = "Plot1")
                 })
-                output$refreshedMessage <- renderPrint({
-                    cat("Successfully Refreshed: ",
-                        "All edits to dataframe are temporary. ",
-                        "Copy wells and call function remove_raw() in console ",
-                        "or script to store change permanently")
-
-                })
-                output$removedMessage <- renderPrint({
-                    message(NULL)
-                })
-                output$copiedMessage <- renderPrint({
-                    message(NULL)
-                })
+                showModal(modalDialog(
+                    title = "Successfully Refreshed",
+                    "All edits to dataframe are temporary.
+                    Copy wells and call function remove_raw( ) in console
+                    or script to store change permanently"
+                ))
                 output$info <- renderPrint({
                     cat("Selected Curve: ", unique(clicked_points$legend_text))
                 })
@@ -192,21 +186,12 @@ weed_raw <- function(raw_data,
                                       unique(clicked_points$legend_text))
                     plotly::ggplotly(gg1, source = "Plot1")
                 })
-                output$viewRemovedMessage <- renderPrint({
-                    cat("Viewing Selected Curves Only: ",
-                        "Click remove if selections are correct. Else refresh",
-                        "screening to select more or close-reopen window",
-                        "to reselect.")
-                })
-                output$removedMessage <- renderPrint({
-                    message(NULL)
-                })
-                output$copiedMessage <- renderPrint({
-                    message(NULL)
-                })
-                output$refreshedMessage <- renderPrint({
-                    message(NULL)
-                })
+                showModal(modalDialog(
+                    title = "Viewing Selected Curves Only",
+                    "Click remove if selections are correct. Else refresh
+                    screening to select more or close-reopen
+                    window to reselect."
+                ))
                 output$info <- renderPrint({
                     cat("Selected Curve: ", unique(clicked_points$legend_text))
                 })

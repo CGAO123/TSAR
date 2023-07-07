@@ -28,6 +28,9 @@ merge_norm <- function(
     if (length(data) != length(name) || length(date) != length(name)) {
         stop("Data, name, and date counts do not match.")
     }
+    if (length(data) == 0) {
+        stop("No data input, please check parameter input.")
+    }
 
     tsar_data <- c()
     dataset <- c()

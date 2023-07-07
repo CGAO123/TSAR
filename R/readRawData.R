@@ -125,7 +125,7 @@ read_raw_data <- function(
         #--- Generate well_ID to match w/ analysis file
         raw_data$well_ID <- paste0(raw_data$Well.Position, "_", file_name)
     } else {
-        error("File type not .csv or .txt")
+        stop("File type not .csv or .txt")
         }
 
     return(raw_data)

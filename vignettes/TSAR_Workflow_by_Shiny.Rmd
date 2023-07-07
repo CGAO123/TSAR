@@ -1,8 +1,8 @@
 ---
-title: "TSAR_Workflow_by_Shiny"
+title: "TSAR Workflow by Shiny"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{TSAR_Workflow_by_Shiny}
+  %\VignetteIndexEntry{TSAR Workflow by Shiny}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,7 +26,7 @@ Load data and remove blank wells by specifying a range of wells with `removerang
 
 ```{r, eval = FALSE}
 data("qPCR_data1")
-qPCR_data1<-remove_raw(qPCR_data1, removerange = c("B","H","1","12"))
+qPCR_data1 <- remove_raw(qPCR_data1, removerange = c("B", "H", "1", "12"))
 weed_raw(qPCR_data1)
 ```
 

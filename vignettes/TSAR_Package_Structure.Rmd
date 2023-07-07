@@ -35,7 +35,11 @@ TSAR segregates data structure into three tiers:
 -   `norm_data`, pre-processed and normalized data
 -   `tsar_data`, analyzed with ready for graphs
 
-Users may access TSAR workflow from either `raw_data` or `norm_data` as long as data achieves proper qualities.
+Users may access TSAR workflow from either `raw_data` or `norm_data` as long as data achieves proper qualities. Functions corresponding each tier are wrapped in shiny application. All analysis and visualization can be achieved within user-interactive window, also open-able in local browser.
+
+- `weed_raw()`; input: raw; output: data without blank wells and corrupted curves
+- `analyze_norm()`; input: raw or output of weed_raw; output: analyzed data with conditions specified
+- `graph_tsar()`; input: tsar_data or output of analyze_norm; output: graphs
 
 #2. From `raw_data` to `norm_data`
 
@@ -65,11 +69,11 @@ screen(raw_data) + theme(aspect.ratio = 0.7,
                          legend.text = element_text(size = 4), 
                          legend.key.size = unit(0.1, "cm"),
                          legend.title = element_text(size = 6)) +
-                    guides(color=guide_legend(nrow=4, byrow=TRUE)) 
+                    guides(color = guide_legend(nrow = 4, byrow = TRUE)) 
 raw_data <- remove_raw(raw_data, removerange = c("C","H","1","12"))
 ```
 
-Both functions above are wrapped inside an interactive window through function`weed_raw()`. It is implemented through r Shiny application where users can select curves using cursor and remove selected curves easily.
+Both functions above are wrapped inside an interactive window through function`weed_raw()`. It is implemented through r Shiny application where users can select curves using cursor and remove selected curves easily. Refer to separate vignette, `"TSAR Workflow by Shiny"`, and readme.md file for more documentation.
 
 ```{r, eval=FALSE}
 weed_raw(raw_data)
@@ -78,9 +82,9 @@ weed_raw(raw_data)
 Running the window, we can spot that curve at A12 has an abnormally high initial fluorescence and should be removed for data accuracy. We can make sure of correct selection through `View Selected` button and remove using `Remove Data` button. Beware that all data edits are made inside the interactive window. To translate the change permanently downstream, click `Copy Selected` and paste information to `remove_raw()`. To avoid error, close window proper through `Close Window` instead of the cross mark on top left corner.
 
 ```{r}
-raw_data <- remove_raw(raw_data, 
-                       removelist = c('B04','B11','B09','B05','B10','B03',
-                                      'B02','B01','B08','B12','B07','B06'))
+raw_data <- remove_raw(raw_data, removelist = 
+                           c("B04", "B11", "B09", "B05", "B10", "B03", 
+                             "B02", "B01", "B08", "B12", "B07", "B06"))
 ```
 
 ##2.2 Data Analysis
@@ -109,7 +113,7 @@ test <- normalize(test)
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 test <- model_fit(test, model = gammodel)
 view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
-                    guides(color=guide_legend(nrow=2, byrow=TRUE)) 
+                    guides(color = guide_legend(nrow = 2, byrow = TRUE)) 
 tm_est(test)
 ```
 
@@ -122,7 +126,7 @@ All analysis necessary if formatted in function `gam_analysis()`. Parameters are
 
 ```{r}
 x <- gam_analysis(raw_data, 
-                  smoothed = T, 
+                  smoothed = TRUE, 
                   fluo = 5, 
                   selections = c("Well.Position", "Temperature", 
                                  "Fluorescence", "Normalized"))
@@ -145,10 +149,11 @@ write_tsar(output, name = "vitamin_analysis", file = "csv")
 To streamline to the following graphic analysis, make sure `code = 2` to maintain all necessary data.
 
 ```{r message=FALSE}
-norm_data <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x, code = 2), type = "by_template")
+norm_data <- join_well_info(file_path = NULL, file=Well_Information, 
+                            read_tsar(x, code = 2), type = "by_template")
 ```
 
-All of the function above in chapter 2 are wrapped together in a shiny application named `analyze_norm()`. Refer to separate vignette, "Interactive Usage", and readme.md file for more documentation.
+All of the function above in chapter 2 are wrapped together in a shiny application named `analyze_norm()`. Refer to separate vignette, `"TSAR Workflow by Shiny"`, and readme.md file for more documentation.
 
 ```{r, eval=FALSE}
 analyze_norm(raw_data)
@@ -165,15 +170,17 @@ Use `merge_norm()` to merge all norm_data and specify original data file name an
 ```{r message=FALSE}
 #analyze replicate data 
 raw_data_rep <- qPCR_data2
-raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B","H","1","12"), 
+raw_data_rep <- remove_raw(raw_data_rep, removerange = c("B", "H", "1", "12"), 
                                          removelist = c("A12"))
-analysis_rep <- gam_analysis(raw_data_rep , smoothed = T)
-norm_data_rep <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(analysis_rep, code = 2), type = "by_template")
+analysis_rep <- gam_analysis(raw_data_rep, smoothed = TRUE)
+norm_data_rep <- join_well_info(file_path = NULL, file = Well_Information, 
+                                read_tsar(analysis_rep, code = 2), 
+                                type = "by_template")
 
 #merge data
 tsar_data <- merge_norm(data = list(norm_data, norm_data_rep), 
-                        name = c("Vitamin_RawData_Thermal Shift_02_162.eds.csv", 
-                                "Vitamin_RawData_Thermal Shift_02_168.eds.csv"), 
+                        name = c("Vitamin_RawData_Thermal Shift_02_162.eds.csv",
+                                "Vitamin_RawData_Thermal Shift_02_168.eds.csv"),
                         date = c("20230203", "20230209"))
 ```
 
@@ -197,7 +204,7 @@ well_IDs(tsar_data)
 TSA_proteins(tsar_data)
 TSA_ligands(tsar_data)
 
-conclusion <- tsar_data%>%
+conclusion <- tsar_data %>%
   filter(condition_ID != "NA_NA") %>%
   filter(condition_ID != "CA FL_Riboflavin")
 ```
@@ -230,11 +237,11 @@ tsa_compare_plot(conclusion,
 Users may also graph by condition IDs or well IDs using function `TSA_wells_plot()`.
 
 ```{r}
-ABA_Cond <- conclusion %>% filter(condition_ID == 'CA FL_4-ABA')
+ABA_Cond <- conclusion %>% filter(condition_ID == "CA FL_4-ABA")
 TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```
 
-All of the above functions are also wrapped in an interactive window call through `graph_tsar()`. Simply call function on merged tsar_data and access all graphing features in one window. Refer to separate vignette, "Interactive Usage", and readme.md file for more documentation.
+All of the above functions are also wrapped in an interactive window call through `graph_tsar()`. Simply call function on merged tsar_data and access all graphing features in one window. Refer to separate vignette, `"TSAR Workflow by Shiny"`, and readme.md file for more documentation.
 
 ```{r, eval=FALSE}
 graph_tsar(tsar_data)
