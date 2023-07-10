@@ -38,7 +38,7 @@ knitr::include_graphics("images/weed_raw.png")
 
 ## Data Analysis
 
-Analyze data by calling function `analyze_norm()` and follow the workflow from top to bottom. Preview data table for changes occurring at each step and refer to graph to view fit of model. Always refer to the message bar below table and graph for hints and error references. A success message will also be prompted after each successful run of step.
+Analyze data by calling function `analyze_norm()` and follow the workflow from top to bottom. Preview data table for changes occurring at each step and refer to graph to view fit of model on each well. Always refer to the message for hints and error references. A success message will also be prompted after each successful run of step.
 
 Remember to save analysis output locally by clicking `Save File`. Always preview data before saving to ensure data contains all necessary information.
 
@@ -46,31 +46,51 @@ Remember to save analysis output locally by clicking `Save File`. Always preview
 analyze_norm(qPCR_data1)
 ```
 
-The top left panel output a preview of current data set. The right panel allows user to view the fit of model and Tm estimation by individual wells of selection. Once confirming correct data input and modeling effects, click `Analyze all 96 Wells` to propagate model and analysis onto the rest of data. A preview of analyzed data will also be shown on the left panel once analysis is complete.
+The top left panel output a preview of current data set. The right panel allows user to view the fit of model and Tm estimation by individual wells of selection. Once confirming correct data input and modeling effects,
 
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/analyze_norm.png")
 ```
 
-Upload well information by excel template and preview to confirm if information is correct. Click `Set Conditions` to connect all data to the conditions. A success message should be prompted in the message bar. Lastly, to save all analysis locally, click `Save File` after previewing output. p.s. make to select `both` under `Choose dataset` if intending to use `graph_tsar()` or other graphing tools within the package.
+Click `Analyze all Wells` to propagate model and analysis onto the rest of data. A preview of analyzed data will also be modeling and analyzing all 96 Wells will take between 30 to 50 seconds. If no modeling are needed, given data are smooth enough, analysis of all 96 wells should be completed under 5 seconds. p.s. actual time length many subject to change under different conditions
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/analyze_norm1.png")
+knitr::include_graphics("images/analyze_norm12.png")
+```
+
+Upload well information by excel template and preview to confirm if information is correct. Use `View Upload` to preview uploaded information and directly edit inside the window. User may also choose `Manual Input` to put in all condition information by Well. Make sure to hit `Save Changes` after editing and click `Set Conditions` to link all data to the conditions. A success message should be prompted.
 
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/analyze_norm2.png")
+knitr::include_graphics("images/analyze_norm3.png")
 ```
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/analyze_norm4.png")
+```
+
+Lastly, to save all analysis locally, click `Save File` after previewing output. p.s. make to select `both` under `Choose dataset` if intending to use `graph_tsar()` or other graphing tools within the package.
 
 ## Data Visualization
 
 Use function `graph_tsar()` to start a Shiny application for graphing options. Run `na.omit()` on data if error occurs. Three graphing options are allowed, boxplot of Tm, compare plots, and conditions plot.
- 
+
 Function takes optional data parameter. If analysis file is already imported in the environment, call function as `graph_tsar(tsar_data)`. Else, user may use the merge data panel to upload and merge data of all test trials. Simply call `graph_tsar()` and click `Upload and Merge Data` button to reveal the panel to merge data.
+
 ```{r, eval = FALSE}
 graph_tsar()
 ```
 
-```{r, out.width = "400px", echo = FALSE}
-knitr::include_graphics("images/analyze_norm_0.png")
-```
+Upload is limited to 30MB in size, but not count size. After upload, user will be prompted corresponding numbers of input boxes to specify date of each experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview of tsar_data will be prompted. For a full list of well_ID and conditions_ID, refer to the helper buttons at the bottom of page.
 
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/graph_tsar_01.png")
+knitr::include_graphics("images/graph_tsar_02.png")
+knitr::include_graphics("images/graph_tsar_03.png")
+knitr::include_graphics("images/graph_tsar_04.png")
+knitr::include_graphics("images/graph_tsar5.png")
+```
 
 Top panel outputs all plots, selected desired graphing features below and click generate to output graphs. p.s. Graphing compare plots and selected curves are takes longer than boxplot, please give it few seconds to load.
 
@@ -80,7 +100,15 @@ knitr::include_graphics("images/graph_tsar.png")
 
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/graph_tsar2.png")
-knitr::include_graphics("images/graph_tsar3.png")
 ```
 
-\
+Generating compare plots will output all plausible comparisons by control. To any specific one, a drop list `View Only:` will be prompted below the botton `Generate Compare Plots`. Select by condition_ID to zoom in on graphs.
+
+```{r echo=FALSE, out.width="400px"}
+knitr::include_graphics("images/graph_tsar_31.png")
+knitr::include_graphics("images/graph_tsar_32.png")
+```
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/graph_tsar3.png")
+```

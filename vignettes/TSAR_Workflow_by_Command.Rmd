@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Install package using devtools. Usage of dplyr and ggplot2 along with TSAR package is recommended for enhanced analysis.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(TSAR)
 library(dplyr)
 library(ggplot2)
@@ -104,7 +104,7 @@ For downstream analysis, data need to be mapped towards specific ligand and comp
 ```{r, echo = FALSE}
 #join protein and ligand information 
 norm_data <- join_well_info(file_path = NULL, 
-                            file=Well_Information, 
+                            file = Well_Information, 
                             read_tsar(x, code = 2), type = "by_template")
 norm_data <- na.omit(norm_data)
 head(norm_data)
@@ -129,10 +129,10 @@ myApp <- weed_raw(raw_data_rep)
 shiny::runApp(myApp)
 ```
 ```{r}
-raw_data_rep <- remove_raw(raw_data_rep, removelist = 'A12')
+raw_data_rep <- remove_raw(raw_data_rep, removelist = "A12")
 screen(raw_data_rep)
 
-analysis_rep <- gam_analysis(raw_data_rep , smoothed = TRUE)
+analysis_rep <- gam_analysis(raw_data_rep, smoothed = TRUE)
 output_rep <- read_tsar(analysis_rep, code = 2)
 norm_data_rep <- join_well_info(file_path = NULL, 
                                 file = Well_Information, 
@@ -160,10 +160,11 @@ Use condition_IDs() and well_IDs() to select or remove condition to visualize. V
 ```{r}
 condition_IDs(tsar_data)
 well_IDs(tsar_data)
-conclusion <- tsar_data%>%
+conclusion <- tsar_data %>%
   filter(condition_ID != "NA_NA") %>%
   filter(condition_ID != "CA FL_Riboflavin")
-TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand", separate_legend = FALSE)
+TSA_boxplot(conclusion, color_by = "Protein", label_by = "Ligand",
+            separate_legend = FALSE)
 ```
 
 ## 9. TSA Curve Visualization
