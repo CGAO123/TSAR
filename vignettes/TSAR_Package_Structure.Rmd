@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-knitr::opts_chunk$set(warning = FALSE)
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 library(TSAR)
 library(dplyr)
 library(ggplot2)
@@ -66,11 +65,11 @@ If no wells are specified, `screen()` will default to screening every well and `
 ```{r, out.width = "400px"}
 screen(raw_data) + theme(aspect.ratio = 0.7,
                          legend.position = "bottom",
-                         legend.text = element_text(size = 4), 
+                         legend.text = element_text(size = 4),
                          legend.key.size = unit(0.1, "cm"),
                          legend.title = element_text(size = 6)) +
                     guides(color = guide_legend(nrow = 4, byrow = TRUE)) 
-raw_data <- remove_raw(raw_data, removerange = c("C","H","1","12"))
+raw_data <- remove_raw(raw_data, removerange = c("C", "H", "1", "12"))
 ```
 
 Both functions above are wrapped inside an interactive window through function`weed_raw()`. It is implemented through r Shiny application where users can select curves using cursor and remove selected curves easily. Refer to separate vignette, `"TSAR Workflow by Shiny"`, and readme.md file for more documentation.
@@ -107,7 +106,7 @@ Refer to these following functions:
 
 -   `tm_est()`
 
-```{r}
+```{r, out.width = "400px"}
 test <- filter(raw_data, raw_data$Well.Position == "A01")
 test <- normalize(test) 
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
@@ -139,7 +138,8 @@ Data summary offers an exit point from the workflow if no further graphic output
 To associate ligand and protein conditions with each individual well, call function `join_well_info()`. One may specify using the template excel or separate csv file containing a table of three variables, "Well", "Protein", and "Ligand".
 
 ```{r message=FALSE}
-output <- join_well_info(file_path = NULL, file=Well_Information, read_tsar(x, code = 0), type = "by_template")
+output <- join_well_info(file_path = NULL, file = Well_Information, 
+                         read_tsar(x, code = 0), type = "by_template")
 ```
 
 ```{r, eval = FALSE}
@@ -149,7 +149,7 @@ write_tsar(output, name = "vitamin_analysis", file = "csv")
 To streamline to the following graphic analysis, make sure `code = 2` to maintain all necessary data.
 
 ```{r message=FALSE}
-norm_data <- join_well_info(file_path = NULL, file=Well_Information, 
+norm_data <- join_well_info(file_path = NULL, file = Well_Information, 
                             read_tsar(x, code = 2), type = "by_template")
 ```
 
@@ -215,7 +215,7 @@ conclusion <- tsar_data %>%
 
 Use `TSA_boxplot()` to generate comparison boxplot graphs. Stylistics choices include coloring by protein or ligand, and legend separation. Function returns ggplot object, thus further stylistic changes are allowed.
 
-```{r}
+```{r, out.width = "400px"}
 TSA_boxplot(conclusion, color_by = "Protein", 
             label_by = "Ligand", separate_legend = TRUE)
 ```

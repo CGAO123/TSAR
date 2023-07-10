@@ -4,9 +4,12 @@
 #'   interface. Function wraps together all functions with in TSA_analysis
 #'   family and read_write_analysis family.
 #'
-#' @import openxlsx
+#' @importFrom openxlsx read.xlsx
 #' @import shiny
-
+#' @import rhandsontable
+#' @import dplyr
+#' @import ggplot2
+#'
 #' @export
 #'
 #' @param raw_data The raw data for analysis.
@@ -26,7 +29,20 @@ analyze_norm <- function(raw_data) {
               font-weight: 500;
             }
           "))),
+        tags$style(
+            HTML(
+                "
+              .sticky-panel {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background-color: white;
+              }
+              "
+            )
+        ),
         fluidRow(
+            class = "sticky-panel",
             column(width = 6,
                    br(),
                    div(
@@ -88,11 +104,13 @@ analyze_norm <- function(raw_data) {
         h3("Input Well Conditions"),
         fluidRow(
             column(width = 3,
-                   fileInput("excelFile", "Upload Well Information Template")),
-            column(width = 3, br(),
-                   actionButton("previewBtn", "Preview Condition Setup")),
+                   fileInput("excelFile", "Upload Well Information.xlsx")),
+            column(width = 2, br(),
+                   actionButton("previewBtn", "View Upload")),
             column(width = 1, br(),
                    actionButton("hideBtn", "Hide")),
+            column(width = 2, br(),
+                   actionButton("blank", "Manual Input")),
             column(width = 2, br(),
                    actionButton("saveBtn", "Save Changes")),
             column(width = 1, br(),
@@ -161,6 +179,7 @@ analyze_norm <- function(raw_data) {
         withCondition_option <- TRUE
         output_data <- c()
         well_info <- data.frame()
+        inFile <- NULL
 
         output$table <- renderDataTable({
             data.frame(raw_data)
@@ -177,7 +196,7 @@ analyze_norm <- function(raw_data) {
         })
 
         shiny::observeEvent(input$model_fit, {
-            test <- filter(raw_data, Well.Position == well_option)
+            test <- filter(raw_data, raw_data$Well.Position == well_option)
             test <- normalize(test, fluo = y_col_option)
             model <- model_gam(test, x = test$Temperature, y = test$Normalized)
             test <- model_fit(test, model = model)
@@ -321,8 +340,13 @@ analyze_norm <- function(raw_data) {
             if (!is.null(inFile)) {
                 read.xlsx(inFile$datapath, sheet = 1)
             }
-
         })
+        shiny::observeEvent(input$blank, {
+            output$excelTable <- renderRHandsontable({
+                rhandsontable(data.frame(head(Well_Information_Template,9)))
+            })
+        })
+
         shiny::observeEvent(input$join, {
             if ((imported == FALSE) || (analyzed_done == FALSE)) {
                 if (analyzed_done == FALSE) {
@@ -369,6 +393,7 @@ analyze_norm <- function(raw_data) {
             })
         })
         shiny::observeEvent(input$saveBtn, {
+            imported <<- TRUE
             well_info <<- hot_to_r(input$excelTable)
             showModal(modalDialog(
                 title = "Success",

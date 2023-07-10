@@ -31,7 +31,18 @@ graph_tsar <- function(
 
     ui <- fluidPage(
         useShinyjs(),  # Enable shinyjs
-
+        tags$style(
+            HTML(
+                        "
+              .sticky-panel {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background-color: white;
+              }
+              "
+            )
+        ),
         actionButton("toggleButton",
                      "Upload and Merge Data"),
         shinyjs::hidden(
@@ -55,7 +66,9 @@ graph_tsar <- function(
             )
         ),
         br(),
-        plotOutput("Plot"),
+        div(class = "sticky-panel",
+            plotOutput("Plot")
+            ),
         verbatimTextOutput("Plot_Message"),
         h3("Boxplot"),
         fluidRow(
@@ -168,6 +181,9 @@ graph_tsar <- function(
         datelist <- c()
         options(shiny.maxRequestSize = 30 * 1024 ^ 2)
         dated <- FALSE
+        compare <- NULL
+        separate_legend_option <- FALSE
+        plot_selected_option <- NULL
 
         observeEvent(input$toggleButton, {
             shinyjs::toggle(id = "myPanel")
@@ -378,7 +394,7 @@ graph_tsar <- function(
                 ))
             } else {
                 selected_curves <- filter(tsar_data,
-                                          condition_ID == selected_curves)
+                                          tsar_data$condition_ID == selected_curves)
                 curve_graph <- TSA_wells_plot(selected_curves,
                                               show_Tm = show_tm_c_option,
                                               y = y_axis_c_option,
