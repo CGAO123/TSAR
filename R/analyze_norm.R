@@ -41,6 +41,8 @@ analyze_norm <- function(raw_data) {
               "
             )
         ),
+        checkboxInput("dialogueToggle",
+                      "Turn Off All Hint and Messaged", value = FALSE),
         fluidRow(
             class = "sticky-panel",
             column(width = 6,
@@ -106,7 +108,7 @@ analyze_norm <- function(raw_data) {
             column(width = 3,
                    fileInput("excelFile", "Upload Well Information.xlsx")),
             column(width = 2, br(),
-                   actionButton("previewBtn", "View Upload")),
+                   actionButton("previewBtn", "Preview")),
             column(width = 1, br(),
                    actionButton("hideBtn", "Hide")),
             column(width = 2, br(),
@@ -180,6 +182,11 @@ analyze_norm <- function(raw_data) {
         output_data <- c()
         well_info <- data.frame()
         inFile <- NULL
+        showModalFlag <- FALSE
+
+        shiny:: observeEvent(input$dialogueToggle, {
+            showModalFlag <<- input$dialogueToggle
+        })
 
         output$table <- renderDataTable({
             data.frame(raw_data)
@@ -240,11 +247,13 @@ analyze_norm <- function(raw_data) {
                 "Analyzed Data: norm_data"
             })
             analyzed_done <<- TRUE
-            showModal(modalDialog(
-                title = "Analysis is complete",
-                "Proceede to inputting conditions and saving data
-                before closing window."
-            ))
+            if (!showModalFlag) {
+                showModal(modalDialog(
+                    title = "Analysis is complete",
+                    "Proceede to inputting conditions and saving data
+                    before closing window."
+                ))
+            }
             output_data <<- read_tsar(analysis, code = write_option)
         })
 
@@ -273,41 +282,51 @@ analyze_norm <- function(raw_data) {
 
         shiny::observeEvent(input$write, {
             if (analyzed_done == FALSE) {
-                showModal(modalDialog(
-                    title = "Analysis is Incomplete!",
-                    "Please analyze all data before saving."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Analysis is Incomplete!",
+                        "Please analyze all data before saving."
+                    ))
+                }
             } else {
                 write_tsar(output_data,
                            name = name_option,
                            file = file_type_option)
-                showModal(modalDialog(
-                    title = "Successfully Saved",
-                    "Check your working directory for data file."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Successfully Saved",
+                        "Check your working directory for data file."
+                    ))
+                }
             }
         })
         shiny::observeEvent(input$preview, {
             if (analyzed_done == FALSE) {
-                showModal(modalDialog(
-                    title = "Analysis is Incomplete!",
-                    "Please analyze all data before saving."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Analysis is Incomplete!",
+                        "Please analyze all data before saving."
+                    ))
+                }
             } else {
                 if (imported == FALSE && withCondition_option == TRUE) {
-                    showModal(modalDialog(
-                        title = "Conditions are not specified!",
-                        "Please input condition information first
-                        or set 'With Conditions' as fasle."
-                    ))
+                    if (!showModalFlag) {
+                        showModal(modalDialog(
+                            title = "Conditions are not specified!",
+                            "Please input condition information first
+                            or set 'With Conditions' as fasle."
+                        ))
+                    }
                 }else {
-                    showModal(modalDialog(
-                        title = "Hint :)",
-                        "If you are saving data for tsar_graphing
-                        functions, make sure to save all fluorescence
-                        data (i.e. 'both') to output compare plots and
-                        conditions plot."
-                    ))
+                    if (!showModalFlag) {
+                        showModal(modalDialog(
+                            title = "Hint :)",
+                            "If you are saving data for tsar_graphing
+                            functions, make sure to save all fluorescence
+                            data (i.e. 'both') to output compare plots and
+                            conditions plot."
+                        ))
+                    }
                     if (imported == TRUE && withCondition_option == TRUE) {
                         output_data <<- join_well_info(
                             file_path = inFile$datapath,
@@ -349,17 +368,19 @@ analyze_norm <- function(raw_data) {
 
         shiny::observeEvent(input$join, {
             if ((imported == FALSE) || (analyzed_done == FALSE)) {
-                if (analyzed_done == FALSE) {
+                if ((analyzed_done == FALSE) && (!showModalFlag)) {
                     showModal(modalDialog(
                         title = "Analysis is Incomplete!",
                         "Please analyze all data before saving."
                     ))
                 } else {
-                    showModal(modalDialog(
-                        title = "Conditions are not specified!",
-                        "Please input condition information first
-                        or set 'With Conditions' as fasle."
-                    ))
+                    if (!showModalFlag) {
+                        showModal(modalDialog(
+                            title = "Conditions are not specified!",
+                            "Please input condition information first
+                            or set 'With Conditions' as fasle."
+                        ))
+                    }
                 }
             } else {
                 joined <<- join_well_info(file_path = inFile$datapath,
@@ -371,10 +392,12 @@ analyze_norm <- function(raw_data) {
                 output$table <- renderDataTable({
                     data.frame(joined)
                 }, options = list(pageLength = 7))
-                showModal(modalDialog(
-                    title = "Conditions Saved",
-                    "Proceede to preview output and save data."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Conditions Saved",
+                        "Proceede to preview output and save data."
+                    ))
+                }
                 output$table_title <- renderText({
                     "Complete Data: tsar_data"
                 })
@@ -382,7 +405,10 @@ analyze_norm <- function(raw_data) {
         })
         shiny::observeEvent(input$previewBtn, {
             output$excelTable <- renderRHandsontable({
-                if (!is.null(data())) {
+                if (length(well_info) != 0) {
+                    rhandsontable(data.frame(head(well_info, 9)))
+                }
+                else if (!is.null(data())) {
                     rhandsontable(data.frame(head(data(), 9)))
                 }
             })
@@ -395,10 +421,12 @@ analyze_norm <- function(raw_data) {
         shiny::observeEvent(input$saveBtn, {
             imported <<- TRUE
             well_info <<- hot_to_r(input$excelTable)
-            showModal(modalDialog(
-                title = "Success",
-                "Changes saved successfully."
-            ))
+            if (!showModalFlag) {
+                showModal(modalDialog(
+                    title = "Success",
+                    "Changes saved successfully."
+                ))
+            }
         })
 
         shiny::observeEvent(input$stopButton, {

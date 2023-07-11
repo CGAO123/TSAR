@@ -36,12 +36,42 @@ weed_raw <- function(raw_data,
 
         ui <- fluidPage(
             useShinyjs(),
+            checkboxInput("dialogueToggle",
+                          "Turn Off All Hint and Messaged", value = FALSE),
+
             fluidRow(
                 column(width = 4, h3("Current Raw Dataset: ")),
                 h3(dataName <- deparse(substitute(raw_data)))
             ),
             plotlyOutput("distPlot"),
             verbatimTextOutput("info"),
+            actionButton("toggle_button", "Remove By Grid"),
+            div(id = "grid-panel",
+                style = "display: none;",
+                fluidRow(
+                    column(width = 12,
+                           div(id = "grid-container",
+                               style = "display: grid; grid-template-columns:
+                                repeat(12, 50px); grid-gap: 0px; grid-",
+                               lapply(1:96, function(i) {
+                                   row <- ceiling(i / 12)
+                                   col <- i %% 12
+                                   if (col == 0) col <- 12
+                                   col_label <- sprintf("%02d", col)
+                                   div(id = paste0("cell-", i),
+                                       class = "grid-cell",
+                                       style = "background-color: white;
+                                       height: 30px; cursor: pointer;
+                                       display: flex; align-items:
+                                       center; justify-content: center;
+                                       font-size: 12px;",
+                                       paste0(LETTERS[row], col_label))
+                               })
+                           )
+                    )
+                )
+            ),
+            verbatimTextOutput("highlighted_list"),
             fluidRow(
                 column(width = 3,
                        actionButton("myButton", "Copy Selected Wells")),
@@ -49,7 +79,6 @@ weed_raw <- function(raw_data,
                        actionButton("removeCall",
                                     "Copy Selected in Full Function Call")),
             ),
-            verbatimTextOutput("copiedMessage"),
             br(),
             fluidRow(
                 column(width = 2,
@@ -57,11 +86,8 @@ weed_raw <- function(raw_data,
                 column(width = 2,
                        actionButton("viewRemovedButton", "View Selected"))
             ),
-            verbatimTextOutput("removedMessage"),
-            verbatimTextOutput("viewRemovedMessage"),
             br(),
             actionButton("refreshButton", "Refresh Screening"),
-            verbatimTextOutput("refreshedMessage"),
             br(),
             actionButton("stopButton", "Close Window"),
 
@@ -70,8 +96,81 @@ weed_raw <- function(raw_data,
         )
         server <- function(input, output) {
             clicked_points_legend_text <- NULL
-
             clicked_points <- reactiveValues(data = NULL, legend_text = NULL)
+            showModalFlag <- FALSE
+            highlighted_cells <- reactiveVal(NULL)
+            unhighlighted_cells <- reactiveVal(NULL)
+
+            shiny::observe({
+                for (i in 1:96) {
+                    shinyjs::runjs(
+                        sprintf("$('#cell-%d').click(function() {
+                if ($(this).css('background-color') === 'rgb(255, 255, 255)') {
+                $(this).css('background-color', 'lightgrey');
+                var cellId = $(this).attr('id');
+                var label = $(this).text().trim();
+                Shiny.onInputChange('highlighted_cells',
+                {id: cellId, label: label});
+                } else {
+                $(this).css('background-color', 'white');
+                var cellId = $(this).attr('id');
+                var label = $(this).text().trim();
+                Shiny.onInputChange('highlighted_cells', null);
+                Shiny.onInputChange('unhighlighted_cells',
+                {id: cellId, label: label});
+                }
+                });", i))
+                }
+            })
+
+            shiny::observeEvent(input$unhighlighted_cells, {
+                cell_id <- input$unhighlighted_cells$id
+                cell_label <- input$unhighlighted_cells$label
+                if (cell_label %in% unlist(highlighted_cells())) {
+                    current_values <- highlighted_cells()
+                    updated_values <- current_values[current_values
+                                                     != cell_label]
+                    highlighted_cells(updated_values)
+                    output$highlighted_list <- renderPrint({
+                        cat("Selected by Grid: ", highlighted_cells())
+                    })
+                }
+            })
+
+            shiny::observeEvent(input$highlighted_cells, {
+                if (!is.null(input$highlighted_cells)) {
+                    cell_id <- input$highlighted_cells$id
+                    cell_label <- input$highlighted_cells$label
+                    if (!is.null(cell_id)) {
+                        highlighted_cells(c(highlighted_cells(),
+                                            cell_label))
+                        output$highlighted_list <- renderPrint({
+                            cat("Selected by Grid: ", highlighted_cells())
+                        })
+                    }
+                } else {
+                    print('im here')
+                    if (cell_label %in% unlist(highlighted_cells())) {
+                        current_values <- highlighted_cells()
+                        updated_values <- current_values[current_values
+                                                         != cell_label]
+                        highlighted_cells(updated_values)
+                        output$highlighted_list <- renderPrint({
+                            cat("Selected by Grid: ", highlighted_cells())
+                        })
+                    }
+                }
+            })
+
+
+
+            shiny::observeEvent(input$toggle_button, {
+                shinyjs::toggle("grid-panel")
+            })
+
+            shiny::observeEvent(input$dialogueToggle, {
+                showModalFlag <<- input$dialogueToggle
+            })
 
             output$distPlot <- plotly::renderPlotly({
                 gg1 <- TSAR::screen(raw_data,
@@ -103,7 +202,8 @@ weed_raw <- function(raw_data,
             shiny::observeEvent(input$myButton, {
                 clicked_points <- gsub(", ", "','",
                                        toString(unique(
-                                           clicked_points_legend_text)))
+                                           c(clicked_points_legend_text,
+                                             highlighted_cells()))))
                 tobecopied <- paste("'", clicked_points, "'",
                                     sep = "")
                 jscode <- sprintf(
@@ -117,16 +217,19 @@ weed_raw <- function(raw_data,
                     jsonlite::toJSON(tobecopied)
                 )
                 shinyjs::runjs(jscode)
-                showModal(modalDialog(
-                    title = "Successfully Copied",
-                    "Review using screen() and remove data with caution."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Successfully Copied",
+                        "Review using screen() and remove data with caution."
+                    ))
+                }
             })
 
             shiny::observeEvent(input$removeCall, {
                 clicked_points <- gsub(", ", "','",
                                        toString(unique(
-                                           clicked_points_legend_text)))
+                                           c(clicked_points_legend_text,
+                                             highlighted_cells()))))
                 tobecopied <- paste("remove_raw(",
                                     dataName,
                                     ", removelist = c('", clicked_points, "'))",
@@ -142,22 +245,27 @@ weed_raw <- function(raw_data,
                     jsonlite::toJSON(tobecopied)
                 )
                 shinyjs::runjs(jscode)
-                showModal(modalDialog(
-                    title = "Successfully Copied",
-                    "Paste function call to script and run directly to
-                    remove selected wells."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Successfully Copied",
+                        "Paste function call to script and run directly to
+                        remove selected wells."
+                    ))
+                }
             })
 
             # Remove selected data
             shiny::observeEvent(input$removeButton, {
                 raw_data <<- remove_raw(raw_data,
-                                       removelist = clicked_points_legend_text)
-                showModal(modalDialog(
-                    title = "Successfully Removed",
-                    "Review new data with screen() in console or
-                    click 'Refresh Screening' to view change within window."
-                ))
+                                    removelist = c(clicked_points_legend_text,
+                                                   highlighted_cells()))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Successfully Removed",
+                        "Review new data with screen() in console or
+                        click 'Refresh Screening' to view change within window."
+                    ))
+                }
             })
 
             # Remove selected data
@@ -168,12 +276,14 @@ weed_raw <- function(raw_data,
                                   checklist = checklist)
                     plotly::ggplotly(gg1, source = "Plot1")
                 })
-                showModal(modalDialog(
-                    title = "Successfully Refreshed",
-                    "All edits to dataframe are temporary.
-                    Copy wells and call function remove_raw( ) in console
-                    or script to store change permanently"
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Successfully Refreshed",
+                        "All edits to dataframe are temporary.
+                        Copy wells and call function remove_raw( ) in console
+                        or script to store change permanently"
+                    ))
+                }
                 output$info <- renderPrint({
                     cat("Selected Curve: ", unique(clicked_points$legend_text))
                 })
@@ -183,15 +293,18 @@ weed_raw <- function(raw_data,
             shiny::observeEvent(input$viewRemovedButton, {
                 output$distPlot <- plotly::renderPlotly({
                     gg1 <- TSAR::screen(raw_data, checklist =
-                                      unique(clicked_points$legend_text))
+                                      unique(c(clicked_points$legend_text,
+                                               highlighted_cells())))
                     plotly::ggplotly(gg1, source = "Plot1")
                 })
-                showModal(modalDialog(
-                    title = "Viewing Selected Curves Only",
-                    "Click remove if selections are correct. Else refresh
-                    screening to select more or close-reopen
-                    window to reselect."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Viewing Selected Curves Only",
+                        "Click remove if selections are correct. Else refresh
+                        screening to select more or close-reopen
+                        window to reselect."
+                    ))
+                }
                 output$info <- renderPrint({
                     cat("Selected Curve: ", unique(clicked_points$legend_text))
                 })

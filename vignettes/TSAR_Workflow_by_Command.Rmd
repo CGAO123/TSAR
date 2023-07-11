@@ -54,7 +54,8 @@ Output analysis result using ggplot to view normalized data and fitted model. De
 
 ```{r}
 tm_est(test)
-view_model(test)
+view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
+                    guides(color = guide_legend(nrow = 2, byrow = TRUE))
 ```
 
 Screen all wells for curve shape on raw_data set and sift out corrupted data. This step is not required but may help remove data modeling errors.
@@ -67,7 +68,12 @@ shiny::runApp(myApp)
 ```
 ```{r}
 raw_data <- remove_raw(raw_data, removerange = c("B", "H", "1", "12"))
-screen(raw_data)
+screen(raw_data) + theme(aspect.ratio = 0.7,
+                         legend.position = "bottom",
+                         legend.text = element_text(size = 6),
+                         legend.key.size = unit(0.4, "cm"),
+                         legend.title = element_text(size = 8)) +
+                    guides(color = guide_legend(nrow = 2, byrow = TRUE)) 
 ```
 
 ## 4. 96-well Analysis Application
@@ -130,7 +136,12 @@ shiny::runApp(myApp)
 ```
 ```{r}
 raw_data_rep <- remove_raw(raw_data_rep, removelist = "A12")
-screen(raw_data_rep)
+screen(raw_data_rep) + theme(aspect.ratio = 0.7,
+                        legend.position = "bottom",
+                        legend.text = element_text(size = 6),
+                        legend.key.size = unit(0.4, "cm"),
+                        legend.title = element_text(size = 8)) +
+                        guides(color = guide_legend(nrow = 2, byrow = TRUE)) 
 
 analysis_rep <- gam_analysis(raw_data_rep, smoothed = TRUE)
 output_rep <- read_tsar(analysis_rep, code = 2)
