@@ -59,7 +59,8 @@ knitr::include_graphics("images/analyze_norm1.png")
 knitr::include_graphics("images/analyze_norm12.png")
 ```
 
-Upload well information by excel template and preview to confirm if information is correct. Use `View Upload` to preview uploaded information and directly edit inside the window. User may also choose `Manual Input` to put in all condition information by Well. Make sure to hit `Save Changes` after editing and click `Set Conditions` to link all data to the conditions. A success message should be prompted.
+Upload well information by excel template and preview to confirm if information is correct. Use `Preview` to preview uploaded information and directly edit inside the window. User may also choose `Manual Input` to put in all condition information by Well. Make sure to hit `Save Changes` after editing and click `Set Conditions` to link all data to the conditions. A success message should be prompted.
+p.s. manually inputted information will override file upload. If mistakenly saved, please close window and re-run command.
 
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/analyze_norm2.png")

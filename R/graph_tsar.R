@@ -43,6 +43,8 @@ graph_tsar <- function(
               "
             )
         ),
+        checkboxInput("dialogueToggle",
+                      "Turn Off All Hint and Messaged", value = FALSE),
         actionButton("toggleButton",
                      "Upload and Merge Data"),
         shinyjs::hidden(
@@ -184,8 +186,13 @@ graph_tsar <- function(
         compare <- NULL
         separate_legend_option <- FALSE
         plot_selected_option <- NULL
+        showModalFlag <- FALSE
 
-        observeEvent(input$toggleButton, {
+        shiny:: observeEvent(input$dialogueToggle, {
+            showModalFlag <<- input$dialogueToggle
+        })
+
+        shiny:: observeEvent(input$toggleButton, {
             shinyjs::toggle(id = "myPanel")
         })
 
@@ -193,12 +200,14 @@ graph_tsar <- function(
             filepath <<- input$file$datapath
             namelist <<- input$file$name
             if (length(tsar_data) == 0) {
-                showModal(modalDialog(
-                    title = "No data input :(",
-                    "No data input: Please upload analysis files to merge
-                    or close window \nand call function with data
-                    included as parameter. e.g. graph_tsar(tsar_data)"
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "No data input :(",
+                        "No data input: Please upload analysis files to merge
+                        or close window \nand call function with data
+                        included as parameter. e.g. graph_tsar(tsar_data)"
+                    ))
+                }
             }
         })
 
@@ -220,25 +229,29 @@ graph_tsar <- function(
             # Print the saved dates
             datelist <<- saved_dates
             if (length(datelist) > 0) {
-                showModal(modalDialog(
-                    title = "Dates saved",
-                    "Confirm in the textbox below if saved dates are
-                    correct and proceede to merging data."
-                ))
-                output$output <- renderPrint({
-                    saved_dates
-                })
-                dated <<- TRUE
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "Dates saved",
+                        "Confirm in the textbox below if saved dates are
+                        correct and proceede to merging data."
+                    ))
+                    output$output <- renderPrint({
+                        saved_dates
+                    })
+                    dated <<- TRUE
+                }
             } else {
-                showModal(modalDialog(
-                    title = ":(",
-                    "Please upload analysis files first before setting dates."
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = ":(",
+                        "Please upload analysis files first before setting dates."
+                    ))
+                }
             }
         })
 
         observeEvent(input$generate, {
-            if (dated == FALSE) {
+            if ((dated == FALSE) && (!showModalFlag)) {
                 showModal(modalDialog(
                     title = "Dates are not saved",
                     "please review and save dates of experiment!"
@@ -288,12 +301,14 @@ graph_tsar <- function(
 
         observeEvent(input$Boxplot, {
             if (length(tsar_data) == 0) {
-                showModal(modalDialog(
-                    title = "No data input",
-                    "No data input: Please upload analysis files to merge
-                    or close window \nand call function with data
-                    included as parameter. e.g. graph_tsar(tsar_data)"
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "No data input",
+                        "No data input: Please upload analysis files to merge
+                        or close window \nand call function with data
+                        included as parameter. e.g. graph_tsar(tsar_data)"
+                    ))
+                }
             } else {
                 box <- TSA_boxplot(tsar_data,
                                    color_by = color_option,
@@ -328,12 +343,14 @@ graph_tsar <- function(
 
         observeEvent(input$Compareplot, {
             if (length(tsar_data) == 0) {
-                showModal(modalDialog(
-                    title = "No data input",
-                    "No data input: Please upload analysis files to merge
-                    or close window \nand call function with data
-                    included as parameter. e.g. graph_tsar(tsar_data)"
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "No data input",
+                        "No data input: Please upload analysis files to merge
+                        or close window \nand call function with data
+                        included as parameter. e.g. graph_tsar(tsar_data)"
+                    ))
+                }
             } else {
                 compare <<- tsa_compare_plot(tsar_data,
                                             y = y_axis_option,
@@ -386,12 +403,14 @@ graph_tsar <- function(
 
         observeEvent(input$curves, {
             if (length(tsar_data) == 0) {
-                showModal(modalDialog(
-                    title = "No data input",
-                    "No data input: Please upload analysis files to merge
-                    or close window \nand call function with data
-                    included as parameter. e.g. graph_tsar(tsar_data)"
-                ))
+                if (!showModalFlag) {
+                    showModal(modalDialog(
+                        title = "No data input",
+                        "No data input: Please upload analysis files to merge
+                        or close window \nand call function with data
+                        included as parameter. e.g. graph_tsar(tsar_data)"
+                    ))
+                }
             } else {
                 selected_curves <- filter(tsar_data,
                                           tsar_data$condition_ID == selected_curves)
