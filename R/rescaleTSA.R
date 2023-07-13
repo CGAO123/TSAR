@@ -10,9 +10,9 @@
 #' @export
 #'
 
-rescale <- function(x) { #Rescale values between two values.
-    rescaled_v <- (x - min(x)) / (max(x) - min(x))
-    return(rescaled_v)
+rescale <- function(x) { # Rescale values between two values.
+  rescaled_v <- (x - min(x)) / (max(x) - min(x))
+  return(rescaled_v)
 }
 
 
@@ -55,42 +55,41 @@ rescale <- function(x) { #Rescale values between two values.
 normalize_fluorescence <- function(
     tsa_data = tsa_data,
     by = "rescale",
-    control_vect = NA
-) {
-    if ("well_ID" %in% names(tsa_data)) {
-        well_ids <- unique(tsa_data$well_ID)
-        n_well_ids <- length(well_ids)
-    } else {
-        stop("A data frame loaded by read_raw_data() must be supplied")
-    }
-    tsa_data$RFU <- rep(NA, nrow(tsa_data))
+    control_vect = NA) {
+  if ("well_ID" %in% names(tsa_data)) {
+    well_ids <- unique(tsa_data$well_ID)
+    n_well_ids <- length(well_ids)
+  } else {
+    stop("A data frame loaded by read_raw_data() must be supplied")
+  }
+  tsa_data$RFU <- rep(NA, nrow(tsa_data))
 
-    if (by == "rescale") { #Rescale between the min and max
-        for (i in 1:n_well_ids) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                rescale(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
-        }
+  if (by == "rescale") { # Rescale between the min and max
+    for (i in 1:n_well_ids) {
+      tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
+        rescale(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
     }
-    if (by == "max") { #Rescale by max
-        for (i in 1:n_well_ids) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
-                max(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
-        }
+  }
+  if (by == "max") { # Rescale by max
+    for (i in 1:n_well_ids) {
+      tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
+        tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
+          max(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
     }
-    if (by == "min") { #Rescale by min
-        for (i in 1:n_well_ids) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
-                min(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
-        }
+  }
+  if (by == "min") { # Rescale by min
+    for (i in 1:n_well_ids) {
+      tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
+        tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
+          min(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
     }
-    if (by == "control") { #Rescale by user supplied vector
-        for (i in 1:n_well_ids) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
-                control_vect
-        }
+  }
+  if (by == "control") { # Rescale by user supplied vector
+    for (i in 1:n_well_ids) {
+      tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
+        tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
+          control_vect
     }
-    return(tsa_data)
+  }
+  return(tsa_data)
 }

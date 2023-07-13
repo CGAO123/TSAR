@@ -81,31 +81,31 @@
 merge_tsa <- function(
     analysis_file_path,
     raw_data_path,
-    protein = NA, #can filter by protein, as character
-    ligand = NA #can filter by ligand, as character
-) {
-    #--- check the files are uploaded in pairs.
-    n_pairs <- length(analysis_file_path) #needed for loop below
-    if (!n_pairs == length(raw_data_path)) {
-        stop("analysis_file_path and raw_data_path must be equal length")
-    }
+    protein = NA, # can filter by protein, as character
+    ligand = NA # can filter by ligand, as character
+    ) {
+  #--- check the files are uploaded in pairs.
+  n_pairs <- length(analysis_file_path) # needed for loop below
+  if (!n_pairs == length(raw_data_path)) {
+    stop("analysis_file_path and raw_data_path must be equal length")
+  }
 
-    tsa_data <- data.frame() #empty df to loop into
-    for (i in 1:n_pairs) { #Repeat for every pair
-        raw_data_i <- read_raw_data(path = raw_data_path[i]) #Load raw data
-        raw_data_i <- raw_data_i[!names(raw_data_i) %in% c("Well", "Reading")]
-        analysis_i <- read_analysis(path = analysis_file_path[i]) #load analysis
-        #Merge .eds file
-        tsa_data_i <- merge(analysis_i, raw_data_i, by = "well_ID")
-        tsa_data <- rbind(tsa_data, tsa_data_i) #Add .eds to merged files
-    }
+  tsa_data <- data.frame() # empty df to loop into
+  for (i in 1:n_pairs) { # Repeat for every pair
+    raw_data_i <- read_raw_data(path = raw_data_path[i]) # Load raw data
+    raw_data_i <- raw_data_i[!names(raw_data_i) %in% c("Well", "Reading")]
+    analysis_i <- read_analysis(path = analysis_file_path[i]) # load analysis
+    # Merge .eds file
+    tsa_data_i <- merge(analysis_i, raw_data_i, by = "well_ID")
+    tsa_data <- rbind(tsa_data, tsa_data_i) # Add .eds to merged files
+  }
 
-    #--- Filters
-    if (!is.na(protein)) { #Filter by protein
-        tsa_data <- tsa_data[tsa_data$Protein %in% protein, ]
-    }
-    if (!is.na(ligand)) { #Filter by ligand
-        tsa_data <- tsa_data[tsa_data$Ligand %in% ligand, ]
-    }
-    return(tsa_data)
+  #--- Filters
+  if (!is.na(protein)) { # Filter by protein
+    tsa_data <- tsa_data[tsa_data$Protein %in% protein, ]
+  }
+  if (!is.na(ligand)) { # Filter by ligand
+    tsa_data <- tsa_data[tsa_data$Ligand %in% ligand, ]
+  }
+  return(tsa_data)
 }

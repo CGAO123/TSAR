@@ -22,7 +22,7 @@ file output on the working directory where data was read in
 writes output into csv or txt files
 }
 \examples{
-#write.tsar(output_data, name = "2022_03_18_test", file = "txt")
+# write.tsar(output_data, name = "2022_03_18_test", file = "txt")
 
 }
 \seealso{

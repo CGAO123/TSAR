@@ -12,9 +12,13 @@ Authors@R: c(person(c("William", "M."),
 			role = c("aut"))
 		)
 Description: This package automates analysis workflow for TSA qPCR data. 
+	Processing, analyzing, and visualizing data through both shiny 
+	applications and command line exercises. Package aims to simplify 
+	data analysis and offer front to end workflow from raw data to 
+	multiple trial analysis.
 License: LGPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 RoxygenNote: 7.2.3
 Imports: 
     dplyr (>= 1.0.7),
@@ -30,11 +34,14 @@ Imports:
     plotly,
     shinyjs,
     jsonlite,
-    devtools
+    rhandsontable,
+    openxlsx,
+    shinyWidgets
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+biocViews: qPCRWorkflow, Workflow
 DataRaw: data/qPCR_data1.rda
 DataRaw2: data/qPCR_data2.rda
 Depends: 

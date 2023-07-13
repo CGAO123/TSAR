@@ -31,41 +31,54 @@
 normalize <- function(
     raw_data,
     fluo = -1,
-    selected = c("Well.Position",
-                 "Temperature",
-                 "Fluorescence",
-                 "Normalized")) {
-
+    selected = c(
+      "Well.Position",
+      "Temperature",
+      "Fluorescence",
+      "Normalized"
+    )) {
   norm_data <- raw_data %>%
-    #make sure fluorescence and temperature variable is in double type
-    #step to ensure that calculations do not return error
-    transform(Fluorescence =
-                  as.double(gsub(",", "", raw_data$Fluorescence))) %>%
-    transform(Temperature =
-                  as.double(gsub(",", "", raw_data$Temperature))) %>%
+    # make sure fluorescence and temperature variable is in double type
+    # step to ensure that calculations do not return error
+    transform(
+      Fluorescence =
+        as.double(gsub(",", "", raw_data$Fluorescence))
+    ) %>%
+    transform(
+      Temperature =
+        as.double(gsub(",", "", raw_data$Temperature))
+    ) %>%
     transform(Well.Position = paste(
-        substr(raw_data$Well.Position, 1, 1),
-        sprintf("%02s", substr(raw_data$Well.Position, 2,
-                               nchar(raw_data$Well.Position))), sep = ""))
+      substr(raw_data$Well.Position, 1, 1),
+      sprintf("%02s", substr(
+        raw_data$Well.Position, 2,
+        nchar(raw_data$Well.Position)
+      )),
+      sep = ""
+    ))
 
   if (fluo == -1) {
-    #assign min and max
+    # assign min and max
     min_f <- min(norm_data$Fluorescence)
     max_f <- max(norm_data$Fluorescence)
     norm_data <- norm_data %>%
-      #normalize by max and min
-      mutate(Normalized =
-                 (norm_data$Fluorescence - min_f) / (max_f - min_f)) %>%
-      #select only desired variables (e.g. drop raw derivative values)
-      dplyr:: select(selected)
+      # normalize by max and min
+      mutate(
+        Normalized =
+          (norm_data$Fluorescence - min_f) / (max_f - min_f)
+      ) %>%
+      # select only desired variables (e.g. drop raw derivative values)
+      dplyr::select(selected)
   } else {
     norm_data <- norm_data %>%
-      #normalize by max and min
-      mutate(Normalized =
-                 (norm_data[[fluo]] - min(norm_data[[fluo]])) /
-                    (max(norm_data[[fluo]]) - min(norm_data[[fluo]]))) %>%
-      #select only desired variables (e.g. drop raw derivative values)
-      dplyr:: select(selected)
+      # normalize by max and min
+      mutate(
+        Normalized =
+          (norm_data[[fluo]] - min(norm_data[[fluo]])) /
+            (max(norm_data[[fluo]]) - min(norm_data[[fluo]]))
+      ) %>%
+      # select only desired variables (e.g. drop raw derivative values)
+      dplyr::select(selected)
   }
 }
 
@@ -91,9 +104,11 @@ normalize <- function(
 #'
 #' @export
 model_gam <- function(norm_data, x, y) {
-    mgcv::gam(formula = y ~ s(x, bs = "ad"),
-              data = norm_data,
-              method = "GACV.Cp")
+  mgcv::gam(
+    formula = y ~ s(x, bs = "ad"),
+    data = norm_data,
+    method = "GACV.Cp"
+  )
 }
 
 
@@ -119,19 +134,21 @@ model_gam <- function(norm_data, x, y) {
 #' @export
 #'
 model_fit <- function(norm_data, model, smoothed) {
-    if (missing(smoothed)) {
-        norm_data <- norm_data %>%
-        #pull in the fitted values into data frame
-        mutate(fitted = model$fitted.values)
-        #calculate derivative using fitted values
-        norm_data <- mutate(norm_data,
-                            norm_deriv =
-                                c(diff(norm_data$fitted) /
-                                diff(norm_data$Temperature), NA))
-    }else {
-        norm_data <- mutate(norm_data,
-                            norm_deriv =
-                                c(diff(norm_data[, smoothed]) /
-                                diff(norm_data$Temperature), NA))
-    }
+  if (missing(smoothed)) {
+    norm_data <- norm_data %>%
+      # pull in the fitted values into data frame
+      mutate(fitted = model$fitted.values)
+    # calculate derivative using fitted values
+    norm_data <- mutate(norm_data,
+      norm_deriv =
+        c(diff(norm_data$fitted) /
+          diff(norm_data$Temperature), NA)
+    )
+  } else {
+    norm_data <- mutate(norm_data,
+      norm_deriv =
+        c(diff(norm_data[, smoothed]) /
+          diff(norm_data$Temperature), NA)
+    )
+  }
 }

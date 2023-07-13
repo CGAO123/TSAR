@@ -21,8 +21,8 @@ reads previous pipeline output lists and organizes them into separate
   data frames
 }
 \examples{
-#read_tsar(result, code = 0)
-#output_data <- read_tsar(result, code = 2)
+# read_tsar(result, code = 0)
+# output_data <- read_tsar(result, code = 2)
 
 }
 \seealso{

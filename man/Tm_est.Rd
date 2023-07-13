@@ -27,9 +27,9 @@ looks for Tm temperature values by finding the inflection point in the
   locating the maximum first derivative
 }
 \examples{
-#well <- fitted \%>\%
+# well <- fitted \%>\%
 #   filter(Well.Position == "A1")
-#tm_est(A1)
-#tm_est(A1, min = 30, max= 35)
+# tm_est(A1)
+# tm_est(A1, min = 30, max= 35)
 }
 \concept{tsa_analysis}
