@@ -24,18 +24,18 @@
 
 
 Tm_difference <-
-    function(tsa_data,
-             control_condition = "CA-FL_DMSO" #Cond. ID of Tms to compare
-    ) {
-        TM_DF <- TSA_Tms(tsa_data)
+  function(tsa_data,
+           control_condition = "CA-FL_DMSO" # Cond. ID of Tms to compare
+  ) {
+    TM_DF <- TSA_Tms(tsa_data)
 
-        if (!is.na(control_condition)) {
-            if (!control_condition %in% condition_IDs(tsa_data)) {
-                stop("control_condition is not found in tsa_data$condition_ID")
-            }
-            ctrl_avg <- TM_DF$Avg_Tm[TM_DF$condition_ID == control_condition]
-        }
-        TM_DF$delta_Tm <- TM_DF$Avg_Tm - ctrl_avg
-
-        return(TM_DF)
+    if (!is.na(control_condition)) {
+      if (!control_condition %in% condition_IDs(tsa_data)) {
+        stop("control_condition is not found in tsa_data$condition_ID")
+      }
+      ctrl_avg <- TM_DF$Avg_Tm[TM_DF$condition_ID == control_condition]
     }
+    TM_DF$delta_Tm <- TM_DF$Avg_Tm - ctrl_avg
+
+    return(TM_DF)
+  }

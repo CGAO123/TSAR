@@ -23,14 +23,14 @@
 #' @export
 #'
 condition_IDs <- function(
-    analysis_data, #analysis data to determine number of unique conditions
-    n = FALSE #c("T", "F") F = vector, T = number summary
-) {
-    if (n) {
-        return(length(unique(analysis_data$condition_ID)))
-    } else {
-        return(unique(analysis_data$condition_ID))
-    }
+    analysis_data, # analysis data to determine number of unique conditions
+    n = FALSE # c("T", "F") F = vector, T = number summary
+    ) {
+  if (n) {
+    return(length(unique(analysis_data$condition_ID)))
+  } else {
+    return(unique(analysis_data$condition_ID))
+  }
 }
 
 
@@ -63,14 +63,14 @@ condition_IDs <- function(
 #' @export
 
 well_IDs <- function(
-    tsa_data, #tsa data to determine number of unique conditions
-    n = FALSE #c("T", "F") F = List, T = number summary
-) {
-    if (n) {
-        return(length(unique(tsa_data$well_ID)))
-    } else {
-        return(unique(tsa_data$well_ID))
-    }
+    tsa_data, # tsa data to determine number of unique conditions
+    n = FALSE # c("T", "F") F = List, T = number summary
+    ) {
+  if (n) {
+    return(length(unique(tsa_data$well_ID)))
+  } else {
+    return(unique(tsa_data$well_ID))
+  }
 }
 
 #' TSA Proteins
@@ -95,14 +95,14 @@ well_IDs <- function(
 #' @export
 
 TSA_proteins <- function(
-    tsa_data, #tsa data to determine number of unique conditions
-    n = FALSE #c("T", "F") F = List, T = number summary
-) {
-    if (n) {
-        return(length(levels(factor(tsa_data$Protein))))
-    } else {
-        return(levels(factor(tsa_data$Protein)))
-    }
+    tsa_data, # tsa data to determine number of unique conditions
+    n = FALSE # c("T", "F") F = List, T = number summary
+    ) {
+  if (n) {
+    return(length(levels(factor(tsa_data$Protein))))
+  } else {
+    return(levels(factor(tsa_data$Protein)))
+  }
 }
 
 #' TSA Ligands
@@ -125,12 +125,12 @@ TSA_proteins <- function(
 #' @export
 
 TSA_ligands <- function(
-    tsa_data, #tsa data to determine number of unique conditions
-    n = FALSE #c("T", "F") F = List, T = number summary
-) {
-    if (n) {
-        return(length(levels(factor(tsa_data$Ligand))))
-    } else {
-        return(levels(factor(tsa_data$Ligand)))
-    }
+    tsa_data, # tsa data to determine number of unique conditions
+    n = FALSE # c("T", "F") F = List, T = number summary
+    ) {
+  if (n) {
+    return(length(levels(factor(tsa_data$Ligand))))
+  } else {
+    return(levels(factor(tsa_data$Ligand)))
+  }
 }

@@ -29,38 +29,45 @@
 
 TSA_Tms <- function(
     analysis_data,
-    condition_average = TRUE
-) {
-    if (condition_average) { #--- Code to average by condition
-        n_conditions <- condition_IDs(analysis_data, n = TRUE)
-        tm_df <- as.data.frame(matrix(ncol = 0, nrow = n_conditions))
-        for (i in 1:n_conditions) {
-            condition_i <- condition_IDs(analysis_data)[i]
-            analysis_data_i <-
-                analysis_data[analysis_data$condition_ID == condition_i, ]
-            tm_df_i <- dplyr::distinct(analysis_data_i, well_ID, Tm)
-            n_tms_i <- nrow(tm_df_i)
-            avg_tm_i <- mean(tm_df_i$Tm, na.rm = TRUE)
-            sd_tm_i <- sd(tm_df_i$Tm, na.rm = TRUE)
+    condition_average = TRUE) {
+  if (condition_average) { #--- Code to average by condition
+    n_conditions <- condition_IDs(analysis_data, n = TRUE)
+    tm_df <- as.data.frame(matrix(ncol = 0, nrow = n_conditions))
+    for (i in 1:n_conditions) {
+      condition_i <- condition_IDs(analysis_data)[i]
+      analysis_data_i <-
+        analysis_data[analysis_data$condition_ID == condition_i, ]
+      tm_df_i <- dplyr::distinct(analysis_data_i, well_ID, Tm)
+      n_tms_i <- nrow(tm_df_i)
+      avg_tm_i <- mean(tm_df_i$Tm, na.rm = TRUE)
+      sd_tm_i <- sd(tm_df_i$Tm, na.rm = TRUE)
 
 
-            tm_df[i, 1:(n_tms_i + 3)] <-
-                c(condition_i, avg_tm_i, sd_tm_i, tm_df_i$Tm)
-        }
-        #--- Format col names and data type
-        names(tm_df) <- c("condition_ID", "Avg_Tm", "SD_Tm",
-                          paste("Tm_",  (4:ncol(tm_df) - 3)))
-        tm_df[, 2:ncol(tm_df)] <- lapply(tm_df[, 2:ncol(tm_df)], as.numeric)
-        #--- Matching values to get Protein and Ligand into table
-        tm_df$Protein <-
-            analysis_data$Protein[match(tm_df$condition_ID,
-                                        analysis_data$condition_ID)]
-        tm_df$Ligand <-
-            analysis_data$Ligand[match(tm_df$condition_ID,
-                                       analysis_data$condition_ID)]
-    } else { #When only reporting wells, not conditions
-        tm_df <- dplyr::distinct(analysis_data, well_ID, Tm,
-                          condition_ID, Protein, Ligand)
+      tm_df[i, 1:(n_tms_i + 3)] <-
+        c(condition_i, avg_tm_i, sd_tm_i, tm_df_i$Tm)
     }
-    return(tm_df)
+    #--- Format col names and data type
+    names(tm_df) <- c(
+      "condition_ID", "Avg_Tm", "SD_Tm",
+      paste("Tm_", (4:ncol(tm_df) - 3))
+    )
+    tm_df[, 2:ncol(tm_df)] <- lapply(tm_df[, 2:ncol(tm_df)], as.numeric)
+    #--- Matching values to get Protein and Ligand into table
+    tm_df$Protein <-
+      analysis_data$Protein[match(
+        tm_df$condition_ID,
+        analysis_data$condition_ID
+      )]
+    tm_df$Ligand <-
+      analysis_data$Ligand[match(
+        tm_df$condition_ID,
+        analysis_data$condition_ID
+      )]
+  } else { # When only reporting wells, not conditions
+    tm_df <- dplyr::distinct(
+      analysis_data, well_ID, Tm,
+      condition_ID, Protein, Ligand
+    )
+  }
+  return(tm_df)
 }

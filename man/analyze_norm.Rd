@@ -15,7 +15,7 @@ The analyze_norm function allows users to process analysis through an UI
   family and read_write_analysis family.
 }
 \examples{
-#analyze_norm(raw_data)
+# analyze_norm(raw_data)
 
 }
 \seealso{
