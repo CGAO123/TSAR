@@ -9,6 +9,9 @@ analyze_norm(raw_data)
 \arguments{
 \item{raw_data}{The raw data for analysis.}
 }
+\value{
+shiny application
+}
 \description{
 The analyze_norm function allows users to process analysis through an UI
   interface. Function wraps together all functions with in TSA_analysis

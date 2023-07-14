@@ -46,159 +46,159 @@ TSA_wells_plot <- function(
     plot_subtitle = NA,
     smooth = TRUE,
     separate_legend = TRUE) {
-  if (!"well_ID" %in% names(tsa_data) ||
-    !"condition_ID" %in% names(tsa_data)) {
-    stop("tsa_data must be a data frame merged by
+    if (!"well_ID" %in% names(tsa_data) ||
+        !"condition_ID" %in% names(tsa_data)) {
+        stop("tsa_data must be a data frame merged by
              merge_tsa() or merg_norm()")
-  }
+    }
 
 
-  if (y == "Fluorescence") { # When data supplied is not normalized
-    TSA_curve <- ggplot(tsa_data, aes(
-      x = Temperature,
-      y = Fluorescence
-    ))
-    tm_height <- max(tsa_data$Fluorescence) / 4 # y value for geom_label
-    tsa_average_df <- tsa_average(
-      tsa_data = tsa_data, y = "Fluorescence",
-      sd_smooth = smooth
-    )
-  }
-  if (y == "RFU") { # When data supplied is normalized
-    TSA_curve <- ggplot(tsa_data, aes(
-      x = Temperature,
-      y = Normalized
-    ))
-    tm_height <- 0.4 # y value for geom_label
-    tsa_average_df <- tsa_average(
-      tsa_data = tsa_data, y = "RFU",
-      sd_smooth = smooth
-    )
-  }
+    if (y == "Fluorescence") { # When data supplied is not normalized
+        TSA_curve <- ggplot(tsa_data, aes(
+            x = Temperature,
+            y = Fluorescence
+        ))
+        tm_height <- max(tsa_data$Fluorescence) / 4 # y value for geom_label
+        tsa_average_df <- tsa_average(
+            tsa_data = tsa_data, y = "Fluorescence",
+            sd_smooth = smooth
+        )
+    }
+    if (y == "RFU") { # When data supplied is normalized
+        TSA_curve <- ggplot(tsa_data, aes(
+            x = Temperature,
+            y = Normalized
+        ))
+        tm_height <- 0.4 # y value for geom_label
+        tsa_average_df <- tsa_average(
+            tsa_data = tsa_data, y = "RFU",
+            sd_smooth = smooth
+        )
+    }
 
-  if (smooth) { # Adds smoothed lines
-    TSA_curve <- TSA_curve +
-      geom_line(aes(color = well_ID), alpha = 0.95)
-  } else { # add each temp/fluor obs as individ. point
-    TSA_curve <- TSA_curve +
-      geom_point(aes(color = well_ID),
-        alpha = 0.5
-      )
-  }
+    if (smooth) { # Adds smoothed lines
+        TSA_curve <- TSA_curve +
+            geom_line(aes(color = well_ID), alpha = 0.95)
+    } else { # add each temp/fluor obs as individ. point
+        TSA_curve <- TSA_curve +
+            geom_point(aes(color = well_ID),
+                alpha = 0.5
+            )
+    }
 
-  TSA_curve <- TSA_curve + theme_bw()
+    TSA_curve <- TSA_curve + theme_bw()
 
-  if (show_Tm) {
-    avg_tm <- TSA_Tms(tsa_data)$Avg_Tm
-    TSA_curve <- TSA_curve +
-      geom_vline(
-        xintercept = avg_tm,
-        linetype = "dashed",
-        color = "#BC9595"
-      ) +
-      geom_label(
-        label = paste0("Tm=", round(avg_tm, 2), "C", sep = ""),
-        aes(
-          x = avg_tm,
-          y = tm_height
-        ),
-        nudge_x = Tm_label_nudge
-      )
-  }
+    if (show_Tm) {
+        avg_tm <- TSA_Tms(tsa_data)$Avg_Tm
+        TSA_curve <- TSA_curve +
+            geom_vline(
+                xintercept = avg_tm,
+                linetype = "dashed",
+                color = "#BC9595"
+            ) +
+            geom_label(
+                label = paste0("Tm=", round(avg_tm, 2), "C", sep = ""),
+                aes(
+                    x = avg_tm,
+                    y = tm_height
+                ),
+                nudge_x = Tm_label_nudge
+            )
+    }
 
 
-  #-- plot titles
-  if (is.na(plot_title)) { # Auto-generate plot titles if needed
-    if (TSA_proteins(tsa_data = tsa_data, n = TRUE) == 1) {
-      title <- paste0(
-        c(
-          "Thermal Profile of ",
-          TSA_proteins(tsa_data = tsa_data)
-        ),
-        collapse = ""
-      )
+    #-- plot titles
+    if (is.na(plot_title)) { # Auto-generate plot titles if needed
+        if (TSA_proteins(tsa_data = tsa_data, n = TRUE) == 1) {
+            title <- paste0(
+                c(
+                    "Thermal Profile of ",
+                    TSA_proteins(tsa_data = tsa_data)
+                ),
+                collapse = ""
+            )
+        } else {
+            title <- "Thermal Profile"
+        }
     } else {
-      title <- "Thermal Profile"
+        title <- plot_title
     }
-  } else {
-    title <- plot_title
-  }
-  #--- Add titles
-  if (is.na(plot_subtitle)) { # Auto-generate plot titles if needed
-    subtitle <- paste(c("With:", TSA_ligands(tsa_data = tsa_data)),
-      collapse = " "
-    )
-  } else {
-    subtitle <- plot_subtitle
-  }
-  TSA_curve <- TSA_curve + labs(title = title, subtitle = subtitle)
-
-
-  if (separate_legend) { # Sep legend if desired
-    legend_plot <- get_legend(TSA_curve)
-    TSA_curve <- TSA_curve + theme(legend.position = "none")
-    TSA_return <- list(TSA_curve, legend_plot)
-  } else {
-    TSA_return <- NULL
-  }
-
-
-  if (show_average) { # Add avg_line to plot as an aggregate of well data
-
-    if (smooth) { # If settings are smoothed, then use regression lines
-      TSA_curve <- TSA_curve +
-        geom_ribbon(
-          inherit.aes = FALSE,
-          data = tsa_average_df,
-          aes(
-            x = Temperature,
-            ymin = sd_min_smooth,
-            ymax = sd_max_smooth
-          ),
-          alpha = 0.4
+    #--- Add titles
+    if (is.na(plot_subtitle)) { # Auto-generate plot titles if needed
+        subtitle <- paste(c("With:", TSA_ligands(tsa_data = tsa_data)),
+            collapse = " "
         )
-      TSA_curve <- TSA_curve +
-        geom_line(
-          inherit.aes = FALSE,
-          linetype = "dotdash",
-          data = tsa_average_df,
-          aes(
-            x = Temperature,
-            y = avg_smooth
-          )
-        )
-    } else { # If not smoothened, use errors and lines without regression
-      TSA_curve <- TSA_curve +
-        geom_ribbon(
-          inherit.aes = FALSE,
-          data = tsa_average_df,
-          aes(
-            x = Temperature,
-            ymin = sd_min,
-            ymax = sd_max
-          ),
-          alpha = 0.4
-        )
-      TSA_curve <- TSA_curve +
-        geom_line(
-          inherit.aes = FALSE,
-          linetype = "dotdash",
-          data = tsa_average_df,
-          aes(
-            x = Temperature,
-            y = average
-          )
-        )
-    }
-
-    if (!is.null(TSA_return)) {
-      TSA_return[[1]] <- TSA_curve
     } else {
-      TSA_return <- TSA_curve
+        subtitle <- plot_subtitle
     }
-  }
+    TSA_curve <- TSA_curve + labs(title = title, subtitle = subtitle)
 
-  return(TSA_return)
+
+    if (separate_legend) { # Sep legend if desired
+        legend_plot <- get_legend(TSA_curve)
+        TSA_curve <- TSA_curve + theme(legend.position = "none")
+        TSA_return <- list(TSA_curve, legend_plot)
+    } else {
+        TSA_return <- NULL
+    }
+
+
+    if (show_average) { # Add avg_line to plot as an aggregate of well data
+
+        if (smooth) { # If settings are smoothed, then use regression lines
+            TSA_curve <- TSA_curve +
+                geom_ribbon(
+                    inherit.aes = FALSE,
+                    data = tsa_average_df,
+                    aes(
+                        x = Temperature,
+                        ymin = sd_min_smooth,
+                        ymax = sd_max_smooth
+                    ),
+                    alpha = 0.4
+                )
+            TSA_curve <- TSA_curve +
+                geom_line(
+                    inherit.aes = FALSE,
+                    linetype = "dotdash",
+                    data = tsa_average_df,
+                    aes(
+                        x = Temperature,
+                        y = avg_smooth
+                    )
+                )
+        } else { # If not smoothened, use errors and lines without regression
+            TSA_curve <- TSA_curve +
+                geom_ribbon(
+                    inherit.aes = FALSE,
+                    data = tsa_average_df,
+                    aes(
+                        x = Temperature,
+                        ymin = sd_min,
+                        ymax = sd_max
+                    ),
+                    alpha = 0.4
+                )
+            TSA_curve <- TSA_curve +
+                geom_line(
+                    inherit.aes = FALSE,
+                    linetype = "dotdash",
+                    data = tsa_average_df,
+                    aes(
+                        x = Temperature,
+                        y = average
+                    )
+                )
+        }
+
+        if (!is.null(TSA_return)) {
+            TSA_return[[1]] <- TSA_curve
+        } else {
+            TSA_return <- TSA_curve
+        }
+    }
+
+    return(TSA_return)
 }
 
 
@@ -234,106 +234,106 @@ TSA_boxplot <- function(
     label_by = "Ligand", # If not "Ligand" or "Protein", default order is used
     separate_legend = TRUE # Logical
     ) {
-  plot_data <- TSA_Tms(
-    analysis_data = tsa_data,
-    condition_average = FALSE
-  )
-  plot_data <- plot_data[!is.na(plot_data$Tm), ] # Remove conditions with no Tm
+    plot_data <- TSA_Tms(
+        analysis_data = tsa_data,
+        condition_average = FALSE
+    )
+    plot_data <- plot_data[!is.na(plot_data$Tm), ] # Remove conditions with no Tm
 
-  # If changing condition is not specified, calculate which varies more
-  if (!color_by %in% c("Ligand", "Protein")) {
-    n_proteins <- TSA_proteins(plot_data, n = TRUE)
-    n_ligands <- TSA_ligands(plot_data, n = TRUE)
-    if (n_ligands > n_proteins) {
-      color_by <- "Ligand"
-    } else {
-      color_by <- "Protein"
+    # If changing condition is not specified, calculate which varies more
+    if (!color_by %in% c("Ligand", "Protein")) {
+        n_proteins <- TSA_proteins(plot_data, n = TRUE)
+        n_ligands <- TSA_ligands(plot_data, n = TRUE)
+        if (n_ligands > n_proteins) {
+            color_by <- "Ligand"
+        } else {
+            color_by <- "Protein"
+        }
     }
-  }
 
-  if (color_by == "Ligand") {
-    tsa_plot <- ggplot(
-      plot_data,
-      aes(
-        x = condition_ID,
-        y = Tm,
-        color = Ligand
-      )
-    ) +
-      geom_boxplot(alpha = 0.25) +
-      geom_point(shape = 1) +
-      scale_color_discrete(unique(tsa_data$Ligand),
-        name = "Ligand"
-      )
-  }
-  if (color_by == "Protein") {
-    tsa_plot <- ggplot(
-      plot_data,
-      aes(
-        x = condition_ID,
-        y = Tm,
-        color = Protein
-      )
-    ) +
-      geom_boxplot(alpha = 0.25) +
-      geom_point(shape = 1) +
-      scale_color_discrete(unique(tsa_data$Protein),
-        name = "Protein"
-      )
-  }
+    if (color_by == "Ligand") {
+        tsa_plot <- ggplot(
+            plot_data,
+            aes(
+                x = condition_ID,
+                y = Tm,
+                color = Ligand
+            )
+        ) +
+            geom_boxplot(alpha = 0.25) +
+            geom_point(shape = 1) +
+            scale_color_discrete(unique(tsa_data$Ligand),
+                name = "Ligand"
+            )
+    }
+    if (color_by == "Protein") {
+        tsa_plot <- ggplot(
+            plot_data,
+            aes(
+                x = condition_ID,
+                y = Tm,
+                color = Protein
+            )
+        ) +
+            geom_boxplot(alpha = 0.25) +
+            geom_point(shape = 1) +
+            scale_color_discrete(unique(tsa_data$Protein),
+                name = "Protein"
+            )
+    }
 
-  if (label_by == "Ligand") {
-    tsa_plot <- tsa_plot +
-      scale_x_discrete(
-        breaks = plot_data$condition_ID,
-        labels = plot_data$Ligand,
-        name = label_by
-      )
-  }
-  if (label_by == "Protein") {
-    tsa_plot <- tsa_plot +
-      scale_x_discrete(
-        breaks = plot_data$condition_ID,
-        labels = plot_data$Protein,
-        name = label_by
-      )
-  }
+    if (label_by == "Ligand") {
+        tsa_plot <- tsa_plot +
+            scale_x_discrete(
+                breaks = plot_data$condition_ID,
+                labels = plot_data$Ligand,
+                name = label_by
+            )
+    }
+    if (label_by == "Protein") {
+        tsa_plot <- tsa_plot +
+            scale_x_discrete(
+                breaks = plot_data$condition_ID,
+                labels = plot_data$Protein,
+                name = label_by
+            )
+    }
 
 
-  if (!is.na(control_condition)) {
-    if (control_condition %in% condition_IDs(tsa_data)) {
-      ctrl_Tm <-
-        TSA_Tms(analysis_data = tsa_data[tsa_data$condition_ID ==
-          control_condition, ])
-      ctrl_Tm <- ctrl_Tm$Avg_Tm
-      tsa_plot <- tsa_plot +
-        geom_hline(
-          yintercept = ctrl_Tm,
-          color = "grey",
-          linetype = 2,
-          alpha = 0.9
-        )
-    } else {
-      stop("condition_ID assigned to control_condition is not
+    if (!is.na(control_condition)) {
+        if (control_condition %in% condition_IDs(tsa_data)) {
+            ctrl_Tm <-
+                TSA_Tms(analysis_data = tsa_data[tsa_data$condition_ID ==
+                    control_condition, ])
+            ctrl_Tm <- ctrl_Tm$Avg_Tm
+            tsa_plot <- tsa_plot +
+                geom_hline(
+                    yintercept = ctrl_Tm,
+                    color = "grey",
+                    linetype = 2,
+                    alpha = 0.9
+                )
+        } else {
+            stop("condition_ID assigned to control_condition is not
                 found in the TSA data. Use condition_IDs(tsa_data) to get
                  the list of acceptable IDs")
+        }
     }
-  }
 
-  tsa_plot <- tsa_plot +
-    coord_flip() +
-    theme_bw() +
-    labs(y = expression("T"["m"] ~ "(" * degree * "C)"))
+    tsa_plot <- tsa_plot +
+        coord_flip() +
+        theme_bw() +
+        labs(y = expression("T"["m"] ~ "(" * degree * "C)"))
 
-  if (separate_legend) {
-    legend_plot <- get_legend(tsa_plot)
-    tsa_plot <- tsa_plot + theme(legend.position = "none")
-    plot_list <- list(tsa_plot, legend_plot)
-    return(plot_list)
-  } else {
-    tsa_plot <- tsa_plot
-    return(tsa_plot)
-  }
+    if (separate_legend) {
+        legend_plot <- get_legend(tsa_plot)
+        tsa_plot <- tsa_plot + theme(legend.position = "none")
+        plot_list <- list(tsa_plot, legend_plot)
+        return(plot_list)
+    } else {
+        tsa_plot <- tsa_plot
+        return(tsa_plot)
+    }
 }
 
 #' Compare TSA curves to control
@@ -368,158 +368,158 @@ tsa_compare_plot <- function(
     show_Tm = FALSE,
     title_by = "both",
     digits = 1) {
-  if (!"well_ID" %in% names(tsa_data) ||
-    !"condition_ID" %in% names(tsa_data)) {
-    stop("tsa_data must be a data frame merged by merge_tsa()")
-  }
+    if (!"well_ID" %in% names(tsa_data) ||
+        !"condition_ID" %in% names(tsa_data)) {
+        stop("tsa_data must be a data frame merged by merge_tsa()")
+    }
 
-  if (!control_condition %in% condition_IDs(tsa_data)) {
-    stop("control_condition must be a value from tsa_data$condition_ID")
-  }
+    if (!control_condition %in% condition_IDs(tsa_data)) {
+        stop("control_condition must be a value from tsa_data$condition_ID")
+    }
 
-  Tms_df <- TSA_Tms(tsa_data)
-  control_avg <- Tms_df$Avg_Tm[Tms_df$condition_ID == control_condition]
+    Tms_df <- TSA_Tms(tsa_data)
+    control_avg <- Tms_df$Avg_Tm[Tms_df$condition_ID == control_condition]
 
-  control_df <- tsa_data[tsa_data$condition_ID == control_condition, ]
-  control_df <- tsa_average(tsa_data = control_df, y = y)
+    control_df <- tsa_data[tsa_data$condition_ID == control_condition, ]
+    control_df <- tsa_average(tsa_data = control_df, y = y)
 
 
-  control_curve <- ggplot(
-    control_df,
-    aes(x = Temperature, y = avg_smooth)
-  ) +
-    geom_ribbon(
-      aes(
-        x = Temperature,
-        ymin = sd_min_smooth,
-        ymax = sd_max_smooth
-      ),
-      alpha = 0.4,
-      fill = "black"
+    control_curve <- ggplot(
+        control_df,
+        aes(x = Temperature, y = avg_smooth)
     ) +
-    geom_line(
-      linetype = "dotdash",
-      color = "black"
-    )
+        geom_ribbon(
+            aes(
+                x = Temperature,
+                ymin = sd_min_smooth,
+                ymax = sd_max_smooth
+            ),
+            alpha = 0.4,
+            fill = "black"
+        ) +
+        geom_line(
+            linetype = "dotdash",
+            color = "black"
+        )
 
 
-  colfunc <- colorRampPalette(c("red", "blue"))
-  col_vect <- colfunc(condition_IDs(tsa_data, n = TRUE))
+    colfunc <- colorRampPalette(c("red", "blue"))
+    col_vect <- colfunc(condition_IDs(tsa_data, n = TRUE))
 
-  Tm_difference_DF <-
-    Tm_difference(
-      tsa_data = tsa_data,
-      control_condition = control_condition
-    )
+    Tm_difference_DF <-
+        Tm_difference(
+            tsa_data = tsa_data,
+            control_condition = control_condition
+        )
 
 
-  curve_list <- as.list(rep(NA, condition_IDs(tsa_data, n = TRUE)))
+    curve_list <- as.list(rep(NA, condition_IDs(tsa_data, n = TRUE)))
 
-  for (i in 1:condition_IDs(tsa_data, n = TRUE)) {
-    condition_i <- condition_IDs(tsa_data)[i]
-    tm_avg_i <- Tms_df$Avg_Tm[Tms_df$condition_ID == condition_i]
+    for (i in 1:condition_IDs(tsa_data, n = TRUE)) {
+        condition_i <- condition_IDs(tsa_data)[i]
+        tm_avg_i <- Tms_df$Avg_Tm[Tms_df$condition_ID == condition_i]
 
-    Tm_diff_i <-
-      Tm_difference_DF$delta_Tm[Tm_difference_DF$condition_ID
-      == condition_i]
-    Tm_diff_i <- round(Tm_diff_i, digits = digits)
+        Tm_diff_i <-
+            Tm_difference_DF$delta_Tm[Tm_difference_DF$condition_ID
+            == condition_i]
+        Tm_diff_i <- round(Tm_diff_i, digits = digits)
 
-    title_i <- condition_i
-    subtitle_i <- paste("Tm = ", Tm_diff_i, "C", sep = "")
-    ctrl_subtitle <- control_condition
-    if (title_by == "ligand") {
-      title_i <-
-        Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
-        == condition_i]
-      ctrl_subtitle <-
-        Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
-        == control_condition]
+        title_i <- condition_i
+        subtitle_i <- paste("Tm = ", Tm_diff_i, "C", sep = "")
+        ctrl_subtitle <- control_condition
+        if (title_by == "ligand") {
+            title_i <-
+                Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
+                == condition_i]
+            ctrl_subtitle <-
+                Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
+                == control_condition]
+        }
+        if (title_by == "protein") {
+            title_i <-
+                Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
+                == condition_i]
+            ctrl_subtitle <-
+                Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
+                == control_condition]
+        }
+        if (title_by == "both") {
+            title_i <- paste(
+                Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
+                == condition_i],
+                " + ",
+                Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
+                == condition_i],
+                sep = ""
+            )
+            ctrl_subtitle <- paste(
+                Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
+                == control_condition],
+                " + ",
+                Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
+                == control_condition],
+                sep = ""
+            )
+        }
+
+
+
+
+        cond_df_i <- tsa_data[tsa_data$condition_ID == condition_i, ]
+        cond_df_i <- tsa_average(tsa_data = cond_df_i, y = y)
+
+        diff_curve_i <- control_curve +
+            geom_ribbon(
+                data = cond_df_i,
+                aes(
+                    x = Temperature,
+                    ymin = sd_min_smooth,
+                    ymax = sd_max_smooth
+                ),
+                alpha = 0.4,
+                fill = col_vect[i]
+            ) +
+            geom_line(
+                color = col_vect[i],
+                data = cond_df_i
+            )
+        diff_curve_i <- diff_curve_i +
+            geom_vline(
+                xintercept = control_avg,
+                linetype = "dashed",
+                color = "black"
+            ) +
+            geom_vline(
+                xintercept = tm_avg_i,
+                linetype = "dashed",
+                color = col_vect[i]
+            )
+
+        diff_curve_i <- diff_curve_i +
+            theme_bw() +
+            labs(
+                title = title_i,
+                subtitle = subtitle_i
+            )
+
+        curve_list[[i]] <- diff_curve_i
+        names(curve_list)[i] <- condition_i
     }
-    if (title_by == "protein") {
-      title_i <-
-        Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
-        == condition_i]
-      ctrl_subtitle <-
-        Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
-        == control_condition]
-    }
-    if (title_by == "both") {
-      title_i <- paste(
-        Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
-        == condition_i],
-        " + ",
-        Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
-        == condition_i],
-        sep = ""
-      )
-      ctrl_subtitle <- paste(
-        Tm_difference_DF$Protein[Tm_difference_DF$condition_ID
-        == control_condition],
-        " + ",
-        Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID
-        == control_condition],
-        sep = ""
-      )
-    }
 
+    #-- adding control plot to list
+    control_curve <- control_curve +
+        labs(
+            title = "Control",
+            subtitle = ctrl_subtitle
+        ) +
+        theme_bw()
 
+    #-- removes control plot from loop and replace with control only
+    curve_list[names(curve_list) == control_condition] <- NULL
+    curve_list[names(curve_list) == control_condition]
+    curve_list[[length(curve_list) + 1]] <- control_curve
+    names(curve_list)[length(curve_list)] <-
+        paste("Control: ", control_condition, sep = "")
 
-
-    cond_df_i <- tsa_data[tsa_data$condition_ID == condition_i, ]
-    cond_df_i <- tsa_average(tsa_data = cond_df_i, y = y)
-
-    diff_curve_i <- control_curve +
-      geom_ribbon(
-        data = cond_df_i,
-        aes(
-          x = Temperature,
-          ymin = sd_min_smooth,
-          ymax = sd_max_smooth
-        ),
-        alpha = 0.4,
-        fill = col_vect[i]
-      ) +
-      geom_line(
-        color = col_vect[i],
-        data = cond_df_i
-      )
-    diff_curve_i <- diff_curve_i +
-      geom_vline(
-        xintercept = control_avg,
-        linetype = "dashed",
-        color = "black"
-      ) +
-      geom_vline(
-        xintercept = tm_avg_i,
-        linetype = "dashed",
-        color = col_vect[i]
-      )
-
-    diff_curve_i <- diff_curve_i +
-      theme_bw() +
-      labs(
-        title = title_i,
-        subtitle = subtitle_i
-      )
-
-    curve_list[[i]] <- diff_curve_i
-    names(curve_list)[i] <- condition_i
-  }
-
-  #-- adding control plot to list
-  control_curve <- control_curve +
-    labs(
-      title = "Control",
-      subtitle = ctrl_subtitle
-    ) +
-    theme_bw()
-
-  #-- removes control plot from loop and replace with control only
-  curve_list[names(curve_list) == control_condition] <- NULL
-  curve_list[names(curve_list) == control_condition]
-  curve_list[[length(curve_list) + 1]] <- control_curve
-  names(curve_list)[length(curve_list)] <-
-    paste("Control: ", control_condition, sep = "")
-
-  return(curve_list)
+    return(curve_list)
 }

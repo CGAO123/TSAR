@@ -45,8 +45,8 @@ Run example analysis on one well to screen potential errors and enhancement of m
 ```{r}
 # normalize fluorescence reading into scale between 0 and 1
 test <- normalize(test, fluo = 5, selected = c(
-  "Well.Position", "Temperature",
-  "Fluorescence", "Normalized"
+    "Well.Position", "Temperature",
+    "Fluorescence", "Normalized"
 ))
 head(test)
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
@@ -58,7 +58,7 @@ Output analysis result using ggplot to view normalized data and fitted model. De
 ```{r}
 tm_est(test)
 view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
-  guides(color = guide_legend(nrow = 2, byrow = TRUE))
+    guides(color = guide_legend(nrow = 2, byrow = TRUE))
 ```
 
 Screen all wells for curve shape on raw_data set and sift out corrupted data. This step is not required but may help remove data modeling errors.
@@ -72,13 +72,13 @@ shiny::runApp(myApp)
 ```{r}
 raw_data <- remove_raw(raw_data, removerange = c("B", "H", "1", "12"))
 screen(raw_data) + theme(
-  aspect.ratio = 0.7,
-  legend.position = "bottom",
-  legend.text = element_text(size = 6),
-  legend.key.size = unit(0.4, "cm"),
-  legend.title = element_text(size = 8)
+    aspect.ratio = 0.7,
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.key.size = unit(0.4, "cm"),
+    legend.title = element_text(size = 8)
 ) +
-  guides(color = guide_legend(nrow = 2, byrow = TRUE))
+    guides(color = guide_legend(nrow = 2, byrow = TRUE))
 ```
 
 ## 4. 96-well Analysis Application
@@ -87,11 +87,11 @@ TSAR package excels in mass analysis by propagating identical protocols to all 9
 
 ```{r, echo = FALSE}
 x <- gam_analysis(raw_data,
-  smoothed = TRUE, fluo = 5,
-  selections = c(
-    "Well.Position", "Temperature",
-    "Fluorescence", "Normalized"
-  )
+    smoothed = TRUE, fluo = 5,
+    selections = c(
+        "Well.Position", "Temperature",
+        "Fluorescence", "Normalized"
+    )
 )
 x <- na.omit(x)
 ```
@@ -120,9 +120,9 @@ For downstream analysis, data need to be mapped towards specific ligand and comp
 # join protein and ligand information
 data("Well_Information")
 norm_data <- join_well_info(
-  file_path = NULL,
-  file = Well_Information,
-  read_tsar(x, code = 2), type = "by_template"
+    file_path = NULL,
+    file = Well_Information,
+    read_tsar(x, code = 2), type = "by_template"
 )
 norm_data <- na.omit(norm_data)
 head(norm_data)
@@ -152,20 +152,20 @@ shiny::runApp(myApp)
 ```{r}
 raw_data_rep <- remove_raw(raw_data_rep, removelist = "A12")
 screen(raw_data_rep) + theme(
-  aspect.ratio = 0.7,
-  legend.position = "bottom",
-  legend.text = element_text(size = 6),
-  legend.key.size = unit(0.4, "cm"),
-  legend.title = element_text(size = 8)
+    aspect.ratio = 0.7,
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.key.size = unit(0.4, "cm"),
+    legend.title = element_text(size = 8)
 ) +
-  guides(color = guide_legend(nrow = 2, byrow = TRUE))
+    guides(color = guide_legend(nrow = 2, byrow = TRUE))
 
 analysis_rep <- gam_analysis(raw_data_rep, smoothed = TRUE)
 output_rep <- read_tsar(analysis_rep, code = 2)
 norm_data_rep <- join_well_info(
-  file_path = NULL,
-  file = Well_Information,
-  output_rep, type = "by_template"
+    file_path = NULL,
+    file = Well_Information,
+    output_rep, type = "by_template"
 )
 norm_data_rep <- na.omit(norm_data_rep)
 ```
@@ -177,12 +177,12 @@ date.
 norm_data <- na.omit(norm_data)
 norm_data_rep <- na.omit(norm_data_rep)
 tsar_data <- merge_norm(
-  data = list(norm_data, norm_data_rep),
-  name = c(
-    "Vitamin_RawData_Thermal Shift_02_162.eds.csv",
-    "Vitamin_RawData_Thermal Shift_02_168.eds.csv"
-  ),
-  date = c("20230203", "20230209")
+    data = list(norm_data, norm_data_rep),
+    name = c(
+        "Vitamin_RawData_Thermal Shift_02_162.eds.csv",
+        "Vitamin_RawData_Thermal Shift_02_168.eds.csv"
+    ),
+    date = c("20230203", "20230209")
 )
 ```
 
@@ -195,11 +195,11 @@ Visualize Tm estimation by compound or ligand type in the format of box graph.
 condition_IDs(tsar_data)
 well_IDs(tsar_data)
 conclusion <- tsar_data %>%
-  filter(condition_ID != "NA_NA") %>%
-  filter(condition_ID != "CA FL_Riboflavin")
+    filter(condition_ID != "NA_NA") %>%
+    filter(condition_ID != "CA FL_Riboflavin")
 TSA_boxplot(conclusion,
-  color_by = "Protein", label_by = "Ligand",
-  separate_legend = FALSE
+    color_by = "Protein", label_by = "Ligand",
+    separate_legend = FALSE
 )
 ```
 
@@ -212,8 +212,8 @@ tsa_compare_plot generated multiple line graphs for comparison.
 control_ID <- "CA FL_DMSO"
 
 tsa_compare_plot(conclusion,
-  y = "RFU",
-  control_condition = control_ID
+    y = "RFU",
+    control_condition = control_ID
 )
 ```
 

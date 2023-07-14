@@ -102,78 +102,78 @@ read_analysis <- function(
     manual_wells = NA,
     skip_flags = FALSE,
     manual_file = NA) {
-  # Note: Wells that do not have an Analysis Group assigned are removed
+    # Note: Wells that do not have an Analysis Group assigned are removed
 
 
-  #--- Loading and formatting
+    #--- Loading and formatting
 
 
-  if (!stringr::str_detect(path, "AnalysisResults")) {
-    warning('Check the input file,
+    if (!stringr::str_detect(path, "AnalysisResults")) {
+        warning('Check the input file,
                     The path name does not include "AnalysisResults"')
-  }
-  if (stringr::str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
-    if (stringr::str_detect(path, pattern = "(.*\\.txt$)")) {
-      analysis <- read.delim(path,
-        skip = 2,
-        na.strings = c("", "NA", " ")
-      )
     }
-    if (stringr::str_detect(path, pattern = "(.*\\.csv$)")) {
-      analysis <- read.csv(path,
-        skip = 2,
-        na.strings = c("", "NA", " ")
-      )
+    if (stringr::str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
+        if (stringr::str_detect(path, pattern = "(.*\\.txt$)")) {
+            analysis <- read.delim(path,
+                skip = 2,
+                na.strings = c("", "NA", " ")
+            )
+        }
+        if (stringr::str_detect(path, pattern = "(.*\\.csv$)")) {
+            analysis <- read.csv(path,
+                skip = 2,
+                na.strings = c("", "NA", " ")
+            )
+        }
+        names(analysis) <- stringr::str_replace_all(names(analysis), "\\.", " ")
+        names(analysis)[names(analysis) == "Flag Indicator"] <- "Flags"
+        analysis <- analysis[1:96, ] # Trim to 96 wells
+        analysis$`Tm D` <- as.numeric(analysis$`Tm D`)
+        analysis$`Tm B` <- as.numeric(analysis$`Tm B`)
+    } else {
+        stop("File type not .csv or .txt")
     }
-    names(analysis) <- stringr::str_replace_all(names(analysis), "\\.", " ")
-    names(analysis)[names(analysis) == "Flag Indicator"] <- "Flags"
-    analysis <- analysis[1:96, ] # Trim to 96 wells
-    analysis$`Tm D` <- as.numeric(analysis$`Tm D`)
-    analysis$`Tm B` <- as.numeric(analysis$`Tm B`)
-  } else {
-    stop("File type not .csv or .txt")
-  }
-  if (type == "boltzmann") {
-    col_names <-
-      c(
-        "Well", conditions, "Tm B", "dTm B",
-        "Analysis Group", "Flags", "Experiment File Name"
-      )
-  }
-  if (type == "derivative") {
-    col_names <-
-      c(
-        "Well", conditions, "Tm D", "dTm D",
-        "Analysis Group", "Flags", "Experiment File Name"
-      )
-  }
-  # Keep only rows with an analysis group and required+condition cols
-  analysis <- analysis[(!is.na(analysis$`Analysis Group`)), col_names]
-  names(analysis)[names(analysis) %in% c("Tm D", "Tm B")] <- "Tm"
-  #--- Generating ID codes for downstream functions
-  #--- Making condition_ID-same for all equivalent wells (for well matching)
-  if (is.na(manual_conditions)) { # Default, auto generate condition IDs
-    analysis$condition_ID <-
-      tidyr::unite(analysis, "condition_ID", conditions)$condition_ID
-  } else {
-    analysis$condition_ID <- manual_conditions # manual well assignments
-  }
-  #--- Making well_codes-each well is independent (for raw&analysis matching)
-  if (!is.na(manual_file)) {
-    analysis$`Experiment File Name` <- manual_file
-  }
-  if (is.na(manual_wells)) { # Default, auto generate condition IDs
-    analysis$well_ID <-
-      tidyr::unite(
-        analysis, "well_ID",
-        c("Well", "Experiment File Name")
-      )$well_ID
-  } else {
-    analysis$well_ID <- manual_wells # manual well assignments
-  }
-  if (skip_flags) { # remove flagged rows if user specifies
-    analysis <- analysis[analysis$Flags == 0, ]
-  }
+    if (type == "boltzmann") {
+        col_names <-
+            c(
+                "Well", conditions, "Tm B", "dTm B",
+                "Analysis Group", "Flags", "Experiment File Name"
+            )
+    }
+    if (type == "derivative") {
+        col_names <-
+            c(
+                "Well", conditions, "Tm D", "dTm D",
+                "Analysis Group", "Flags", "Experiment File Name"
+            )
+    }
+    # Keep only rows with an analysis group and required+condition cols
+    analysis <- analysis[(!is.na(analysis$`Analysis Group`)), col_names]
+    names(analysis)[names(analysis) %in% c("Tm D", "Tm B")] <- "Tm"
+    #--- Generating ID codes for downstream functions
+    #--- Making condition_ID-same for all equivalent wells (for well matching)
+    if (is.na(manual_conditions)) { # Default, auto generate condition IDs
+        analysis$condition_ID <-
+            tidyr::unite(analysis, "condition_ID", conditions)$condition_ID
+    } else {
+        analysis$condition_ID <- manual_conditions # manual well assignments
+    }
+    #--- Making well_codes-each well is independent (for raw&analysis matching)
+    if (!is.na(manual_file)) {
+        analysis$`Experiment File Name` <- manual_file
+    }
+    if (is.na(manual_wells)) { # Default, auto generate condition IDs
+        analysis$well_ID <-
+            tidyr::unite(
+                analysis, "well_ID",
+                c("Well", "Experiment File Name")
+            )$well_ID
+    } else {
+        analysis$well_ID <- manual_wells # manual well assignments
+    }
+    if (skip_flags) { # remove flagged rows if user specifies
+        analysis <- analysis[analysis$Flags == 0, ]
+    }
 
-  return(analysis)
+    return(analysis)
 }

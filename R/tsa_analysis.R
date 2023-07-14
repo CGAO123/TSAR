@@ -25,14 +25,14 @@
 #' @export
 #'
 tm_est <- function(norm_data, min, max) {
-  # if min and max are not specified, default to check across the graph
-  if (missing(min) && missing(max)) {
-    return(norm_data$Temperature[which.max(norm_data$norm_deriv)])
-  } else { # allow input to restrict the domain of search for inflection points
-    x <- norm_data[norm_data$Temperature >= min &
-      norm_data$Temperature <= max, ]
-    return(x$Temperature[which.max(norm_data$norm_deriv)])
-  }
+    # if min and max are not specified, default to check across the graph
+    if (missing(min) && missing(max)) {
+        return(norm_data$Temperature[which.max(norm_data$norm_deriv)])
+    } else { #allow input to restrict the domain of search for inflection points
+        x <- norm_data[norm_data$Temperature >= min &
+            norm_data$Temperature <= max, ]
+        return(x$Temperature[which.max(norm_data$norm_deriv)])
+    }
 }
 
 
@@ -79,84 +79,84 @@ gam_analysis <- function(
     smoothed = FALSE,
     fluo = -1,
     selections = c(
-      "Well.Position",
-      "Temperature",
-      "Fluorescence",
-      "Normalized"
+        "Well.Position",
+        "Temperature",
+        "Fluorescence",
+        "Normalized"
     )) {
-  # Initialize variables
-  tm <- c()
-  kept <- data.frame()
-  fitsummaries <- list()
-  # iterate through each individual well
-  for (i in unique(raw_data$Well.Position)) {
-    by_well <- raw_data %>%
-      filter(raw_data$Well.Position == i)
-    # normalize data
-    by_well <- normalize(
-      raw_data = by_well,
-      fluo = fluo,
-      selected = selections
-    )
+    # Initialize variables
+    tm <- c()
+    kept <- data.frame()
+    fitsummaries <- list()
+    # iterate through each individual well
+    for (i in unique(raw_data$Well.Position)) {
+        by_well <- raw_data %>%
+            filter(raw_data$Well.Position == i)
+        # normalize data
+        by_well <- normalize(
+            raw_data = by_well,
+            fluo = fluo,
+            selected = selections
+        )
 
-    # check is data is already smooth
-    # fit model if not smoothed
-    if (smoothed == FALSE) {
-      gammodel <- model_gam(
-        norm_data = by_well,
-        x = by_well$Temperature,
-        y = by_well$Normalized
-      )
-      # check if user wishes to keep summaries of each well's model fit
-      if (fit == TRUE) {
-        newsum <- list(summary(gammodel))
-        # concat fit summaries
-        fitsummaries <- append(fitsummaries, newsum)
-      }
-      # calculate derivatives and append derivated using fitted values
-      by_well <- model_fit(norm_data = by_well, model = gammodel)
-    } else {
-      # if data smoothing is already present, not further modeling required
-      # calculate derivatives using smoothed data, append derivatives
-      by_well <- by_well %>%
-        mutate(norm_deriv = c(diff(by_well$Normalized)
-        / diff(by_well$Temperature), NA))
+        # check is data is already smooth
+        # fit model if not smoothed
+        if (smoothed == FALSE) {
+            gammodel <- model_gam(
+                norm_data = by_well,
+                x = by_well$Temperature,
+                y = by_well$Normalized
+            )
+            # check if user wishes to keep summaries of each well's model fit
+            if (fit == TRUE) {
+                newsum <- list(summary(gammodel))
+                # concat fit summaries
+                fitsummaries <- append(fitsummaries, newsum)
+            }
+            # calculate derivatives and append derivated using fitted values
+            by_well <- model_fit(norm_data = by_well, model = gammodel)
+        } else {
+            # if data smoothing is already present, not modeling required
+            # calculate derivatives using smoothed data, append derivatives
+            by_well <- by_well %>%
+                mutate(norm_deriv = c(diff(by_well$Normalized)
+                / diff(by_well$Temperature), NA))
+        }
+
+        # estimate tm values and concat them into one list
+        tm <- c(tm, tm_est(by_well))
+
+        # if user wishes to keep all fitted data
+        if (keep == TRUE) {
+            if (smoothed == FALSE) {
+                # keep selected variables, fitted values, and derivatives
+                by_well <- by_well %>%
+                    dplyr::select(all_of(c(unlist(selections), "fitted")))
+            } else {
+                # keep selected variables and derivatives
+                by_well <- by_well %>%
+                    dplyr::select(all_of(selections))
+            }
+            # concat data frame of each well into one big data frame
+            kept <- rbind(kept, by_well)
+        }
     }
 
-    # estimate tm values and concat them into one list
-    tm <- c(tm, tm_est(by_well))
+    # typify all return values into data frames
+    tm <- data.frame(tm)
+    kept <- data.frame(kept)
+    # prepare initial list of output
+    tobereturned <- list(tm)
 
-    # if user wishes to keep all fitted data
+    # concat by users' specifications
     if (keep == TRUE) {
-      if (smoothed == FALSE) {
-        # keep selected variables, fitted values, and derivatives
-        by_well <- by_well %>%
-          dplyr::select(all_of(c(unlist(selections), "fitted")))
-      } else {
-        # keep selected variables and derivatives
-        by_well <- by_well %>%
-          dplyr::select(all_of(selections))
-      }
-      # concat data frame of each well into one big data frame
-      kept <- rbind(kept, by_well)
+        tobereturned <- append(tobereturned, list(kept))
     }
-  }
 
-  # typify all return values into data frames
-  tm <- data.frame(tm)
-  kept <- data.frame(kept)
-  # prepare initial list of output
-  tobereturned <- list(tm)
+    if (fit == TRUE) {
+        tobereturned <- append(tobereturned, list(fitsummaries))
+    }
 
-  # concat by users' specifications
-  if (keep == TRUE) {
-    tobereturned <- append(tobereturned, list(kept))
-  }
-
-  if (fit == TRUE) {
-    tobereturned <- append(tobereturned, list(fitsummaries))
-  }
-
-  # return list of data frames
-  return(tobereturned)
+    # return list of data frames
+    return(tobereturned)
 }
