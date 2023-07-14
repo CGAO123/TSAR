@@ -30,17 +30,22 @@ differently, user needs to specify what column variables to keep}
 }
 \value{
 cleaned up data framed with selected columns
-#examples
-#normalized <-normalize(data = raw_data, fluo = 5, selected =
-#c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
 }
 \description{
 Normalize reads in raw data. This function normalizes data by standardized
   them according to max and min. It also reformat data types by checking
   for potential error
 }
+\examples{
+data("qPCR_data1")
+test <- subset(qPCR_data1, Well.Position == "A01")
+normalize(test)
+
+}
 \seealso{
 Other data_preprocess: 
+\code{\link{model_fit}()},
+\code{\link{model_gam}()},
 \code{\link{remove_raw}()},
 \code{\link{screen}()},
 \code{\link{view_model}()},

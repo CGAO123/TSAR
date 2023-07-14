@@ -15,8 +15,19 @@ ggplot
 \description{
 View Model
 }
+\examples{
+data("qPCR_data1")
+test <- subset(qPCR_data1, Well.Position == "A01")
+test <- normalize(test)
+gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+test <- model_fit(test, model = gammodel)
+view_model(test)
+
+}
 \seealso{
 Other data_preprocess: 
+\code{\link{model_fit}()},
+\code{\link{model_gam}()},
 \code{\link{normalize}()},
 \code{\link{remove_raw}()},
 \code{\link{screen}()},

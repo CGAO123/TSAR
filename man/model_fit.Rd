@@ -21,7 +21,23 @@ data frame; with calculated derivative columns
 \description{
 Model_fit calculates derivatives by refitting model onto data
 }
-\concept{data_preprocess
+\examples{
+data("qPCR_data1")
+test <- subset(qPCR_data1, Well.Position == "A01")
+test <- normalize(test, fluo = 5, selected = c(
+    "Well.Position", "Temperature",
+    "Fluorescence", "Normalized"))
+gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+model_fit(test, model = gammodel)
 
-#examples
-#fitted <- model_fit(data = gammodel, model = fitted)}
+}
+\seealso{
+Other data_preprocess: 
+\code{\link{model_gam}()},
+\code{\link{normalize}()},
+\code{\link{remove_raw}()},
+\code{\link{screen}()},
+\code{\link{view_model}()},
+\code{\link{weed_raw}()}
+}
+\concept{data_preprocess}

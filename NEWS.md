@@ -1,3 +1,2 @@
 # TSAR 0.1.1
-
-* Initial CRAN submission.
+- Initial Draft of TSAR, completed on July 14, 2023.

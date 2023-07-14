@@ -26,7 +26,7 @@ of each model fit}
 if data is already smoothed, set smoothed to true}
 
 \item{fluo}{integer; the Fluorescence variable column id
-(e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
+(e.g. fluo = 5 when 5th column of data frame is the Fluorescence value)
 if fluorescence variable is named exactly as "Fluorescence", fluo does not
 need to be specified.}
 
@@ -42,12 +42,14 @@ list of data frames, list of three data frame outputs,
 function pipeline that combines separated functions and iterate through
   each well to find the tm estimation
 }
-\concept{tsa_analysis
+\examples{
+data("qPCR_data1")
+gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
+  "Well.Position", "Temperature", "Fluorescence", "Normalized"))
 
-#examples
-#raw_data <- utils::read.delim(header = TRUE, skip = 0, nrow = 112976,
-"/Users/candygao/Desktop/qpcrresult/CA_IP_HCB_2_20220110_134917_RawData_
-Thermal Shift_02_55.eds.txt")
-#Result_R <- gam_analysis(rawdata = raw_data, keep = T, fit = T,
-              smoothed = F, selections = c("Well.Position", "Temperature",
-                 "Fluorescence", "Normalized"))}
+}
+\seealso{
+Other tsa_analysis: 
+\code{\link{tm_est}()}
+}
+\concept{tsa_analysis}

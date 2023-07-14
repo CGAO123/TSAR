@@ -18,17 +18,22 @@
 #' @family tsa_analysis
 #'
 #' @examples
-#' # well <- fitted %>%
-#' #   filter(Well.Position == "A1")
-#' # tm_est(A1)
-#' # tm_est(A1, min = 30, max= 35)
+#' data("qPCR_data1")
+#' test <- subset(qPCR_data1, Well.Position == "A01")
+#' test <- normalize(test, fluo = 5, selected = c(
+#'     "Well.Position", "Temperature",
+#'     "Fluorescence", "Normalized"))
+#' gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+#' fit <- model_fit(test, model = gammodel)
+#' tm_est(fit)
+#'
 #' @export
 #'
 tm_est <- function(norm_data, min, max) {
     # if min and max are not specified, default to check across the graph
     if (missing(min) && missing(max)) {
         return(norm_data$Temperature[which.max(norm_data$norm_deriv)])
-    } else { #allow input to restrict the domain of search for inflection points
+    } else { #allow input to restrict domain of search for inflection points
         x <- norm_data[norm_data$Temperature >= min &
             norm_data$Temperature <= max, ]
         return(x$Temperature[which.max(norm_data$norm_deriv)])
@@ -54,7 +59,7 @@ tm_est <- function(norm_data, min, max) {
 #'   to keep. It is set, by default, to \code{c("Well.Position", "Temperature",
 #'   "Fluorescence", "Normalized")}.
 #' @param fluo integer; the Fluorescence variable column id
-#'   (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
+#'   (e.g. fluo = 5 when 5th column of data frame is the Fluorescence value)
 #'   if fluorescence variable is named exactly as "Fluorescence", fluo does not
 #'   need to be specified.
 #'
@@ -63,13 +68,10 @@ tm_est <- function(norm_data, min, max) {
 #'
 #' @family tsa_analysis
 #'
-#' #examples
-#' #raw_data <- utils::read.delim(header = TRUE, skip = 0, nrow = 112976,
-#' "/Users/candygao/Desktop/qpcrresult/CA_IP_HCB_2_20220110_134917_RawData_
-#' Thermal Shift_02_55.eds.txt")
-#' #Result_R <- gam_analysis(rawdata = raw_data, keep = T, fit = T,
-#'               smoothed = F, selections = c("Well.Position", "Temperature",
-#'                  "Fluorescence", "Normalized"))
+#' @examples
+#' data("qPCR_data1")
+#' gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
+#'   "Well.Position", "Temperature", "Fluorescence", "Normalized"))
 #'
 #' @export
 gam_analysis <- function(

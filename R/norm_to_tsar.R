@@ -15,6 +15,24 @@
 #'   The lengths of the \code{data}, \code{name}, and \code{date} vectors
 #'   must match, otherwise an error is thrown.
 #'
+#' @examples
+#' data("qPCR_data1")
+#' result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
+#' data("Well_Information")
+#' norm_data <- join_well_info( file_path = NULL, file = Well_Information,
+#'   read_tsar(result, code = 2), type = "by_template")
+#' norm_data <- na.omit(norm_data)
+#' data("qPCR_data2")
+#' result2 <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
+#' norm_data2 <- join_well_info( file_path = NULL, file = Well_Information,
+#'   read_tsar(result2, code = 2), type = "by_template")
+#' norm_data2 <- na.omit(norm_data2)
+#' tsar_data <- merge_norm(
+#'   data = list(norm_data, norm_data2),
+#'   name = c( "Thermal Shift_162.eds.csv", "Thermal Shift_168.eds.csv"),
+#'   date = c("20230203", "20230209"))
+#'
+#'
 #' @return data frame in the format of tsat_data
 #'
 #' @family TSAR Formatting

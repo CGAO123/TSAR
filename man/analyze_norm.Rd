@@ -18,7 +18,8 @@ The analyze_norm function allows users to process analysis through an UI
   family and read_write_analysis family.
 }
 \examples{
-# analyze_norm(raw_data)
+data("qPCR_data1")
+analyze_norm(qPCR_data1)
 
 }
 \seealso{

@@ -8,6 +8,7 @@
 #' @import shiny
 #' @importFrom shinyjs runjs useShinyjs
 #' @importFrom jsonlite toJSON
+#' @importFrom shinyWidgets materialSwitch
 #'
 #' @export
 #'
@@ -27,8 +28,8 @@
 #' @seealso \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}
 #'
 #' @examples
-#' # myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
-#' # shiny::runApp(myApp)
+#' data("qPCR_data1")
+#' weed_raw(qPCR_data1, checklist = c("A11", "A12"))
 #'
 weed_raw <- function(raw_data,
                      checkrange = NULL,
@@ -92,7 +93,7 @@ weed_raw <- function(raw_data,
                         id = "grid-container",
                         style = "display: grid; grid-template-columns:
                                 repeat(12, 50px); grid-gap: 0px; grid-",
-                        lapply(1:96, function(i) {
+                        for (i in 1:96) {
                             row <- ceiling(i / 12)
                             col <- i %% 12
                             if (col == 0) col <- 12
@@ -107,7 +108,7 @@ weed_raw <- function(raw_data,
                                        font-size: 12px;",
                                 paste0(LETTERS[row], col_label)
                             )
-                        })
+                        }
                     )
                 )
             )
@@ -443,5 +444,5 @@ weed_raw <- function(raw_data,
             stopApp()
         })
     }
-    shinyApp(ui = ui, server = server)
+    app <- shinyApp(ui = ui, server = server)
 }

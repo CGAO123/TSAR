@@ -8,7 +8,7 @@
 #' @import ggplot2
 #' @importFrom shinyjs toggle hidden
 #' @importFrom ggpubr ggarrange
-#' @import shinyWidgets
+#' @importFrom shinyWidgets actionBttn
 #'
 #' @export
 #'
@@ -24,7 +24,7 @@
 #'   \code{\link{condition_IDs}}, \code{\link{well_IDs}}
 #'
 #' @examples
-#' # graph_tsar()
+#' graph_tsar()
 #'
 graph_tsar <- function(tsar_data = data.frame()) {
     ui <- fluidPage(
@@ -567,5 +567,5 @@ graph_tsar <- function(tsar_data = data.frame()) {
         })
     }
 
-    shinyApp(ui = ui, server = server)
+    graph <- shinyApp(ui = ui, server = server)
 }

@@ -27,14 +27,16 @@ The weed_raw function allows users to interact with a screening graph
   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 }
 \examples{
-# myApp <- weed_raw(raw_data, checklist = c("A11", "A12"))
-# shiny::runApp(myApp)
+data("qPCR_data1")
+weed_raw(qPCR_data1, checklist = c("A11", "A12"))
 
 }
 \seealso{
 \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}
 
 Other data_preprocess: 
+\code{\link{model_fit}()},
+\code{\link{model_gam}()},
 \code{\link{normalize}()},
 \code{\link{remove_raw}()},
 \code{\link{screen}()},

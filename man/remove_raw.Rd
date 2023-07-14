@@ -23,8 +23,15 @@ dataframe; data frame with specified well removed
 \description{
 removes selected curves with specified wells and range
 }
+\examples{
+data("qPCR_data1")
+remove_raw(qPCR_data1, removelist = c("A01", "D11"))
+
+}
 \seealso{
 Other data_preprocess: 
+\code{\link{model_fit}()},
+\code{\link{model_gam}()},
 \code{\link{normalize}()},
 \code{\link{screen}()},
 \code{\link{view_model}()},

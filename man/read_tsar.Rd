@@ -21,8 +21,11 @@ reads previous pipeline output lists and organizes them into separate
   data frames
 }
 \examples{
-# read_tsar(result, code = 0)
-# output_data <- read_tsar(result, code = 2)
+data("qPCR_data1")
+result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
+  "Well.Position", "Temperature", "Fluorescence", "Normalized"))
+read_tsar(result, code = 0)
+output_data <- read_tsar(result, code = 2)
 
 }
 \seealso{

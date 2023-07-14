@@ -6,7 +6,7 @@
 #'
 #' @importFrom openxlsx read.xlsx
 #' @import shiny
-#' @import rhandsontable
+#' @importFrom rhandsontable rHandsontableOutput rhandsontable
 #' @import dplyr
 #' @import ggplot2
 #'
@@ -19,7 +19,8 @@
 #'   \code{\link{write_tsar}}, \code{\link{join_well_info}}
 #'
 #' @examples
-#' # analyze_norm(raw_data)
+#' data("qPCR_data1")
+#' analyze_norm(qPCR_data1)
 #'
 analyze_norm <- function(raw_data) {
     ui <- fluidPage(
@@ -527,5 +528,5 @@ analyze_norm <- function(raw_data) {
             stopApp()
         })
     }
-    shinyApp(ui = ui, server = server)
+    app <- shinyApp(ui = ui, server = server)
 }

@@ -15,6 +15,9 @@
 #' @param checklist use this parameter to view selected Wells with full
 #'   Well names. For example, `checklist = c('A01', 'D11')`
 #'
+#' @examples
+#' data("qPCR_data1")
+#' screen(qPCR_data1, checkrange = c("A", "C", "1", "12"))
 #'
 #' @return returns a ggplot graph colors by well IDs
 #'
@@ -97,6 +100,10 @@ screen <- function(raw_data,
 #' @param removelist use this parameter to remove selected Wells with full
 #'   Well names. For example, `removelist = c('A01', 'D11')`
 #'
+#' @examples
+#' data("qPCR_data1")
+#' remove_raw(qPCR_data1, removelist = c("A01", "D11"))
+#'
 #' @return dataframe; data frame with specified well removed
 #' @family data_preprocess
 #' @export
@@ -133,6 +140,13 @@ remove_raw <- function(raw_data,
 #'
 #' @import ggplot2
 #' @param norm_data dataset input, data should match the needs of norm_data
+#' @examples
+#' data("qPCR_data1")
+#' test <- subset(qPCR_data1, Well.Position == "A01")
+#' test <- normalize(test)
+#' gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+#' test <- model_fit(test, model = gammodel)
+#' view_model(test)
 #'
 #' @return ggplot
 #' @family data_preprocess

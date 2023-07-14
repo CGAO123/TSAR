@@ -17,5 +17,6 @@
 #'
 #' @usage data(qPCR_data1)
 #' @return qPCR_data1 data frame
+#' @source experimentally obtained
 #' @keywords dataset
 data(qPCR_data1, envir = environment())

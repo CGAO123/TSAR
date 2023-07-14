@@ -13,6 +13,9 @@ A data frame with the following columns:
     \item{Fluorescence}{fluorescence reading, required input}
   }
 }
+\source{
+experimentally obtained
+}
 \usage{
 data(qPCR_data1)
 }
