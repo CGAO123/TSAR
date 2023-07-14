@@ -27,7 +27,7 @@ Load data and remove blank wells by specifying a range of wells with `removerang
 ```{r, eval = FALSE}
 data("qPCR_data1")
 qPCR_data1 <- remove_raw(qPCR_data1, removerange = c("B", "H", "1", "12"))
-weed_raw(qPCR_data1)
+runApp(weed_raw(qPCR_data1))
 ```
 
 In the plot panel, user can interact with graph and select and un-select data by clicking on curves. User may also `View Selected` wells only and `Remove Selected`. To return to default page and current all change to data set, click `Refresh Screening`. To propagate the same changes to local data set, click `Copy Selected in Full Function Call` to copy a `remove_raw()` call containing all selected wells into clipboard. Paste the call back into console or script and run to propagate changes locally. 
@@ -54,7 +54,7 @@ Analyze data by calling function `analyze_norm()` and follow the workflow from t
 Remember to save analysis output locally by clicking `Save File`. Always preview data before saving to ensure data contains all necessary information.
 
 ```{r, eval = FALSE}
-analyze_norm(qPCR_data1)
+runApp(analyze_norm(qPCR_data1))
 ```
 
 The top left panel output a preview of current data set. The right panel allows user to view the fit of model and Tm estimation by individual wells of selection. Once confirming correct data input and modeling effects,
@@ -88,10 +88,10 @@ Lastly, to save all analysis locally, click `Save File` after previewing output.
 
 Use function `graph_tsar()` to start a Shiny application for graphing options. Run `na.omit()` on data if error occurs. Three graphing options are allowed, boxplot of Tm, compare plots, and conditions plot.
 
-Function takes optional data parameter. If analysis file is already imported in the environment, call function as `graph_tsar(tsar_data)`. Else, user may use the merge data panel to upload and merge data of all test trials. Simply call `graph_tsar()` and click `Upload and Merge Data` button to reveal the panel to merge data.
+Function takes optional data parameter. If analysis file is already imported in the environment, call function as `graph_tsar(tsar_data)`. Refer to vignette "TSAR Workflow by Command" for instructions on how to merge using function `merge_norm()`. Else, user may use the merge data panel to upload and merge data of all test trials. Simply call `graph_tsar()` and click `Upload and Merge Data` button to reveal the panel to merge data.
 
 ```{r, eval = FALSE}
-graph_tsar()
+runApp(graph_tsar())
 ```
 
 Upload is limited to 30MB in size, but not count size. After upload, user will be prompted corresponding numbers of input boxes to specify date of each experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview of tsar_data will be prompted. For a full list of well_ID and conditions_ID, refer to the helper buttons at the bottom of page.

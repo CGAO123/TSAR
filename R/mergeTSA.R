@@ -94,7 +94,7 @@ merge_tsa <- function(
     for (i in 1:n_pairs) { # Repeat for every pair
         raw_data_i <- read_raw_data(path = raw_data_path[i]) # Load raw data
         raw_data_i <- raw_data_i[!names(raw_data_i) %in% c("Well", "Reading")]
-        analysis_i <- read_analysis(path = analysis_file_path[i]) #analyze
+        analysis_i <- read_analysis(path = analysis_file_path[i]) # analyze
         # Merge .eds file
         tsa_data_i <- merge(analysis_i, raw_data_i, by = "well_ID")
         tsa_data <- rbind(tsa_data, tsa_data_i) # Add .eds to merged files

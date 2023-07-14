@@ -19,8 +19,22 @@ gam model fitted with formula set to y ~ s(x, bs = "ad")
 \description{
 function finds fitted fluorescence values
 }
-\concept{data_preprocess
-#example
-#gammodel <- model_gam(Data = normalized,
-                         x = normalized$temperature,
-                         y = normalized$fluorescence)}
+\examples{
+data("qPCR_data1")
+test <- subset(qPCR_data1, Well.Position == "A01")
+test <- normalize(test, fluo = 5, selected = c(
+    "Well.Position", "Temperature",
+    "Fluorescence", "Normalized"))
+model_gam(test, x = test$Temperature, y = test$Normalized)
+
+}
+\seealso{
+Other data_preprocess: 
+\code{\link{model_fit}()},
+\code{\link{normalize}()},
+\code{\link{remove_raw}()},
+\code{\link{screen}()},
+\code{\link{view_model}()},
+\code{\link{weed_raw}()}
+}
+\concept{data_preprocess}

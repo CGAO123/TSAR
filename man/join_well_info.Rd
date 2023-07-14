@@ -45,13 +45,11 @@ reads in the ligand and protein information and joins them accordingly
 to the big data frame for graphing purposes
 }
 \examples{
-# Analysis <- join.well_info("/Users/candygao/Desktop/qpcrresult/
-#                           CA_IP_HCB_2_20220110_134917_AnalysisResults.txt",
-#                           output_data, type = "by_well")
-# Analysis <- join.well_info("~/Desktop/qpcrresult/
-# Well Information Template.xlsx",
-#                         output_data,
-#                         type = "by_template")
+data("qPCR_data1")
+result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
+data("Well_Information")
+norm_data <- join_well_info( file_path = NULL, file = Well_Information,
+  read_tsar(result, code = 2), type = "by_template")
 
 }
 \seealso{

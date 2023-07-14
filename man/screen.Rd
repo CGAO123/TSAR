@@ -24,8 +24,15 @@ returns a ggplot graph colors by well IDs
 screens multiple wells of data and prepares to assist identification of
   corrupted wells and odd out behaviors
 }
+\examples{
+data("qPCR_data1")
+screen(qPCR_data1, checkrange = c("A", "C", "1", "12"))
+
+}
 \seealso{
 Other data_preprocess: 
+\code{\link{model_fit}()},
+\code{\link{model_gam}()},
 \code{\link{normalize}()},
 \code{\link{remove_raw}()},
 \code{\link{view_model}()},

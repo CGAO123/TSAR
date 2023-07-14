@@ -22,9 +22,10 @@
 #'   "Normalized") if not otherwise specified. If data frame variables are named
 #'   differently, user needs to specify what column variables to keep
 #' @return cleaned up data framed with selected columns
-#' #examples
-#' #normalized <-normalize(data = raw_data, fluo = 5, selected =
-#' #c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+#' @examples
+#' data("qPCR_data1")
+#' test <- subset(qPCR_data1, Well.Position == "A01")
+#' normalize(test)
 #'
 #' @family data_preprocess
 #' @export
@@ -97,10 +98,13 @@ normalize <- function(
 #' @return gam model fitted with formula set to y ~ s(x, bs = "ad")
 #'
 #' @family data_preprocess
-#' #example
-#' #gammodel <- model_gam(Data = normalized,
-#'                          x = normalized$temperature,
-#'                          y = normalized$fluorescence)
+#' @examples
+#' data("qPCR_data1")
+#' test <- subset(qPCR_data1, Well.Position == "A01")
+#' test <- normalize(test, fluo = 5, selected = c(
+#'     "Well.Position", "Temperature",
+#'     "Fluorescence", "Normalized"))
+#' model_gam(test, x = test$Temperature, y = test$Normalized)
 #'
 #' @export
 model_gam <- function(norm_data, x, y) {
@@ -128,8 +132,14 @@ model_gam <- function(norm_data, x, y) {
 #'
 #' @family data_preprocess
 #'
-#' #examples
-#' #fitted <- model_fit(data = gammodel, model = fitted)
+#' @examples
+#' data("qPCR_data1")
+#' test <- subset(qPCR_data1, Well.Position == "A01")
+#' test <- normalize(test, fluo = 5, selected = c(
+#'     "Well.Position", "Temperature",
+#'     "Fluorescence", "Normalized"))
+#' gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
+#' model_fit(test, model = gammodel)
 #'
 #' @export
 #'
