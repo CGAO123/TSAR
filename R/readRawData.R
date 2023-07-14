@@ -76,56 +76,56 @@ read_raw_data <- function(
     # stating the .eds file is needed to generate IDs for merging w/ analysis
     #---
     type = "fluorescence") {
-  #--- Loading and formatting
-  if (!str_detect(path, "RawData")) {
-    warning('Check the input file,
+    #--- Loading and formatting
+    if (!str_detect(path, "RawData")) {
+        warning('Check the input file,
                     The path name does not include "RawData"')
-  }
-
-  if (str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
-    if (str_detect(path, pattern = "(.*\\.txt$)")) {
-      raw_data <- read.delim(path)
     }
-    if (str_detect(path, pattern = "(.*\\.csv$)")) {
-      raw_data <- read.csv(path)
-    }
-    #--- determine what type of raw data to load.
 
-    derivative_start <- which(grepl("Derivative", raw_data$Fluorescence))
-    boltzman_start <- which(grepl("Boltzmann", raw_data$Fluorescence))
+    if (str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
+        if (str_detect(path, pattern = "(.*\\.txt$)")) {
+            raw_data <- read.delim(path)
+        }
+        if (str_detect(path, pattern = "(.*\\.csv$)")) {
+            raw_data <- read.csv(path)
+        }
+        #--- determine what type of raw data to load.
 
-    if (type %in% c("fluorescence", "boltzmann", "derivative")) {
-      if (type == "fluorescence") {
-        data_start <- 1
-        data_end <- derivative_start - 1
-      }
-      if (type == "derivative") {
-        data_start <- derivative_start + 1
-        data_end <- boltzman_start - 1
-      }
-      if (type == "boltzmann") {
-        data_start <- boltzman_start + 1
-        data_end <- length(raw_data)
-      }
+        derivative_start <- which(grepl("Derivative", raw_data$Fluorescence))
+        boltzman_start <- which(grepl("Boltzmann", raw_data$Fluorescence))
+
+        if (type %in% c("fluorescence", "boltzmann", "derivative")) {
+            if (type == "fluorescence") {
+                data_start <- 1
+                data_end <- derivative_start - 1
+            }
+            if (type == "derivative") {
+                data_start <- derivative_start + 1
+                data_end <- boltzman_start - 1
+            }
+            if (type == "boltzmann") {
+                data_start <- boltzman_start + 1
+                data_end <- length(raw_data)
+            }
+        } else {
+            stop('type must be c("fluorescence", "boltzmann", "derivative")')
+        }
+
+        raw_data <- raw_data[data_start:data_end, ]
+        raw_data$Temperature <- as.numeric(raw_data$Temperature)
+        raw_data$Fluorescence <- as.numeric(raw_data$Fluorescence)
+        #--- Get the file name from the path name
+        if (is.na(manual_file)) {
+            file_name <- stringr::str_extract(path, "(?<=RawData\\_).*(\\.eds)")
+        } else {
+            file_name <- manual_file
+        }
+
+        #--- Generate well_ID to match w/ analysis file
+        raw_data$well_ID <- paste0(raw_data$Well.Position, "_", file_name)
     } else {
-      stop('type must be c("fluorescence", "boltzmann", "derivative")')
+        stop("File type not .csv or .txt")
     }
 
-    raw_data <- raw_data[data_start:data_end, ]
-    raw_data$Temperature <- as.numeric(raw_data$Temperature)
-    raw_data$Fluorescence <- as.numeric(raw_data$Fluorescence)
-    #--- Get the file name from the path name
-    if (is.na(manual_file)) {
-      file_name <- stringr::str_extract(path, "(?<=RawData\\_).*(\\.eds)")
-    } else {
-      file_name <- manual_file
-    }
-
-    #--- Generate well_ID to match w/ analysis file
-    raw_data$well_ID <- paste0(raw_data$Well.Position, "_", file_name)
-  } else {
-    stop("File type not .csv or .txt")
-  }
-
-  return(raw_data)
+    return(raw_data)
 }

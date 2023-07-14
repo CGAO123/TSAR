@@ -14,6 +14,9 @@ or data frame objects of analysis data set.}
 
 \item{date}{A character vector specifying the dates.}
 }
+\value{
+data frame in the format of tsat_data
+}
 \description{
 This function merges data of experiment replicates across different dates.
   It merges and produces information variables used to group wells of same

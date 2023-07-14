@@ -9,8 +9,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -65,13 +65,13 @@ If no wells are specified, `screen()` will default to screening every well and `
 
 ```{r, out.width = "400px"}
 screen(raw_data) + theme(
-  aspect.ratio = 0.7,
-  legend.position = "bottom",
-  legend.text = element_text(size = 4),
-  legend.key.size = unit(0.1, "cm"),
-  legend.title = element_text(size = 6)
+    aspect.ratio = 0.7,
+    legend.position = "bottom",
+    legend.text = element_text(size = 4),
+    legend.key.size = unit(0.1, "cm"),
+    legend.title = element_text(size = 6)
 ) +
-  guides(color = guide_legend(nrow = 4, byrow = TRUE))
+    guides(color = guide_legend(nrow = 4, byrow = TRUE))
 raw_data <- remove_raw(raw_data, removerange = c("C", "H", "1", "12"))
 ```
 
@@ -85,11 +85,11 @@ Running the window, we can spot that curve at A12 has an abnormally high initial
 
 ```{r}
 raw_data <- remove_raw(raw_data,
-  removelist =
-    c(
-      "B04", "B11", "B09", "B05", "B10", "B03",
-      "B02", "B01", "B08", "B12", "B07", "B06"
-    )
+    removelist =
+        c(
+            "B04", "B11", "B09", "B05", "B10", "B03",
+            "B02", "B01", "B08", "B12", "B07", "B06"
+        )
 )
 ```
 
@@ -119,7 +119,7 @@ test <- normalize(test)
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 test <- model_fit(test, model = gammodel)
 view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
-  guides(color = guide_legend(nrow = 2, byrow = TRUE))
+    guides(color = guide_legend(nrow = 2, byrow = TRUE))
 tm_est(test)
 ```
 
@@ -132,12 +132,12 @@ All analysis necessary if formatted in function `gam_analysis()`. Parameters are
 
 ```{r}
 x <- gam_analysis(raw_data,
-  smoothed = TRUE,
-  fluo = 5,
-  selections = c(
-    "Well.Position", "Temperature",
-    "Fluorescence", "Normalized"
-  )
+    smoothed = TRUE,
+    fluo = 5,
+    selections = c(
+        "Well.Position", "Temperature",
+        "Fluorescence", "Normalized"
+    )
 )
 ```
 
@@ -150,8 +150,8 @@ To associate ligand and protein conditions with each individual well, call funct
 ```{r message=FALSE}
 data("Well_Information")
 output <- join_well_info(
-  file_path = NULL, file = Well_Information,
-  read_tsar(x, code = 0), type = "by_template"
+    file_path = NULL, file = Well_Information,
+    read_tsar(x, code = 0), type = "by_template"
 )
 ```
 
@@ -163,8 +163,8 @@ To streamline to the following graphic analysis, make sure `code = 2` to maintai
 
 ```{r message=FALSE}
 norm_data <- join_well_info(
-  file_path = NULL, file = Well_Information,
-  read_tsar(x, code = 2), type = "by_template"
+    file_path = NULL, file = Well_Information,
+    read_tsar(x, code = 2), type = "by_template"
 )
 ```
 
@@ -187,24 +187,24 @@ Use `merge_norm()` to merge all norm_data and specify original data file name an
 data("qPCR_data2")
 raw_data_rep <- qPCR_data2
 raw_data_rep <- remove_raw(raw_data_rep,
-  removerange = c("B", "H", "1", "12"),
-  removelist = c("A12")
+    removerange = c("B", "H", "1", "12"),
+    removelist = c("A12")
 )
 analysis_rep <- gam_analysis(raw_data_rep, smoothed = TRUE)
 norm_data_rep <- join_well_info(
-  file_path = NULL, file = Well_Information,
-  read_tsar(analysis_rep, code = 2),
-  type = "by_template"
+    file_path = NULL, file = Well_Information,
+    read_tsar(analysis_rep, code = 2),
+    type = "by_template"
 )
 
 # merge data
 tsar_data <- merge_norm(
-  data = list(norm_data, norm_data_rep),
-  name = c(
-    "Vitamin_RawData_Thermal Shift_02_162.eds.csv",
-    "Vitamin_RawData_Thermal Shift_02_168.eds.csv"
-  ),
-  date = c("20230203", "20230209")
+    data = list(norm_data, norm_data_rep),
+    name = c(
+        "Vitamin_RawData_Thermal Shift_02_162.eds.csv",
+        "Vitamin_RawData_Thermal Shift_02_168.eds.csv"
+    ),
+    date = c("20230203", "20230209")
 )
 ```
 
@@ -229,8 +229,8 @@ TSA_proteins(tsar_data)
 TSA_ligands(tsar_data)
 
 conclusion <- tsar_data %>%
-  filter(condition_ID != "NA_NA") %>%
-  filter(condition_ID != "CA FL_Riboflavin")
+    filter(condition_ID != "NA_NA") %>%
+    filter(condition_ID != "CA FL_Riboflavin")
 ```
 
 ##3.2 Graphic Analysis
@@ -241,8 +241,8 @@ Use `TSA_boxplot()` to generate comparison boxplot graphs. Stylistics choices in
 
 ```{r, out.width = "400px"}
 TSA_boxplot(conclusion,
-  color_by = "Protein",
-  label_by = "Ligand", separate_legend = TRUE
+    color_by = "Protein",
+    label_by = "Ligand", separate_legend = TRUE
 )
 ```
 
@@ -254,8 +254,8 @@ TSA_boxplot(conclusion,
 control_ID <- "CA FL_DMSO"
 
 tsa_compare_plot(conclusion,
-  y = "RFU",
-  control_condition = control_ID
+    y = "RFU",
+    control_condition = control_ID
 )
 ```
 

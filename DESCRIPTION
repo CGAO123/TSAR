@@ -1,7 +1,7 @@
 Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(person(c("William", "M."), 
 			"McFadden", 
 			email = "wmm27@pitt.edu", 
@@ -11,6 +11,7 @@ Authors@R: c(person(c("William", "M."),
 			email = "xgao76@emory.edu", 
 			role = c("aut"))
 		)
+Maintainer: Xinlin Gao <candygao2015@outlook.com>
 Description: This package automates analysis workflow for TSA qPCR data. 
 	Processing, analyzing, and visualizing data through both shiny 
 	applications and command line exercises. Package aims to simplify 
@@ -41,8 +42,8 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-biocViews: qPCRWorkflow, Workflow
+biocViews: Workflow, BasicWorkflow
 DataRaw: data/qPCR_data1.rda
 DataRaw2: data/qPCR_data2.rda
 Depends: 
-    R (>= 2.10)
+    R (>= 4.3.0)
