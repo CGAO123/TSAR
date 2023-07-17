@@ -17,6 +17,7 @@ install.packages("remotes")
 library(remotes)
 remotes::install_github("CGAO123/TSAR", auth_token = "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")
 library(TSAR)
+library(shiny)
 ```
 
 TSAR Package is wrapped within a three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser.
