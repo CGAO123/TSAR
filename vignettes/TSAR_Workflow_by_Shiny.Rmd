@@ -127,3 +127,8 @@ knitr::include_graphics("images/graph_tsar_32.png")
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/graph_tsar3.png")
 ```
+
+Helper functions include these following:
+```{r}
+knitr::include_graphics("images/graph_tsar4.png")
+```

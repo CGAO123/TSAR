@@ -20,7 +20,10 @@ The weed_raw function allows users to interact with a screening graph
   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 }
 \examples{
-graph_tsar()
+if (interactive()) {
+    data("example_tsar_data")
+    shiny::runApp(graph_tsar(example_tsar_data))
+}
 
 }
 \seealso{
