@@ -40,6 +40,7 @@ knitr::include_graphics("images/weed_raw.png")
 ```
 
 Selection by grid is also possible. Click on grid to highlight wells of selection. Click again to un-highlight. Click too fast may lead to error due to speed of reaction, use `Clear All Selected` button at the top of page to reset selection. Note that clearing selections alters to-be-copied selections, but will not restore curves already removed in the graph. However, changes are not made permanently. If erroneously removed, simply close and reopen window to run again.
+
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/weed_raw1.png")
 ```
