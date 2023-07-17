@@ -19,6 +19,7 @@ remotes::install_github("CGAO123/TSAR", auth_token = "github_pat_11ALDKG5Y05TuEd
 library(TSAR)
 library(dplyr)
 library(ggplot2)
+library(shiny)
 ```
 
 ```{r, out.width = "400px", echo = FALSE}
