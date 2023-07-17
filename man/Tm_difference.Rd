@@ -27,6 +27,12 @@ From a specified control condition, the change in Tm is calculated for
   condition, see \code{\link{tsa_average}} for details.
   To see all conditions use \code{condition_IDs(tsa_data)}.
 }
+\examples{
+data("example_tsar_data")
+control <- condition_IDs(example_tsar_data)[1]
+Tm_difference(example_tsar_data, control_condition = control)
+
+}
 \seealso{
 \code{\link{merge_tsa}} for preparing data.
   \code{\link{tsa_average}} for more information on the output data.

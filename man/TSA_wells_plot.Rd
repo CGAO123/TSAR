@@ -60,6 +60,12 @@ Generates the individual curves for each well in the merged tsa data input.
   in addition to the individual curves. The average and sd will be smoothened
   by linear regression; see \code{\link{tsa_average}} for details.
 }
+\examples{
+data("example_tsar_data")
+check <- subset(example_tsar_data, condition_ID == "CA FL_PyxINE HCl")
+TSA_wells_plot(check, separate_legend = FALSE)
+
+}
 \seealso{
 \code{\link{merge_tsa}} and \code{\link{normalize_fluorescence}}
   for preparing data. See \code{\link{tsa_average}} and

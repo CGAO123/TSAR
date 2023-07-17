@@ -31,6 +31,10 @@ This function is used to output calculated Tm data from TSA analysis. The
   To analyze multiple TSA experiments, use merge_tsa() to make a single
   data frame for analysis.
 }
+\examples{
+data("example_tsar_data")
+TSA_Tms(example_tsar_data)
+}
 \seealso{
 \code{\link{merge_tsa}}, \code{\link{read_raw_data}},
 and \code{\link{read_analysis}} for preparing input.

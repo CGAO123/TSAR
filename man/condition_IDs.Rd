@@ -25,6 +25,11 @@ This function is used to extract information of the condition IDs from a
   either a character vector of unique IDs present or a numeric value of the
   number of unique IDs.
 }
+\examples{
+data("example_tsar_data")
+condition_IDs(example_tsar_data)
+
+}
 \seealso{
 \code{\link{merge_tsa}} and \code{\link{read_analysis}}
 for preparing input.

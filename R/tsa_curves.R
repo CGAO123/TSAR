@@ -33,6 +33,11 @@
 #' @seealso \code{\link{merge_tsa}} and \code{\link{normalize_fluorescence}}
 #'   for preparing data. See \code{\link{tsa_average}} and
 #'   \code{\link{get_legend}} for details on function parameters.
+#' @examples
+#' data("example_tsar_data")
+#' check <- subset(example_tsar_data, condition_ID == "CA FL_PyxINE HCl")
+#' TSA_wells_plot(check, separate_legend = FALSE)
+#'
 #' @export
 
 
@@ -225,6 +230,10 @@ TSA_wells_plot <- function(
 #' @seealso \code{\link{merge_tsa}}
 #'   for preparing data. See \code{\link{Tm_difference}} and
 #'   \code{\link{get_legend}} for details on function parameters.
+#' @examples
+#' data("example_tsar_data")
+#' TSA_boxplot(example_tsar_data, color_by = "Protein",
+#'   label_by = "Ligand", separate_legend = FALSE)
 #' @export
 
 TSA_boxplot <- function(
@@ -359,6 +368,10 @@ TSA_boxplot <- function(
 #'   \code{\link{get_legend}} for details on function parameters.
 #'   See \code{\link{TSA_wells_plot}} for individual curves of the averaged
 #'   conditions shown.
+#' @examples
+#' data("example_tsar_data")
+#' tsa_compare_plot(example_tsar_data, y = "RFU",
+#'   control_condition = "CA FL_DMSO")
 #' @export
 
 tsa_compare_plot <- function(

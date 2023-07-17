@@ -24,6 +24,9 @@
 #' @family TSAR Formatting
 #' @seealso \code{\link{merge_tsa}}, \code{\link{read_raw_data}},
 #' and \code{\link{read_analysis}} for preparing input.
+#' @examples
+#' data("example_tsar_data")
+#' TSA_Tms(example_tsar_data)
 #' @export
 #'
 

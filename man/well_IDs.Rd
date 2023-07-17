@@ -27,6 +27,11 @@ This function is used to extract information of the well IDs from a
   either a character vector of unique IDs present or a numeric value of the
   number of unique IDs.
 }
+\examples{
+data("example_tsar_data")
+well_IDs(example_tsar_data)
+
+}
 \seealso{
 \code{\link{merge_tsa}}, \code{\link{read_raw_data}},
 and \code{\link{read_analysis}} for preparing input.
