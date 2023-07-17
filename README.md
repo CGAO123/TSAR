@@ -4,6 +4,7 @@
   Using package `remotes` to install package from Github repository. When installing, ensure to set `build_vignettes = TRUE`.
 
 ```r
+install.packages(remotes)
 library(remotes)
 remotes::install_github("CGAO123/TSAR", auth_token = "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", build_vignettes = TRUE)
 library(TSAR)
