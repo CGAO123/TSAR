@@ -14,7 +14,8 @@
 #' @examples
 #' data("qPCR_data1")
 #' result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
-#'   "Well.Position", "Temperature", "Fluorescence", "Normalized"))
+#'     "Well.Position", "Temperature", "Fluorescence", "Normalized"
+#' ))
 #' read_tsar(result, code = 0)
 #' output_data <- read_tsar(result, code = 2)
 #'
@@ -75,7 +76,8 @@ read_tsar <- function(result, code) {
 #' @examples
 #' data("qPCR_data1")
 #' result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
-#'   "Well.Position", "Temperature", "Fluorescence", "Normalized"))
+#'     "Well.Position", "Temperature", "Fluorescence", "Normalized"
+#' ))
 #' output_data <- read_tsar(result, code = 2)
 #' write_tsar(output_data, name = "2022_03_18_test", file = "txt")
 #' file.remove("~/Desktop/TSAR/2022_03_18_test_tsar_output.txt")

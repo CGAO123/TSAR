@@ -32,8 +32,10 @@
 #' data("qPCR_data1")
 #' result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
 #' data("Well_Information")
-#' join_well_info( file_path = NULL, file = Well_Information,
-#'   read_tsar(result, code = 2), type = "by_template")
+#' join_well_info(
+#'     file_path = NULL, file = Well_Information,
+#'     read_tsar(result, code = 2), type = "by_template"
+#' )
 #'
 #' @export
 join_well_info <- function(

@@ -43,8 +43,10 @@
 #'
 #' @examples
 #' data("example_tsar_data")
-#' tsa_average(example_tsar_data, y = "Fluorescence", digits = 1,
-#'   avg_smooth = TRUE, sd_smooth = TRUE)
+#' tsa_average(example_tsar_data,
+#'     y = "Fluorescence", digits = 1,
+#'     avg_smooth = TRUE, sd_smooth = TRUE
+#' )
 #'
 #' @export
 

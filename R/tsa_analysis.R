@@ -22,7 +22,8 @@
 #' test <- subset(qPCR_data1, Well.Position == "A01")
 #' test <- normalize(test, fluo = 5, selected = c(
 #'     "Well.Position", "Temperature",
-#'     "Fluorescence", "Normalized"))
+#'     "Fluorescence", "Normalized"
+#' ))
 #' gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 #' fit <- model_fit(test, model = gammodel)
 #' tm_est(fit)
@@ -33,7 +34,7 @@ tm_est <- function(norm_data, min, max) {
     # if min and max are not specified, default to check across the graph
     if (missing(min) && missing(max)) {
         return(norm_data$Temperature[which.max(norm_data$norm_deriv)])
-    } else { #allow input to restrict domain of search for inflection points
+    } else { # allow input to restrict domain of search for inflection points
         x <- norm_data[norm_data$Temperature >= min &
             norm_data$Temperature <= max, ]
         return(x$Temperature[which.max(norm_data$norm_deriv)])
@@ -71,7 +72,8 @@ tm_est <- function(norm_data, min, max) {
 #' @examples
 #' data("qPCR_data1")
 #' gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
-#'   "Well.Position", "Temperature", "Fluorescence", "Normalized"))
+#'     "Well.Position", "Temperature", "Fluorescence", "Normalized"
+#' ))
 #'
 #' @export
 gam_analysis <- function(
