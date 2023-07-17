@@ -10,12 +10,12 @@
 #'
 #' @examples
 #' data("example_tsar_data")
-#' boxplot <- TSA_boxplot(example_tsar_data, color_by = "Protein",
-#'   label_by = "Ligand", separate_legend = FALSE)
+#' boxplot <- TSA_boxplot(example_tsar_data,
+#'     color_by = "Protein",
+#'     label_by = "Ligand", separate_legend = FALSE
+#' )
 #' get_legend(boxplot)
 #'
-#'
-
 get_legend <- function(input_plot) {
     legend_plot <- input_plot
     legend_plot <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(legend_plot))

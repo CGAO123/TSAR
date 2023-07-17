@@ -8,7 +8,7 @@
 #' @return A numeric vector of rescaled values.
 #' @family TSAR Formatting
 #' @examples
-#' x <- c(0,1,3)
+#' x <- c(0, 1, 3)
 #' rescale(x)
 #'
 #' @export

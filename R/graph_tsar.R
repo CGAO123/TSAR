@@ -224,31 +224,36 @@ graph_tsar <- function(tsar_data = data.frame()) {
         ),
         hr(),
         fluidRow(
-            column(width = 6,
-                h4("helper functions: "),
-        fluidRow(
             column(
-                width = 5,
-                actionButton("condition", "List Conditions IDs")
+                width = 6,
+                h4("helper functions: "),
+                fluidRow(
+                    column(
+                        width = 5,
+                        actionButton("condition", "List Conditions IDs")
+                    ),
+                    column(
+                        width = 4,
+                        actionButton("well", "List Well IDs")
+                    ),
+                    column(
+                        width = 2,
+                        actionButton("tm", "List Tm")
+                    ),
+                )
             ),
             column(
                 width = 4,
-                actionButton("well", "List Well IDs")
-            ),
-            column(
-                width = 2,
-                actionButton("tm", "List Tm")
-            ),
-        )),
-        column(
-            width = 4,
-            br(),
-            selectInput("control_tm",
-                        label = "List Delta Tm:",
-                        choices = c("Select Control: ",
-                                    condition_IDs(tsar_data))
+                br(),
+                selectInput("control_tm",
+                    label = "List Delta Tm:",
+                    choices = c(
+                        "Select Control: ",
+                        condition_IDs(tsar_data)
+                    )
+                )
             )
-        )),
+        ),
         verbatimTextOutput("Condition_ID"),
         verbatimTextOutput("Well_ID"),
         verbatimTextOutput("tmlist"),
@@ -581,10 +586,11 @@ graph_tsar <- function(tsar_data = data.frame()) {
         })
 
         observeEvent(input$control_tm, {
-            if (input$control_tm != "Select Control: "){
+            if (input$control_tm != "Select Control: ") {
                 output$tmlist <- renderPrint({
                     Tm_difference(tsar_data,
-                                  control_condition = input$control_tm)
+                        control_condition = input$control_tm
+                    )
                 })
             }
         })

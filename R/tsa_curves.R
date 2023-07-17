@@ -232,8 +232,10 @@ TSA_wells_plot <- function(
 #'   \code{\link{get_legend}} for details on function parameters.
 #' @examples
 #' data("example_tsar_data")
-#' TSA_boxplot(example_tsar_data, color_by = "Protein",
-#'   label_by = "Ligand", separate_legend = FALSE)
+#' TSA_boxplot(example_tsar_data,
+#'     color_by = "Protein",
+#'     label_by = "Ligand", separate_legend = FALSE
+#' )
 #' @export
 
 TSA_boxplot <- function(
@@ -370,8 +372,10 @@ TSA_boxplot <- function(
 #'   conditions shown.
 #' @examples
 #' data("example_tsar_data")
-#' tsa_compare_plot(example_tsar_data, y = "RFU",
-#'   control_condition = "CA FL_DMSO")
+#' tsa_compare_plot(example_tsar_data,
+#'     y = "RFU",
+#'     control_condition = "CA FL_DMSO"
+#' )
 #' @export
 
 tsa_compare_plot <- function(
