@@ -46,6 +46,11 @@ Generate a number of plots based on the input data to compare the average
 and standard deviation (sd) of each unique condition to a specified
 control condition. To see all conditions use \code{condition_IDs(tsa_data)}.
 }
+\examples{
+data("example_tsar_data")
+tsa_compare_plot(example_tsar_data, y = "RFU",
+  control_condition = "CA FL_DMSO")
+}
 \seealso{
 \code{\link{merge_tsa}} and \code{\link{normalize_fluorescence}}
   for preparing data. See \code{\link{tsa_average}} and

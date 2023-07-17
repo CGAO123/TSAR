@@ -23,6 +23,11 @@ Either a character vector of unique well_IDs or a numeric value.
 This function is used to extract information from a data frame of TSA data.
   The Ligand values should be assigned in the TSA software.
 }
+\examples{
+data("example_tsar_data")
+TSA_ligands(example_tsar_data)
+
+}
 \seealso{
 \code{\link{merge_tsa}}, \code{\link{read_raw_data}},
 and \code{\link{read_analysis}} for preparing input.

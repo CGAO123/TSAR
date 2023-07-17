@@ -16,6 +16,9 @@
 #'
 #' @return Either a character vector of condition_IDs or a numeric value.
 #'
+#' @examples
+#' data("example_tsar_data")
+#' condition_IDs(example_tsar_data)
 #'
 #' @family TSA Summary Functions
 #' @seealso \code{\link{merge_tsa}} and \code{\link{read_analysis}}
@@ -60,6 +63,10 @@ condition_IDs <- function(
 #' @seealso \code{\link{merge_tsa}}, \code{\link{read_raw_data}},
 #' and \code{\link{read_analysis}} for preparing input.
 #'
+#' @examples
+#' data("example_tsar_data")
+#' well_IDs(example_tsar_data)
+#'
 #' @export
 
 well_IDs <- function(
@@ -92,6 +99,10 @@ well_IDs <- function(
 #' @seealso \code{\link{merge_tsa}}, \code{\link{read_raw_data}},
 #' and \code{\link{read_analysis}} for preparing input.
 #'
+#' @examples
+#' data("example_tsar_data")
+#' TSA_proteins(example_tsar_data)
+#'
 #' @export
 
 TSA_proteins <- function(
@@ -121,6 +132,10 @@ TSA_proteins <- function(
 #' @family TSA Summary Functions
 #' @seealso \code{\link{merge_tsa}}, \code{\link{read_raw_data}},
 #' and \code{\link{read_analysis}} for preparing input.
+#'
+#' @examples
+#' data("example_tsar_data")
+#' TSA_ligands(example_tsar_data)
 #'
 #' @export
 

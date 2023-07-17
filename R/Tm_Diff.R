@@ -17,6 +17,11 @@
 #'   \code{\link{condition_IDs}} to get unique Condition IDs within the
 #'   input.
 #'   \code{\link{TSA_boxplot}} for application.
+#' @examples
+#' data("example_tsar_data")
+#' control <- condition_IDs(example_tsar_data)[1]
+#' Tm_difference(example_tsar_data, control_condition = control)
+#'
 #' @export
 
 

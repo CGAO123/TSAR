@@ -18,6 +18,11 @@ For a vector of numeric values, the minimum and maximum values are determined
   Values near 0 are close to the minimum, values near 1 are close to the max.
   This function is utilized by other TSAR functions.
 }
+\examples{
+x <- c(0,1,3)
+rescale(x)
+
+}
 \seealso{
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},

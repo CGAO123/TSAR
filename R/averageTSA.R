@@ -41,6 +41,11 @@
 #' @seealso \code{\link{merge_tsa}} and \code{\link{merge_tsa}} for
 #'    preparing data.
 #'
+#' @examples
+#' data("example_tsar_data")
+#' tsa_average(example_tsar_data, y = "Fluorescence", digits = 1,
+#'   avg_smooth = TRUE, sd_smooth = TRUE)
+#'
 #' @export
 
 tsa_average <- function(tsa_data,

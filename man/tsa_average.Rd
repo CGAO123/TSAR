@@ -53,6 +53,12 @@ This function will take either Fluorescence or Normalized Fluorescence
   If you wish to average by condition, you will need to sort the data frame
   and run this function on subsets.
 }
+\examples{
+data("example_tsar_data")
+tsa_average(example_tsar_data, y = "Fluorescence", digits = 1,
+  avg_smooth = TRUE, sd_smooth = TRUE)
+
+}
 \seealso{
 \code{\link{merge_tsa}} and \code{\link{merge_tsa}} for
    preparing data.
