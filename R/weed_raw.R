@@ -28,8 +28,10 @@
 #' @seealso \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}
 #'
 #' @examples
-#' data("qPCR_data1")
-#' weed_raw(qPCR_data1, checklist = c("A11", "A12"))
+#' if (interactive()) {
+#'     data("qPCR_data1")
+#'     weed_raw(qPCR_data1, checkrange = c("A", "B", "1", "12"))
+#' }
 #'
 weed_raw <- function(raw_data,
                      checkrange = NULL,
@@ -92,8 +94,8 @@ weed_raw <- function(raw_data,
                     div(
                         id = "grid-container",
                         style = "display: grid; grid-template-columns:
-                                repeat(12, 50px); grid-gap: 0px; grid-",
-                        for (i in 1:96) {
+                                repeat(12, 50px); grid-gap: 0px;",
+                        lapply(1:96, function(i) {
                             row <- ceiling(i / 12)
                             col <- i %% 12
                             if (col == 0) col <- 12
@@ -108,7 +110,7 @@ weed_raw <- function(raw_data,
                                        font-size: 12px;",
                                 paste0(LETTERS[row], col_label)
                             )
-                        }
+                        })
                     )
                 )
             )
@@ -174,7 +176,6 @@ weed_raw <- function(raw_data,
         highlighted_cells <- reactiveVal(NULL)
         unhighlighted_cells <- reactiveVal(NULL)
         gg1 <- NULL
-
 
         shiny::observe({
             for (i in 1:96) {

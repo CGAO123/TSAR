@@ -19,8 +19,10 @@
 #'   \code{\link{write_tsar}}, \code{\link{join_well_info}}
 #'
 #' @examples
-#' data("qPCR_data1")
-#' analyze_norm(qPCR_data1)
+#' if (interactive()) {
+#'     data("qPCR_data1")
+#'     shiny::runApp(analyze_norm(qPCR_data1))
+#' }
 #'
 analyze_norm <- function(raw_data) {
     ui <- fluidPage(

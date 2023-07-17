@@ -37,7 +37,8 @@ Imports:
     jsonlite,
     rhandsontable,
     openxlsx,
-    shinyWidgets
+    shinyWidgets,
+    remotes
 Suggests: 
     knitr,
     rmarkdown
