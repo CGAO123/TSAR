@@ -17,10 +17,11 @@ A function to enable separation of legends from plots within the TSAR package
 }
 \examples{
 data("example_tsar_data")
-boxplot <- TSA_boxplot(example_tsar_data, color_by = "Protein",
-  label_by = "Ligand", separate_legend = FALSE)
+boxplot <- TSA_boxplot(example_tsar_data,
+    color_by = "Protein",
+    label_by = "Ligand", separate_legend = FALSE
+)
 get_legend(boxplot)
-
 
 }
 \seealso{

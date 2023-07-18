@@ -4,16 +4,17 @@
 \alias{view_model}
 \title{View Model}
 \usage{
-view_model(norm_data)
+view_model(raw_data)
 }
 \arguments{
-\item{norm_data}{dataset input, data should match the needs of norm_data}
+\item{raw_data}{dataset input, not processing needed}
 }
 \value{
-ggplot
+list of two ggplot graphs
 }
 \description{
-View Model
+function reviews data by well and output a graph of the fit and a graph of
+  derivative. Function called within analyze_norm function.
 }
 \examples{
 data("qPCR_data1")

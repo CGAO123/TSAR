@@ -7,6 +7,7 @@
 #' @importFrom openxlsx read.xlsx
 #' @import shiny
 #' @importFrom rhandsontable rHandsontableOutput rhandsontable
+#' @importFrom ggpubr ggarrange
 #' @import dplyr
 #' @import ggplot2
 #'
@@ -280,14 +281,18 @@ analyze_norm <- function(raw_data) {
         })
 
         shiny::observeEvent(input$model_fit, {
-            test <- filter(raw_data, raw_data$Well.Position == well_option)
+            test <- subset(raw_data, Well.Position == well_option)
             test <- normalize(test, fluo = y_col_option)
             model <- model_gam(test, x = test$Temperature, y = test$Normalized)
+            print("modeled")
             test <- model_fit(test, model = model)
             gg <- view_model(test)
+            print("graphed")
             output$Plot <- renderPlot({
-                gg + theme(aspect.ratio = 0.7, legend.position = "bottom") +
-                    guides(color = guide_legend(nrow = 2, byrow = TRUE))
+                ggarrange(
+                    plotlist = gg,
+                    ncol = 1, common.legend = TRUE
+                )
             })
         })
 

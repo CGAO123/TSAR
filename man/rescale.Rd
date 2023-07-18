@@ -19,7 +19,7 @@ For a vector of numeric values, the minimum and maximum values are determined
   This function is utilized by other TSAR functions.
 }
 \examples{
-x <- c(0,1,3)
+x <- c(0, 1, 3)
 rescale(x)
 
 }

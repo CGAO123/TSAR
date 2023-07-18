@@ -45,7 +45,8 @@ function pipeline that combines separated functions and iterate through
 \examples{
 data("qPCR_data1")
 gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
-  "Well.Position", "Temperature", "Fluorescence", "Normalized"))
+    "Well.Position", "Temperature", "Fluorescence", "Normalized"
+))
 
 }
 \seealso{

@@ -79,8 +79,12 @@ read_tsar <- function(result, code) {
 #'     "Well.Position", "Temperature", "Fluorescence", "Normalized"
 #' ))
 #' output_data <- read_tsar(result, code = 2)
-#' write_tsar(output_data, name = "2022_03_18_test", file = "txt")
-#' file.remove("~/Desktop/TSAR/2022_03_18_test_tsar_output.txt")
+#' #
+#' \dontrun{
+#' # do not run, will build excessive file in package
+#' # write_tsar(output_data, name = "2022_03_18_test", file = "txt")
+#' #
+#' }
 #' @export
 #'
 write_tsar <- function(data, name, file = "txt") {
