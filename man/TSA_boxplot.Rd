@@ -45,8 +45,10 @@ See \code{\link{Tm_difference}} for details.
 }
 \examples{
 data("example_tsar_data")
-TSA_boxplot(example_tsar_data, color_by = "Protein",
-  label_by = "Ligand", separate_legend = FALSE)
+TSA_boxplot(example_tsar_data,
+    color_by = "Protein",
+    label_by = "Ligand", separate_legend = FALSE
+)
 }
 \seealso{
 \code{\link{merge_tsa}}

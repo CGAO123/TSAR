@@ -31,7 +31,8 @@ data("qPCR_data1")
 test <- subset(qPCR_data1, Well.Position == "A01")
 test <- normalize(test, fluo = 5, selected = c(
     "Well.Position", "Temperature",
-    "Fluorescence", "Normalized"))
+    "Fluorescence", "Normalized"
+))
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 fit <- model_fit(test, model = gammodel)
 tm_est(fit)

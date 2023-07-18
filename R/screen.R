@@ -138,8 +138,11 @@ remove_raw <- function(raw_data,
 
 #' View Model
 #'
+#' function reviews data by well and output a graph of the fit and a graph of
+#'   derivative. Function called within analyze_norm function.
+#'
 #' @import ggplot2
-#' @param norm_data dataset input, data should match the needs of norm_data
+#' @param raw_data dataset input, not processing needed
 #' @examples
 #' data("qPCR_data1")
 #' test <- subset(qPCR_data1, Well.Position == "A01")
@@ -148,19 +151,32 @@ remove_raw <- function(raw_data,
 #' test <- model_fit(test, model = gammodel)
 #' view_model(test)
 #'
-#' @return ggplot
+#' @return list of two ggplot graphs
 #' @family data_preprocess
 #' @export
 #'
-view_model <- function(norm_data) {
-    ggplot(data = norm_data, aes(x = Temperature, y = Normalized)) +
+view_model <- function(raw_data) {
+    fit <- ggplot(data = raw_data, aes(x = Temperature, y = Normalized)) +
         geom_point(
             shape = 1, alpha = 0.5,
             aes(color = "Normalized Fluorescence")
         ) +
         geom_line(aes(y = fitted, color = "Fitted Model"), size = 0.5) +
-        geom_vline(xintercept = tm_est(norm_data), color = "red") +
+        geom_vline(xintercept = tm_est(raw_data), color = "red") +
         labs(color = "Curves") +
         theme_bw() +
         theme(panel.grid.major = element_blank())
+
+    raw_data <- na.omit(raw_data)
+    deriv <- ggplot(data = raw_data, aes(x = Temperature, y = norm_deriv)) +
+        geom_point(
+            shape = 1, alpha = 0.5, size = 0.3, color = "blue",
+            aes(fill = "derivative Norm-Fluo")
+        ) +
+        geom_vline(xintercept = tm_est(raw_data), color = "red") +
+        labs(fill = "Curves", y = "derivative Fluorescence") +
+        theme_bw() +
+        theme(panel.grid.major = element_blank())
+
+    return(list(fit, deriv))
 }

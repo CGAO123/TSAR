@@ -116,8 +116,9 @@ test <- filter(raw_data, raw_data$Well.Position == "A01")
 test <- normalize(test)
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 test <- model_fit(test, model = gammodel)
-view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
-    guides(color = guide_legend(nrow = 2, byrow = TRUE))
+view <- view_model(test)
+view[[1]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
+view[[2]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 tm_est(test)
 ```
 

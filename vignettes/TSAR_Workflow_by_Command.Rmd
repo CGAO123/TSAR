@@ -60,7 +60,7 @@ test <- normalize(test, fluo = 5, selected = c(
 ))
 head(test)
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
-test <- model_fit(test, model = gammodel) # , smoothed="Fluorescence")
+test <- model_fit(test, model = gammodel)
 ```
 
 Output analysis result using ggplot to view normalized data and fitted
@@ -72,8 +72,9 @@ of tm value.
 
 ```{r}
 tm_est(test)
-view_model(test) + theme(aspect.ratio = 0.7, legend.position = "bottom") +
-    guides(color = guide_legend(nrow = 2, byrow = TRUE))
+view <- view_model(test)
+view[[1]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
+view[[2]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 ```
 
 Screen all wells for curve shape on raw_data set and sift out corrupted
