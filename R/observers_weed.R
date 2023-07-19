@@ -214,7 +214,7 @@ view_selected <- function(input, output, dataset, checkrange, checklist,
             )
             plotdata <<- plotly::ggplotly(gg1, source = "plotdata")
             plotdata
-            event_register(plotdata, "plotly_click")
+            plotly::event_register(plotdata, "plotly_click")
         })
         if (!input$dialogueToggle) {
             if ((is.null(clicked_points$legend_text)) &&

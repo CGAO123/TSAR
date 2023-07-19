@@ -4,7 +4,7 @@
 #'   and select curves to weed out before entering analysis. Function wraps
 #'   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 #'
-#' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
+#' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data event_register
 #' @import shiny
 #' @importFrom shinyjs runjs useShinyjs
 #' @importFrom jsonlite toJSON
@@ -45,6 +45,7 @@ weed_raw <- function(raw_data,
         highlighted_cells <- reactiveVal(NULL)
         unhighlighted_cells <- reactiveVal(NULL)
         dataset <- reactiveVal(raw_data)
+        dataName <- deparse(substitute(raw_data))
 
         observe_grid(
             input, output, highlighted_cells,
@@ -79,7 +80,7 @@ weed_raw <- function(raw_data,
             )
             plotdata <<- plotly::ggplotly(gg1, source = "plotdata")
             plotdata
-            event_register(plotdata, "plotly_click")
+            plotly::event_register(plotdata, "plotly_click")
         })
     }
     app <- shinyApp(ui = mainpage(raw_data), server = server)
