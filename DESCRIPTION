@@ -2,15 +2,20 @@ Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
 Version: 0.1.1
-Authors@R: c(person(c("William", "M."), 
-			"McFadden", 
-			email = "wmm27@pitt.edu", 
-			role = c("aut")),
-	   	person("Xinlin", 
+Date: 2023
+Authors@R: c(person("Xinlin", 
 			"Gao", 
 			email = "candygao2015@outlook.com", 
 			role = c("aut", "cre"),
-			comment = c(ORCID = "0009-0002-2518-235X"))
+			comment = c(ORCID = "0009-0002-2518-235X")),
+		person(c("William", "M."), 
+			"McFadden", 
+			email = "wmm27@pitt.edu", 
+			role = c("aut")),
+		person(c("Stefan", "G."),
+			"Sarafianos",
+			email = "stefanos.sarafianos@emory.edu",
+			role = c("fnd","aut","ths"))
 		)
 Description: This package automates analysis workflow for TSA qPCR data. 
 	Processing, analyzing, and visualizing data through both shiny 
@@ -30,14 +35,14 @@ Imports:
     readxl (>= 1.4.0),
     stringr (>= 1.4.0),
     tidyr (>= 1.1.4),
-    utils,
-    shiny,
-    plotly,
-    shinyjs,
-    jsonlite,
-    rhandsontable,
-    openxlsx,
-    shinyWidgets
+    utils (>= 4.3.1),
+    shiny (>= 1.7.4.1),
+    plotly (>= 4.10.2),
+    shinyjs (>= 2.1.0),
+    jsonlite (>= 1.8.7),
+    rhandsontable (>= 0.3.8),
+    openxlsx (>= 4.2.5.2),
+    shinyWidgets (>= 0.7.6)
 Suggests: 
     knitr,
     rmarkdown
@@ -47,5 +52,6 @@ DataRaw: data/qPCR_data1.rda
 DataRaw2: data/qPCR_data2.rda
 DataRaw3: data/Well_Information.rda
 DataRaw4: data/Well_Information_Template.rda
+DataRawr: data/example_tsar_data.rda
 Depends: 
     R (>= 4.3.0)
