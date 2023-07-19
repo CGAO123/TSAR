@@ -27,8 +27,8 @@ The weed_raw function allows users to interact with a screening graph
   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 }
 \examples{
+data("qPCR_data1")
 if (interactive()) {
-    data("qPCR_data1")
     weed_raw(qPCR_data1, checkrange = c("A", "B", "1", "12"))
 }
 
