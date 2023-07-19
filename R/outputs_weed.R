@@ -6,7 +6,7 @@ print_plot <- function(input, output, dataset, checkrange, checklist, gg1) {
         )
         plotdata <<- plotly::ggplotly(gg1, source = "plotdata")
         plotdata
-        event_register(plotdata, "plotly_click")
+        plotly::event_register(plotdata, "plotly_click")
     })
 }
 print_click <- function(input, output, clicked_points) {
