@@ -54,7 +54,7 @@ TSA_wells_plot <- function(
     if (!"well_ID" %in% names(tsa_data) ||
         !"condition_ID" %in% names(tsa_data)) {
         stop("tsa_data must be a data frame merged by
-             merge_tsa() or merg_norm()")
+             merge_tsa() or merge_norm()")
     }
 
 
