@@ -29,7 +29,7 @@ The weed_raw function allows users to interact with a screening graph
 \examples{
 data("qPCR_data1")
 if (interactive()) {
-    weed_raw(qPCR_data1, checkrange = c("A", "B", "1", "12"))
+    runApp(weed_raw(qPCR_data1, checkrange = c("A", "B", "1", "12")))
 }
 
 }

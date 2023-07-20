@@ -30,7 +30,7 @@
 #' @examples
 #' data("qPCR_data1")
 #' if (interactive()) {
-#'     weed_raw(qPCR_data1, checkrange = c("A", "B", "1", "12"))
+#'     runApp(weed_raw(qPCR_data1, checkrange = c("A", "B", "1", "12")))
 #' }
 #'
 weed_raw <- function(raw_data,
@@ -40,12 +40,13 @@ weed_raw <- function(raw_data,
     source("~/Desktop/TSAR/R/outputs_weed.R")
     source("~/Desktop/TSAR/R/interface_weed.R")
 
+    ui <- mainpage(raw_data, data_name = deparse(substitute(raw_data)))
+
     server <- function(input, output) {
         clicked_points <- reactiveValues(legend_text = NULL)
         highlighted_cells <- reactiveVal(NULL)
         unhighlighted_cells <- reactiveVal(NULL)
         dataset <- reactiveVal(raw_data)
-        dataName <- deparse(substitute(raw_data))
 
         observe_grid(
             input, output, highlighted_cells,
@@ -83,5 +84,5 @@ weed_raw <- function(raw_data,
             plotly::event_register(plotdata, "plotly_click")
         })
     }
-    app <- shinyApp(ui = mainpage(raw_data), server = server)
+    app <- shinyApp(ui = ui, server = server)
 }

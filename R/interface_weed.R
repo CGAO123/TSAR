@@ -1,4 +1,4 @@
-mainpage <- function(raw_data) {
+mainpage <- function(raw_data, data_name) {
     fluidPage(
         useShinyjs(),
         tags$style(
@@ -31,7 +31,7 @@ mainpage <- function(raw_data) {
         ),
         fluidRow(
             column(width = 4, h3("Current Raw Dataset: ")),
-            h3(dataName <- deparse(substitute(raw_data)))
+            h3(data_name)
         ),
         div(
             class = "sticky-panel",
