@@ -1,8 +1,9 @@
 #' Graph tsar_data
 #'
-#' The weed_raw function allows users to interact with a screening graph
-#'   and select curves to weed out before entering analysis. Function wraps
-#'   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
+#' Function allows users to graph out tsar_data, building boxplot, compare
+#'   plots, and curves by condition. Input of data as parameter is optional.
+#'   graph_tsar wraps together all graphing functions and relative helper
+#'   functions.
 #'
 #' @import shiny
 #' @import ggplot2
@@ -12,7 +13,9 @@
 #'
 #' @export
 #'
-#' @param tsar_data tsar data outputted by norm_to_tsar or merge_tsa
+#' @param tsar_data tsar data outputted by merge_norm or merge_tsa.
+#'   Parameter is optional. If no data is passed, access the merge panel
+#'   to merge norm_data into tsar_data.
 #'
 #' @return prompts separate app window for user interaction,
 #'   does not return specific value; generates boxplot and compare plots
@@ -20,8 +23,10 @@
 #'
 #' @family TSA Plots
 #'
-#' @seealso \code{\link{TSA_boxplot}}, \code{\link{tsa_compare_plot}},
-#'   \code{\link{condition_IDs}}, \code{\link{well_IDs}}
+#' @seealso \code{\link{TSA_boxplot}}, \code{\link{TSA_compare_plot}},
+#'   \code{\link{condition_IDs}}, \code{\link{well_IDs}},
+#'   \code{\link{merge_norm}}, \code{\link{TSA_Tms}},
+#'   \code{\link{Tm_difference}}
 #'
 #' @examples
 #' if (interactive()) {

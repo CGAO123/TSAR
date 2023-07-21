@@ -1,10 +1,11 @@
-#' Weed Raw
+#' Weed raw data for corrupt curves
 #'
 #' The weed_raw function allows users to interact with a screening graph
 #'   and select curves to weed out before entering analysis. Function wraps
 #'   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 #'
-#' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data event_register
+#' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
+#'   event_register
 #' @import shiny
 #' @importFrom shinyjs runjs useShinyjs
 #' @importFrom jsonlite toJSON
@@ -47,22 +48,26 @@ weed_raw <- function(raw_data,
         highlighted_cells <- reactiveVal(NULL)
         unhighlighted_cells <- reactiveVal(NULL)
         dataset <- reactiveVal(raw_data)
+        gg1 <- reactiveVal(NULL)
 
         observe_grid(
             input, output, highlighted_cells,
             unhighlighted_cells
         )
-        clear_selection(input, output, clicked_points, highlighted_cells)
+        clear_selection(
+            input, output, clicked_points,
+            highlighted_cells, unhighlighted_cells
+        )
         unhighlight_grid(input, output, highlighted_cells)
         highlight_grid(input, output, highlighted_cells)
         toggle_grid(input, output)
         print_click(input, output, clicked_points)
         copy_click(input, output, highlighted_cells, clicked_points)
         copy_click_full(
-            input, output, highlighted_cells, dataName,
+            input, output, highlighted_cells,
             clicked_points
         )
-        stop_window(input, output)
+        stop_window(input, output, dataset)
         remove_selected(
             input, output, dataset, checkrange, checklist,
             gg1, highlighted_cells, clicked_points
@@ -73,16 +78,7 @@ weed_raw <- function(raw_data,
             input, output, dataset, checkrange, checklist,
             highlighted_cells, clicked_points, gg1
         )
-
-        output$distPlot <- plotly::renderPlotly({
-            gg1 <<- TSAR::screen(dataset(),
-                checkrange = checkrange,
-                checklist = checklist
-            )
-            plotdata <<- plotly::ggplotly(gg1, source = "plotdata")
-            plotdata
-            plotly::event_register(plotdata, "plotly_click")
-        })
+        print_plot(input, output, dataset, checkrange, checklist, gg1)
     }
     app <- shinyApp(ui = ui, server = server)
 }

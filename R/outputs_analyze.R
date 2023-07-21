@@ -23,11 +23,11 @@ build_view <- function(input, output, gg) {
 }
 
 build_well <- function(input, output, hide = FALSE) {
-    output$excelTable <- renderRHandsontable({
+    output$excelTable <- rhandsontable::renderRHandsontable({
         if (hide == TRUE) {
             NULL
         } else {
-            rhandsontable(data.frame(head(Well_Information_Template, 9)))
+            rhandsontable(data.frame(head(well_information_template, 9)))
         }
     })
 }

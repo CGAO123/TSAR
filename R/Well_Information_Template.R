@@ -4,7 +4,7 @@
 #'   Template specifies the way condition information will be read in as,
 #'   specifying protein and ligand content in well.
 #'
-#' @name Well_Information_Template
+#' @name well_information_template
 #'
 #' @format A data frame with the following columns:
 #'   \describe{
@@ -35,7 +35,7 @@
 #'     \item{Ligand...25}{Ligand in Well 12}
 #'   }
 #'
-#' @usage data(Well_Information_Template)
+#' @usage data(well_information_template)
 #' @return well information template in data frame
 #' @keywords dataset
-data(Well_Information_Template, envir = environment())
+data(well_information_template, envir = environment())

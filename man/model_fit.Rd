@@ -11,15 +11,18 @@ model_fit(norm_data, model, smoothed)
 
 \item{model}{fitted model containing fitted values}
 
-\item{smoothed}{inform whether data already contains smoothed model; set
-\code{smoothed = "Flourescence"} to calculate norm_deriv upon the
-existing model}
+\item{smoothed}{inform whether data already contains a smoothed model; Input
+the column name of the smoothed data to override values of gam model
+fitting. For example, existing "Fluorescence" column contains data already
+smoothed, set \code{smoothed = "Flourescence"} to calculate derivative
+function upon the called smoothed data.}
 }
 \value{
 data frame; with calculated derivative columns
 }
 \description{
-Model_fit calculates derivatives by refitting model onto data
+Model_fit calculates derivatives by refitting model onto data. Only runs
+  on data of a single well.
 }
 \examples{
 data("qPCR_data1")
@@ -30,6 +33,8 @@ test <- normalize(test, fluo = 5, selected = c(
 ))
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 model_fit(test, model = gammodel)
+# if data come smoothed, run ...
+model_fit(test, smoothed = "Fluorescence")
 
 }
 \seealso{

@@ -2,20 +2,23 @@
 % Please edit documentation in R/norm_to_tsar.R
 \name{merge_norm}
 \alias{merge_norm}
-\title{Merge and format data for sequential applications of graphing functions}
+\title{Merge and format norm_data into tsar_data}
 \usage{
 merge_norm(data, name, date)
 }
 \arguments{
-\item{data}{A character vector specifying the file paths of the data files
-or data frame objects of analysis data set.}
+\item{data}{list, a character vector specifying the file paths of the data
+files or data frame objects of analysis data set. For example, given data
+frames named "data1" and "data2", specify parameter as
+\code{data = list(data1, data2)}.}
 
-\item{name}{A character vector specifying the experiment names.}
+\item{name}{list, character vector specifying the experiment names.}
 
-\item{date}{A character vector specifying the dates.}
+\item{date}{list, character vector specifying the dates. Does not require
+any date format restrictions.}
 }
 \value{
-data frame in the format of tsat_data
+data frame in the format of tsar_data
 }
 \description{
 This function merges data of experiment replicates across different dates.
@@ -30,17 +33,17 @@ This function merges and normalizes test data from multiple files.
 \examples{
 data("qPCR_data1")
 result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
-data("Well_Information")
+data("well_information")
 norm_data <- join_well_info(
-    file_path = NULL, file = Well_Information,
-    read_tsar(result, code = 2), type = "by_template"
+    file_path = NULL, file = well_information,
+    read_tsar(result, output_content = 2), type = "by_template"
 )
 norm_data <- na.omit(norm_data)
 data("qPCR_data2")
 result2 <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
 norm_data2 <- join_well_info(
-    file_path = NULL, file = Well_Information,
-    read_tsar(result2, code = 2), type = "by_template"
+    file_path = NULL, file = well_information,
+    read_tsar(result2, output_content = 2), type = "by_template"
 )
 norm_data2 <- na.omit(norm_data2)
 tsar_data <- merge_norm(
@@ -53,10 +56,10 @@ tsar_data <- merge_norm(
 \seealso{
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},
+\code{\link{TSA_average}()},
 \code{\link{Tm_difference}()},
-\code{\link{merge_tsa}()},
+\code{\link{merge_TSA}()},
 \code{\link{normalize_fluorescence}()},
-\code{\link{rescale}()},
-\code{\link{tsa_average}()}
+\code{\link{rescale}()}
 }
 \concept{TSAR Formatting}

@@ -2,39 +2,44 @@
 % Please edit documentation in R/data_preprocess.R
 \name{normalize}
 \alias{normalize}
-\title{normalize function}
+\title{Normalize Fluorescence}
 \usage{
 normalize(
   raw_data,
-  fluo = -1,
+  fluo = NA,
   selected = c("Well.Position", "Temperature", "Fluorescence", "Normalized")
 )
 }
 \arguments{
 \item{raw_data}{data frame; raw dataset input, should be of only one well.
-If multiple wells need to be normalized, use \code{\link{gam_analysis}} for
-96 well application. If only preliminary screening is needed, use
-\code{\link[TSAR]{screen}}}
+If multiple wells need to be normalized, use \code{\link{gam_analysis}}()
+for 96 well application. If only preliminary screening is needed, use
+\code{\link[TSAR]{screen}}().}
 
 \item{fluo}{integer; the Fluorescence variable column id
 (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
   if fluorescence variable is named exactly as "Fluorescence", fluo does not
-  need to be specified. i.e. fluo is set to -1 by default,
-  suggesting the variable is named "Fluorescence"}
+  need to be specified. i.e. fluo is set to NA by default,
+  suggesting the variable is named "Fluorescence".}
 
 \item{selected}{list of character strings;
 variables from the original data set users intend to keep.
 Variable default set to c("Well.Position", "Temperature", "Fluorescence",
 "Normalized") if not otherwise specified. If data frame variables are named
-differently, user needs to specify what column variables to keep}
+differently, user needs to specify what column variables to keep.}
 }
 \value{
 cleaned up data framed with selected columns
 }
 \description{
-Normalize reads in raw data. This function normalizes data by standardized
-  them according to max and min. It also reformat data types by checking
-  for potential error
+normalize() reads in raw_data. This function normalizes data by standardizing
+  them according to maximum and minimum fluorescence per well, with maximum
+  set to 1 and minimum set to 0. It also reformats data types by checking
+  for potential error. i.e. a string speicfying 100,000 will be read in
+  as number, 100000, without issue.
+  Function is applicable only to data of a single well, do not call on
+  an entire data frame of all 96 well data. It is intended for single well
+  screening purposes.
 }
 \examples{
 data("qPCR_data1")

@@ -1,4 +1,4 @@
-#' Screen
+#' Screen raw curves
 #'
 #' screens multiple wells of data and prepares to assist identification of
 #'   corrupted wells and odd out behaviors
@@ -11,9 +11,9 @@
 #' @param checkrange list type input identifying range of wells to select.
 #'   For example, if viewing first 8 wells from row A to C is needed, one can
 #'   specify the row letters and column numbers like this:
-#'   `checkrange = c("A", "C", "1", "8")`
+#'   \code{checkrange = c("A", "C", "1", "8")}
 #' @param checklist use this parameter to view selected Wells with full
-#'   Well names. For example, `checklist = c('A01', 'D11')`
+#'   Well names. For example, \code{checklist = c('A01', 'D11')}
 #'
 #' @examples
 #' data("qPCR_data1")
@@ -87,18 +87,18 @@ screen <- function(raw_data,
         theme(panel.grid.major = element_blank())
 }
 
-#' remove_raw
+#' Remove selected raw curves
 #'
-#' removes selected curves with specified wells and range
+#' Removes selected curves with specified wells and range.
 #' @import dplyr
 #'
 #' @param raw_data dataframe; to be processed data
 #' @param removerange list type input identifying range of wells to select.
 #'   For example, if removing all 12 wells from row D to H is needed, one can
 #'   specify the row letters and column numbers like this:
-#'   `removerange = c("D", "H", "1", "12")`
+#'   \code{removerange = c("D", "H", "1", "12")}
 #' @param removelist use this parameter to remove selected Wells with full
-#'   Well names. For example, `removelist = c('A01', 'D11')`
+#'   Well names. For example, \code{removelist = c('A01', 'D11')}
 #'
 #' @examples
 #' data("qPCR_data1")
@@ -138,7 +138,7 @@ remove_raw <- function(raw_data,
 
 #' View Model
 #'
-#' function reviews data by well and output a graph of the fit and a graph of
+#' Function reviews data by well and output a graph of the fit and a graph of
 #'   derivative. Function called within analyze_norm function.
 #'
 #' @import ggplot2
@@ -162,7 +162,7 @@ view_model <- function(raw_data) {
             aes(color = "Normalized Fluorescence")
         ) +
         geom_line(aes(y = fitted, color = "Fitted Model"), size = 0.5) +
-        geom_vline(xintercept = tm_est(raw_data), color = "red") +
+        geom_vline(xintercept = Tm_est(raw_data), color = "red") +
         labs(color = "Curves") +
         theme_bw() +
         theme(panel.grid.major = element_blank())
@@ -173,7 +173,7 @@ view_model <- function(raw_data) {
             shape = 1, alpha = 0.5, size = 0.3, color = "blue",
             aes(fill = "derivative Norm-Fluo")
         ) +
-        geom_vline(xintercept = tm_est(raw_data), color = "red") +
+        geom_vline(xintercept = Tm_est(raw_data), color = "red") +
         labs(fill = "Curves", y = "derivative Fluorescence") +
         theme_bw() +
         theme(panel.grid.major = element_blank())

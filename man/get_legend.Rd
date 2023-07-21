@@ -13,7 +13,7 @@ get_legend(input_plot)
 two ggplots, one containing the legend and another containg all else.
 }
 \description{
-A function to enable separation of legends from plots within the TSAR package
+Function enables separation of legends from plots within the TSAR package.
 }
 \examples{
 data("example_tsar_data")
@@ -27,8 +27,8 @@ get_legend(boxplot)
 \seealso{
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},
+\code{\link{TSA_compare_plot}()},
 \code{\link{TSA_wells_plot}()},
-\code{\link{graph_tsar}()},
-\code{\link{tsa_compare_plot}()}
+\code{\link{graph_tsar}()}
 }
 \concept{TSA Plots}

@@ -1,8 +1,8 @@
-#' find inflection point function
+#' Find inflection point function
 #'
-#' looks for Tm temperature values by finding the inflection point in the
-#'   normalized fluorescence data. The inflection point is approximated by
-#'   locating the maximum first derivative
+#' Looks for Tm temperature values by finding the inflection point in the
+#'   fluorescence data. The inflection point is approximated by
+#'   locating the maximum first derivative stored in "norm_deriv" column.
 #'
 #' @param norm_data data frame; data frame input containing derivative values
 #'   can only be data frames for one well; finding inflections points across
@@ -26,11 +26,11 @@
 #' ))
 #' gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 #' fit <- model_fit(test, model = gammodel)
-#' tm_est(fit)
+#' Tm_est(fit)
 #'
 #' @export
 #'
-tm_est <- function(norm_data, min, max) {
+Tm_est <- function(norm_data, min, max) {
     # if min and max are not specified, default to check across the graph
     if (missing(min) && missing(max)) {
         return(norm_data$Temperature[which.max(norm_data$norm_deriv)])
@@ -42,36 +42,36 @@ tm_est <- function(norm_data, min, max) {
 }
 
 
-#' gam_analysis function runs on the full board
+#' Analysis of all 96 wells through gam modeling
 #'
-#' function pipeline that combines separated functions and iterate through
-#'   each well to find the tm estimation
+#' Function pipeline that combines separated functions and iterate through
+#'   each well to estimate the Tm.
 #' @importFrom mgcv gam
 #' @importFrom magrittr %>%
 #'
 #' @param raw_data data frame; raw data frame
-#' @param keep Boolean; set to T by default to return normalized data and
-#'   fitted data
-#' @param smoothed Boolean; set to false by default,
+#' @param keep Boolean; set to \code{keep = TRUE}
+#'   by default to return normalized data and fitted data
+#' @param smoothed Boolean; set to \code{smoothed = FALSE} by default,
 #'   if data is already smoothed, set smoothed to true
-#' @param fit Boolean; set to F by default, T returns access to information
-#'   of each model fit
+#' @param fit Boolean; set to \code{fit = FALSE} by default, \code{fit = TRUE}
+#'   returns access to information of each model fit. Not accessible in shiny.
 #' @param selections list of characters; the variables in raw data user intends
 #'   to keep. It is set, by default, to \code{c("Well.Position", "Temperature",
 #'   "Fluorescence", "Normalized")}.
-#' @param fluo integer; the Fluorescence variable column id
+#' @param fluo_col integer; the Fluorescence variable column id
 #'   (e.g. fluo = 5 when 5th column of data frame is the Fluorescence value)
 #'   if fluorescence variable is named exactly as "Fluorescence", fluo does not
 #'   need to be specified.
 #'
-#' @return list of data frames, list of three data frame outputs,
-#'   Tm estimation by well, data set, fit of model by well
+#' @return List of data frames, list of three data frame outputs,
+#'   Tm estimation by well, data set, fit of model by well.
 #'
 #' @family tsa_analysis
 #'
 #' @examples
 #' data("qPCR_data1")
-#' gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
+#' gam_analysis(qPCR_data1, smoothed = TRUE, fluo_col = 5, selections = c(
 #'     "Well.Position", "Temperature", "Fluorescence", "Normalized"
 #' ))
 #'
@@ -81,7 +81,7 @@ gam_analysis <- function(
     keep = TRUE,
     fit = FALSE,
     smoothed = FALSE,
-    fluo = -1,
+    fluo_col = NA,
     selections = c(
         "Well.Position",
         "Temperature",
@@ -99,7 +99,7 @@ gam_analysis <- function(
         # normalize data
         by_well <- normalize(
             raw_data = by_well,
-            fluo = fluo,
+            fluo = fluo_col,
             selected = selections
         )
 
@@ -128,7 +128,7 @@ gam_analysis <- function(
         }
 
         # estimate tm values and concat them into one list
-        tm <- c(tm, tm_est(by_well))
+        tm <- c(tm, Tm_est(by_well))
 
         # if user wishes to keep all fitted data
         if (keep == TRUE) {

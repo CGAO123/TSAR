@@ -31,9 +31,9 @@ build_dates <- function(input, output) {
 }
 save_dates <- function(input, output, dated, datelist) {
     shiny::observeEvent(input$save_dates, {
-        saved_dates <- sapply(input$file$name, function(i) {
+        saved_dates <- vapply(input$file$name, function(i) {
             as.character(input[[paste0("Date for file ", i)]])
-        })
+        }, FUN.VALUE = character(1))
         datelist(saved_dates)
         if (!is.null(datelist)) {
             if (!input$dialogueToggle) {
@@ -56,7 +56,8 @@ save_dates <- function(input, output, dated, datelist) {
         }
     })
 }
-merge_update <- function(input, output, dated, graph_tsar_data, datelist, session) {
+merge_update <- function(input, output, dated, graph_tsar_data,
+                         datelist, session) {
     shiny::observeEvent(input$generate, {
         if ((dated() == FALSE) && (!input$dialogueToggle)) {
             showModal(modalDialog(
@@ -137,7 +138,7 @@ build_compare <- function(input, output, graph_tsar_data, compare) {
                 ))
             }
         } else {
-            compare_p <- tsa_compare_plot(graph_tsar_data(),
+            compare_p <- TSA_compare_plot(graph_tsar_data(),
                 y = input$y_axis,
                 title_by = input$title_by,
                 show_Tm = input$show_tm,

@@ -1,6 +1,6 @@
 render_message <- function(input, output) {
-    output$Plot_Message <- renderPrint({
-        cat(
+    output$Plot_Message <- renderText({
+        c(
             "Select one of the following graph options and click generate.",
             "\nGraphing takes few seconds to load, please wait :)"
         )

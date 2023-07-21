@@ -58,7 +58,7 @@ mainpage <- function(raw_data, data_name) {
                         id = "grid-container",
                         style = "display: grid; grid-template-columns:
                                 repeat(12, 50px); grid-gap: 0px;",
-                        lapply(1:96, function(i) {
+                        lapply(seq_len(96), function(i) {
                             row <- ceiling(i / 12)
                             col <- i %% 12
                             if (col == 0) col <- 12
@@ -131,5 +131,13 @@ mainpage <- function(raw_data, data_name) {
         ),
         br(),
         actionButton("stopButton", "Close Window"),
+        div(
+            id = "hidden",
+            checkboxGroupInput("extractedname",
+                label = "name",
+                choices = list(data_name),
+                selected = data_name
+            )
+        )
     )
 }

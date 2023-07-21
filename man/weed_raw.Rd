@@ -2,7 +2,7 @@
 % Please edit documentation in R/weed_raw.R
 \name{weed_raw}
 \alias{weed_raw}
-\title{Weed Raw}
+\title{Weed raw data for corrupt curves}
 \usage{
 weed_raw(raw_data, checkrange = NULL, checklist = NULL)
 }

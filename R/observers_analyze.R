@@ -12,7 +12,7 @@ perform_analysis <- function(input, output, raw_data, analysis,
                              output_data, analyzed_done) {
     shiny::observeEvent(input$analyze, {
         analysis_p <- gam_analysis(raw_data,
-            fluo = input$num_a,
+            fluo_col = input$num_a,
             keep = input$keep,
             fit = input$fit,
             smoothed = input$smooth,
@@ -21,7 +21,7 @@ perform_analysis <- function(input, output, raw_data, analysis,
                 "Normalized"
             )
         )
-        d <- read_tsar(analysis_p, code = 2)
+        d <- read_tsar(analysis_p, output_content = 2)
         analysis(analysis_p)
         render_data(input, output, d)
         render_data_title(input, output, "Analyzed Data: norm_data")
@@ -33,7 +33,7 @@ perform_analysis <- function(input, output, raw_data, analysis,
                         before closing window."
             ))
         }
-        output_data_p <- read_tsar(analysis(), code = input$radio)
+        output_data_p <- read_tsar(analysis(), output_content = input$radio)
         output_data(output_data_p)
     })
 }
@@ -46,7 +46,7 @@ join_condition <- function(input, output, analysis, output_data, imported,
                 file = well_info(),
                 analysis_file =
                     read_tsar(analysis(),
-                        code = input$radio
+                        output_content = input$radio
                     ),
                 type = "by_template"
             )
@@ -55,7 +55,9 @@ join_condition <- function(input, output, analysis, output_data, imported,
             if (analyzed_done() == FALSE) {
                 output_data(NULL)
             } else {
-                output_data_p <- read_tsar(analysis(), code = input$radio)
+                output_data_p <- read_tsar(analysis(),
+                    output_content = input$radio
+                )
                 output_data(output_data_p)
             }
         }
@@ -118,7 +120,7 @@ preview_output <- function(input, output, analyzed_done, imported, output_data,
                         file_path = inFile(),
                         file = well_info(),
                         analysis_file = read_tsar(analysis(),
-                            code = input$radio
+                            output_content = input$radio
                         ),
                         type = "by_template"
                     )
@@ -128,7 +130,7 @@ preview_output <- function(input, output, analyzed_done, imported, output_data,
                         output_data(NULL)
                     } else {
                         output_data_p <- read_tsar(analysis(),
-                            code = input$radio
+                            output_content = input$radio
                         )
                         output_data(output_data_p)
                     }
@@ -168,7 +170,7 @@ set_condition <- function(input, output, imported, analyzed_done, inFile,
                 file = well_info(),
                 analysis_file =
                     read_tsar(analysis(),
-                        code = input$radio
+                        output_content = input$radio
                     ),
                 type = "by_template"
             )
@@ -187,7 +189,7 @@ set_condition <- function(input, output, imported, analyzed_done, inFile,
 
 preview_condition <- function(input, output, well_info, data) {
     shiny::observeEvent(input$previewBtn, {
-        output$excelTable <- renderRHandsontable({
+        output$excelTable <- rhandsontable::renderRHandsontable({
             if (!is.null(well_info())) {
                 rhandsontable(data.frame(head(well_info(), 9)))
             } else if (!is.null(data())) {
@@ -204,7 +206,7 @@ hide <- function(input, output) {
 save_change <- function(input, output, imported, well_info) {
     shiny::observeEvent(input$saveBtn, {
         imported(TRUE)
-        well_info(hot_to_r(input$excelTable))
+        well_info(rhandsontable::hot_to_r(input$excelTable))
         if (!input$dialogueToggle) {
             showModal(modalDialog(
                 title = "Success",

@@ -26,10 +26,10 @@ rescale(x)
 \seealso{
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},
+\code{\link{TSA_average}()},
 \code{\link{Tm_difference}()},
+\code{\link{merge_TSA}()},
 \code{\link{merge_norm}()},
-\code{\link{merge_tsa}()},
-\code{\link{normalize_fluorescence}()},
-\code{\link{tsa_average}()}
+\code{\link{normalize_fluorescence}()}
 }
 \concept{TSAR Formatting}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/screen.R
 \name{remove_raw}
 \alias{remove_raw}
-\title{remove_raw}
+\title{Remove selected raw curves}
 \usage{
 remove_raw(raw_data, removerange = NULL, removelist = NULL)
 }
@@ -12,16 +12,16 @@ remove_raw(raw_data, removerange = NULL, removelist = NULL)
 \item{removerange}{list type input identifying range of wells to select.
 For example, if removing all 12 wells from row D to H is needed, one can
 specify the row letters and column numbers like this:
-`removerange = c("D", "H", "1", "12")`}
+\code{removerange = c("D", "H", "1", "12")}}
 
 \item{removelist}{use this parameter to remove selected Wells with full
-Well names. For example, `removelist = c('A01', 'D11')`}
+Well names. For example, \code{removelist = c('A01', 'D11')}}
 }
 \value{
 dataframe; data frame with specified well removed
 }
 \description{
-removes selected curves with specified wells and range
+Removes selected curves with specified wells and range.
 }
 \examples{
 data("qPCR_data1")

@@ -2,30 +2,30 @@
 % Please edit documentation in R/tsa_analysis.R
 \name{gam_analysis}
 \alias{gam_analysis}
-\title{gam_analysis function runs on the full board}
+\title{Analysis of all 96 wells through gam modeling}
 \usage{
 gam_analysis(
   raw_data,
   keep = TRUE,
   fit = FALSE,
   smoothed = FALSE,
-  fluo = -1,
+  fluo_col = NA,
   selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized")
 )
 }
 \arguments{
 \item{raw_data}{data frame; raw data frame}
 
-\item{keep}{Boolean; set to T by default to return normalized data and
-fitted data}
+\item{keep}{Boolean; set to \code{keep = TRUE}
+by default to return normalized data and fitted data}
 
-\item{fit}{Boolean; set to F by default, T returns access to information
-of each model fit}
+\item{fit}{Boolean; set to \code{fit = FALSE} by default, \code{fit = TRUE}
+returns access to information of each model fit. Not accessible in shiny.}
 
-\item{smoothed}{Boolean; set to false by default,
+\item{smoothed}{Boolean; set to \code{smoothed = FALSE} by default,
 if data is already smoothed, set smoothed to true}
 
-\item{fluo}{integer; the Fluorescence variable column id
+\item{fluo_col}{integer; the Fluorescence variable column id
 (e.g. fluo = 5 when 5th column of data frame is the Fluorescence value)
 if fluorescence variable is named exactly as "Fluorescence", fluo does not
 need to be specified.}
@@ -35,22 +35,22 @@ to keep. It is set, by default, to \code{c("Well.Position", "Temperature",
 "Fluorescence", "Normalized")}.}
 }
 \value{
-list of data frames, list of three data frame outputs,
-  Tm estimation by well, data set, fit of model by well
+List of data frames, list of three data frame outputs,
+  Tm estimation by well, data set, fit of model by well.
 }
 \description{
-function pipeline that combines separated functions and iterate through
-  each well to find the tm estimation
+Function pipeline that combines separated functions and iterate through
+  each well to estimate the Tm.
 }
 \examples{
 data("qPCR_data1")
-gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
+gam_analysis(qPCR_data1, smoothed = TRUE, fluo_col = 5, selections = c(
     "Well.Position", "Temperature", "Fluorescence", "Normalized"
 ))
 
 }
 \seealso{
 Other tsa_analysis: 
-\code{\link{tm_est}()}
+\code{\link{Tm_est}()}
 }
 \concept{tsa_analysis}

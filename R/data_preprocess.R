@@ -1,26 +1,31 @@
-#' normalize function
+#' Normalize Fluorescence
 #'
-#' Normalize reads in raw data. This function normalizes data by standardized
-#'   them according to max and min. It also reformat data types by checking
-#'   for potential error
+#' normalize() reads in raw_data. This function normalizes data by standardizing
+#'   them according to maximum and minimum fluorescence per well, with maximum
+#'   set to 1 and minimum set to 0. It also reformats data types by checking
+#'   for potential error. i.e. a string speicfying 100,000 will be read in
+#'   as number, 100000, without issue.
+#'   Function is applicable only to data of a single well, do not call on
+#'   an entire data frame of all 96 well data. It is intended for single well
+#'   screening purposes.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate select
 #'
 #' @param raw_data data frame; raw dataset input, should be of only one well.
-#'   If multiple wells need to be normalized, use \code{\link{gam_analysis}} for
-#'   96 well application. If only preliminary screening is needed, use
-#'   \code{\link[TSAR]{screen}}
+#'   If multiple wells need to be normalized, use \code{\link{gam_analysis}}()
+#'   for 96 well application. If only preliminary screening is needed, use
+#'   \code{\link[TSAR]{screen}}().
 #' @param fluo integer; the Fluorescence variable column id
 #' (e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
 #'   if fluorescence variable is named exactly as "Fluorescence", fluo does not
-#'   need to be specified. i.e. fluo is set to -1 by default,
-#'   suggesting the variable is named "Fluorescence"
+#'   need to be specified. i.e. fluo is set to NA by default,
+#'   suggesting the variable is named "Fluorescence".
 #' @param selected list of character strings;
 #'   variables from the original data set users intend to keep.
 #'   Variable default set to c("Well.Position", "Temperature", "Fluorescence",
 #'   "Normalized") if not otherwise specified. If data frame variables are named
-#'   differently, user needs to specify what column variables to keep
+#'   differently, user needs to specify what column variables to keep.
 #' @return cleaned up data framed with selected columns
 #' @examples
 #' data("qPCR_data1")
@@ -31,7 +36,7 @@
 #' @export
 normalize <- function(
     raw_data,
-    fluo = -1,
+    fluo = NA,
     selected = c(
         "Well.Position",
         "Temperature",
@@ -58,7 +63,7 @@ normalize <- function(
             sep = ""
         ))
 
-    if (fluo == -1) {
+    if (is.na(fluo)) {
         # assign min and max
         min_f <- min(norm_data$Fluorescence)
         max_f <- max(norm_data$Fluorescence)
@@ -83,19 +88,23 @@ normalize <- function(
     }
 }
 
-#' modeling function
+#' Generalized Addidtive Modeling on TSA data
 #'
-#' function finds fitted fluorescence values
+#' Function finds fitted fluorescence values by imposing generalized
+#'   additive model on fluorescence data by temperature. Model assumes
+#'   method = "GACV.Cp" and sets to \code{formula = y ~ s(x, bs = "ad")}.
+#'   Function inherits function from gam package, \code{\link{gam}}().
 #'
 #'
 #' @importFrom magrittr %>%
 #' @importFrom mgcv gam
 #' @importFrom dplyr mutate select
 #'
-#' @param norm_data data frame input
+#' @param norm_data data frame input, preferably normalized using
+#'   \code{\link{normalize}}.
 #' @param x temperature column
 #' @param y normalized fluorescence column
-#' @return gam model fitted with formula set to y ~ s(x, bs = "ad")
+#' @return dtaa frame containing gam model fitted values
 #'
 #' @family data_preprocess
 #' @examples
@@ -119,16 +128,19 @@ model_gam <- function(norm_data, x, y) {
 
 #' Refit and calculate derivative function
 #'
-#' Model_fit calculates derivatives by refitting model onto data
+#' Model_fit calculates derivatives by refitting model onto data. Only runs
+#'   on data of a single well.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate select
 #'
 #' @param norm_data data frame; the raw data set input
 #' @param model fitted model containing fitted values
-#' @param smoothed inform whether data already contains smoothed model; set
-#'   \code{smoothed = "Flourescence"} to calculate norm_deriv upon the
-#'   existing model
+#' @param smoothed inform whether data already contains a smoothed model; Input
+#'   the column name of the smoothed data to override values of gam model
+#'   fitting. For example, existing "Fluorescence" column contains data already
+#'   smoothed, set \code{smoothed = "Flourescence"} to calculate derivative
+#'   function upon the called smoothed data.
 #' @return data frame; with calculated derivative columns
 #'
 #' @family data_preprocess
@@ -142,6 +154,8 @@ model_gam <- function(norm_data, x, y) {
 #' ))
 #' gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 #' model_fit(test, model = gammodel)
+#' # if data come smoothed, run ...
+#' model_fit(test, smoothed = "Fluorescence")
 #'
 #' @export
 #'
