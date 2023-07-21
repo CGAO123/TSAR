@@ -21,16 +21,16 @@
 #' @examples
 #' data("qPCR_data1")
 #' result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
-#' data("Well_Information")
+#' data("well_information")
 #' norm_data <- join_well_info(
-#'     file_path = NULL, file = Well_Information,
+#'     file_path = NULL, file = well_information,
 #'     read_tsar(result, output_content = 2), type = "by_template"
 #' )
 #' norm_data <- na.omit(norm_data)
 #' data("qPCR_data2")
 #' result2 <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
 #' norm_data2 <- join_well_info(
-#'     file_path = NULL, file = Well_Information,
+#'     file_path = NULL, file = well_information,
 #'     read_tsar(result2, output_content = 2), type = "by_template"
 #' )
 #' norm_data2 <- na.omit(norm_data2)

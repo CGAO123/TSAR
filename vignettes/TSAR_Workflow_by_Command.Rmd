@@ -150,10 +150,10 @@ blank input. In case removal is needed, call function na.omit().
 
 ```{r, echo = FALSE}
 # join protein and ligand information
-data("Well_Information")
+data("well_information")
 norm_data <- join_well_info(
     file_path = NULL,
-    file = Well_Information,
+    file = well_information,
     read_tsar(x, output_content = 2), type = "by_template"
 )
 norm_data <- na.omit(norm_data)
@@ -198,7 +198,7 @@ analysis_rep <- gam_analysis(raw_data_rep, smoothed = TRUE)
 output_rep <- read_tsar(analysis_rep, output_content = 2)
 norm_data_rep <- join_well_info(
     file_path = NULL,
-    file = Well_Information,
+    file = well_information,
     output_rep, type = "by_template"
 )
 norm_data_rep <- na.omit(norm_data_rep)

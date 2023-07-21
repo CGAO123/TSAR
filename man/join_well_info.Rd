@@ -47,9 +47,9 @@ to the big data frame for graphing purposes.
 \examples{
 data("qPCR_data1")
 result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
-data("Well_Information")
+data("well_information")
 join_well_info(
-    file_path = NULL, file = Well_Information,
+    file_path = NULL, file = well_information,
     read_tsar(result, output_content = 2), type = "by_template"
 )
 

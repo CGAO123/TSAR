@@ -1,10 +1,10 @@
-#' Well_Information Data
+#' example well information Data
 #'
 #' Dataset Description:
-#'   This file is a readin using Well_Information_Template. File contains the
+#'   This file is a readin using well_information_template. File contains the
 #'   conditions of well, specifying protein and ligand content in well.
 #'
-#' @name Well_Information
+#' @name well_information
 #'
 #' @format A data frame with the following columns:
 #'   \describe{
@@ -35,7 +35,7 @@
 #'     \item{Ligand...25}{Ligand in Well 12}
 #'   }
 #'
-#' @usage data(Well_Information)
+#' @usage data(well_information)
 #' @return well information data frame
 #' @keywords dataset
-data(Well_Information, envir = environment())
+data(well_information, envir = environment())
