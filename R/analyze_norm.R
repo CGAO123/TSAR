@@ -1,4 +1,4 @@
-#' Analyze Norm
+#' Analyze to Normalize
 #'
 #' The analyze_norm function allows users to process analysis through an UI
 #'   interface. Function wraps together all functions with in TSA_analysis

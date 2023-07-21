@@ -2,14 +2,14 @@
 % Please edit documentation in R/read_well_info.R
 \name{join_well_info}
 \alias{join_well_info}
-\title{well information input function}
+\title{Well information input function}
 \usage{
 join_well_info(
   file_path,
   file = NULL,
   analysis_file,
-  skips = 2,
-  nrows = 95,
+  skips = 0,
+  nrows = 96,
   type
 )
 }
@@ -23,13 +23,13 @@ information is already read in}
 data and tm values}
 
 \item{skips}{integer; number indicating the number of headers present in
-input file, default set to 2 when file input is by_well
-If the input follows the excel template, this parameter does not apply,
-can be ignored}
+input file, default set to 0 when file input is "by_well"
+If the input follows the excel template, this parameter does not apply.}
 
 \item{nrows}{integer; number indicating the number of rows the data is.
-Default set to 95 assuming analysis on 96 well plate. If inputting by excel
-template, this parameter does not apply, may be ignored.}
+Default set to 96 assuming analysis on 96 well plate. Parameter is only
+applicable when file input is "by_well". If inputting by excel
+template, this parameter does not apply, please ignore.}
 
 \item{type}{string; variable specifies the type of input read in.
 type = "by_well" requires input of csv or txt files of three variables:
@@ -41,8 +41,8 @@ format provided}
 outputs data frame joining data information with well information
 }
 \description{
-reads in the ligand and protein information and joins them accordingly
-to the big data frame for graphing purposes
+Reads in the ligand and protein information and joins them accordingly
+to the big data frame for graphing purposes.
 }
 \examples{
 data("qPCR_data1")
@@ -50,7 +50,7 @@ result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5)
 data("Well_Information")
 join_well_info(
     file_path = NULL, file = Well_Information,
-    read_tsar(result, code = 2), type = "by_template"
+    read_tsar(result, output_content = 2), type = "by_template"
 )
 
 }

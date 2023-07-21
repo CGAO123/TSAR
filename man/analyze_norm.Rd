@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyze_norm.R
 \name{analyze_norm}
 \alias{analyze_norm}
-\title{Analyze Norm}
+\title{Analyze to Normalize}
 \usage{
 analyze_norm(raw_data)
 }

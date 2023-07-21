@@ -1,8 +1,8 @@
 #' Example tsar_data file
 #'
 #' Dataset Description:
-#'   This dataset is an example dataset for tsar_data strucutre. Such data
-#'   frame containsincluding well ID, conditions, and experimental details.
+#'   This is an example dataset of the tsar_data strucutre. The data
+#'   frame contains well ID, conditions, and experimental details.
 #'
 #' @name example_tsar_data
 #'

@@ -13,7 +13,7 @@ view_model(raw_data)
 list of two ggplot graphs
 }
 \description{
-function reviews data by well and output a graph of the fit and a graph of
+Function reviews data by well and output a graph of the fit and a graph of
   derivative. Function called within analyze_norm function.
 }
 \examples{

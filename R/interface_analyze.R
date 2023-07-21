@@ -93,7 +93,7 @@ analyzepage <- function(raw_data, data_name) {
             column(
                 width = 12,
                 checkboxGroupInput("checkGroup",
-                    label = "Keep variables: (do not remove Well.Position and Temperature variables)",
+                    label = "Keep variables: (keep x and y)",
                     choices = c(names(raw_data)),
                     inline = TRUE,
                     selected = c(

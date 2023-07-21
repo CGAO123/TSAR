@@ -24,7 +24,7 @@
 #'   analysis_file_path must contain the term  \emph{AnalysisResults} as the
 #'   TSA software automatically assigns this when exporting data. Data is loaded
 #'   from the \code{\link{read_raw_data}} and \code{\link{read_analysis}}
-#'   functions within this merge_tsa function.
+#'   functions within this merge_TSA function.
 #'
 
 #' @param protein can be used to select for an individual or multiple protein(s)
@@ -57,7 +57,7 @@
 #'   \strong{Condition IDs} are generated only in the
 #'   \code{\link{read_analysis}}, see that function's documentation for
 #'   more details. Condition IDs are assigned to raw data in the
-#'   \code{\link{merge_tsa}} function.
+#'   \code{\link{merge_TSA}} function.
 #'    \cr\cr
 #'
 #'   \strong{Well IDs} are similar to Condition IDs, as they are
@@ -78,7 +78,7 @@
 #' @export
 
 
-merge_tsa <- function(
+merge_TSA <- function(
     analysis_file_path,
     raw_data_path,
     protein = NA, # can filter by protein, as character
@@ -91,7 +91,7 @@ merge_tsa <- function(
     }
 
     tsa_data <- data.frame() # empty df to loop into
-    for (i in 1:n_pairs) { # Repeat for every pair
+    for (i in seq_len(n_pairs)) { # Repeat for every pair
         raw_data_i <- read_raw_data(path = raw_data_path[i]) # Load raw data
         raw_data_i <- raw_data_i[!names(raw_data_i) %in% c("Well", "Reading")]
         analysis_i <- read_analysis(path = analysis_file_path[i]) # analyze

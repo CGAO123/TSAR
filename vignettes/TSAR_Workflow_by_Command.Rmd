@@ -67,11 +67,11 @@ Output analysis result using ggplot to view normalized data and fitted
 model. Determine is any noise need to be removed (i.e. subsetting by
 temperature range). Determine which model is the best (i.e. is currrent
 data already smoothed, does fitted model suit well.) Determine if
-tm-estimation is proper. \*current model assumes derivative estimation
-of tm value.
+Tm-estimation is proper. \*current model assumes derivative estimation
+of Tm value.
 
 ```{r}
-tm_est(test)
+Tm_est(test)
 view <- view_model(test)
 view[[1]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 view[[2]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
@@ -110,7 +110,7 @@ separate modeling is needed. If modeling is needed, input argument as
 
 ```{r, echo = FALSE}
 x <- gam_analysis(raw_data,
-    smoothed = TRUE, fluo = 5,
+    smoothed = TRUE, fluo_col = 5,
     selections = c(
         "Well.Position", "Temperature",
         "Fluorescence", "Normalized"
@@ -128,15 +128,15 @@ pipeline to downstream analysis does not require output to be locally
 saved.
 
 ```{r, echo = FALSE}
-# look at only tm result by well
-output <- read_tsar(x, code = 0)
+# look at only Tm result by well
+output <- read_tsar(x, output_content = 0)
 head(output)
 tail(output)
 ```
 
 ```{r, eval = FALSE}
 # write output data file
-write_tsar(read_tsar(x, code = 2), name = "0923_tm_val", file = "csv")
+write_tsar(read_tsar(x, output_content = 2), name = "0923_tm_val", file = "csv")
 ```
 
 ## 6. Complete Dataset with Ligand and Protein Information
@@ -154,7 +154,7 @@ data("Well_Information")
 norm_data <- join_well_info(
     file_path = NULL,
     file = Well_Information,
-    read_tsar(x, code = 2), type = "by_template"
+    read_tsar(x, output_content = 2), type = "by_template"
 )
 norm_data <- na.omit(norm_data)
 head(norm_data)
@@ -195,7 +195,7 @@ screen(raw_data_rep) + theme(
     guides(color = guide_legend(nrow = 2, byrow = TRUE))
 
 analysis_rep <- gam_analysis(raw_data_rep, smoothed = TRUE)
-output_rep <- read_tsar(analysis_rep, code = 2)
+output_rep <- read_tsar(analysis_rep, output_content = 2)
 norm_data_rep <- join_well_info(
     file_path = NULL,
     file = Well_Information,
@@ -246,7 +246,7 @@ tsa_compare_plot generated multiple line graphs for comparison.
 ```{r}
 control_ID <- "CA FL_DMSO"
 
-tsa_compare_plot(conclusion,
+TSA_compare_plot(conclusion,
     y = "RFU",
     control_condition = control_ID
 )
@@ -261,4 +261,9 @@ with caution.
 ```{r Data Correction}
 error <- conclusion %>% filter(condition_ID == "CA FL_PyxINE HCl")
 TSA_wells_plot(error, separate_legend = FALSE)
+```
+
+## 11. Session Info
+```{r}
+sessionInfo()
 ```

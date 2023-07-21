@@ -1,7 +1,8 @@
 observe_grid <- function(input, output,
                          highlighted_cells, unhighlighted_cells) {
     shiny::observe({
-        for (i in 1:96) {
+        for (i in seq_len(96)) {
+            shinyjs::hide("hidden")
             shinyjs::runjs(
                 sprintf("$('#cell-%d').click(function() {
                         if ($(this).css('background-color') ===
@@ -25,11 +26,11 @@ observe_grid <- function(input, output,
     })
 }
 clear_selection <- function(input, output, clicked_points,
-                            highlighted_cells) {
+                            highlighted_cells, unhighlighted_cells) {
     shiny::observeEvent(input$clear, {
-        clicked_points <<- reactiveValues(legend_text = NULL)
-        highlighted_cells <<- reactiveVal(NULL)
-        unhighlighted_cells <<- reactiveVal(NULL)
+        clicked_points$legend_text <- NULL
+        highlighted_cells(NULL)
+        unhighlighted_cells(NULL)
         print_grid(input, output, highlighted_cells)
         print_click(input, output, clicked_points)
     })
@@ -78,8 +79,9 @@ toggle_grid <- function(input, output) {
 register_click <- function(input, output, clicked_points, gg1) {
     shiny::observeEvent(event_data("plotly_click", source = "plotdata"), {
         d <- event_data("plotly_click", source = "plotdata")
-        legend_text <- gg1$data$Well.Position[gg1$data$Fluorescence
-        == d$y]
+        pd <- gg1()
+        legend_text <- pd[["x"]][["data"]][[d$curveNumber + 1]][["name"]]
+
 
         if (
             (legend_text %in% clicked_points$legend_text)) {
@@ -127,8 +129,7 @@ copy_click <- function(input, output, highlighted_cells, clicked_points) {
         }
     })
 }
-copy_click_full <- function(input, output, highlighted_cells,
-                            dataName, clicked_points) {
+copy_click_full <- function(input, output, highlighted_cells, clicked_points) {
     shiny::observeEvent(input$removeCall, {
         clicked_points <- gsub(
             ", ", "','",
@@ -140,7 +141,7 @@ copy_click_full <- function(input, output, highlighted_cells,
             ))
         )
         tobecopied <- paste("remove_raw(",
-            dataName,
+            input$extractedname,
             ", removelist = c('", clicked_points, "'))",
             sep = ""
         )
@@ -164,8 +165,9 @@ copy_click_full <- function(input, output, highlighted_cells,
         }
     })
 }
-stop_window <- function(input, output) {
+stop_window <- function(input, output, dataset) {
     shiny::observeEvent(input$stopButton, {
+        assign("new_raw_data", dataset(), envir = .GlobalEnv)
         stopApp()
     })
 }
@@ -194,9 +196,10 @@ refresh <- function(input, output, dataset, checkrange, checklist, gg1) {
         if (!input$dialogueToggle) {
             showModal(modalDialog(
                 title = "Successfully Refreshed",
-                "All edits to dataframe are temporary.
-                Copy wells and call function remove_raw( ) in console
-                or script to store change permanently"
+                "All edits to dataframe are temporary. Close window using the
+                close buttom will store new dataset under new_raw_data
+                in the global environment. User may also copy wells and
+                run remove_raw( ) in console to store change permanently."
             ))
         }
     })
@@ -205,16 +208,16 @@ view_selected <- function(input, output, dataset, checkrange, checklist,
                           highlighted_cells, clicked_points, gg1) {
     shiny::observeEvent(input$viewRemovedButton, {
         output$distPlot <- plotly::renderPlotly({
-            gg1 <<- TSAR::screen(dataset(),
+            gg1_p <- TSAR::screen(dataset(),
                 checklist =
                     unique(c(
                         clicked_points$legend_text,
                         highlighted_cells()
                     ))
             )
-            plotdata <<- plotly::ggplotly(gg1, source = "plotdata")
-            plotdata
-            plotly::event_register(plotdata, "plotly_click")
+            plotdata <- plotly::ggplotly(gg1_p, source = "plotdata")
+            gg1(plotdata)
+            plotly::event_register(gg1(), "plotly_click")
         })
         if (!input$dialogueToggle) {
             if ((is.null(clicked_points$legend_text)) &&

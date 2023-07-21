@@ -23,7 +23,7 @@ build_view <- function(input, output, gg) {
 }
 
 build_well <- function(input, output, hide = FALSE) {
-    output$excelTable <- renderRHandsontable({
+    output$excelTable <- rhandsontable::renderRHandsontable({
         if (hide == TRUE) {
             NULL
         } else {

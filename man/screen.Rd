@@ -2,7 +2,7 @@
 % Please edit documentation in R/screen.R
 \name{screen}
 \alias{screen}
-\title{Screen}
+\title{Screen raw curves}
 \usage{
 screen(raw_data, checkrange = NULL, checklist = NULL)
 }
@@ -12,10 +12,10 @@ screen(raw_data, checkrange = NULL, checklist = NULL)
 \item{checkrange}{list type input identifying range of wells to select.
 For example, if viewing first 8 wells from row A to C is needed, one can
 specify the row letters and column numbers like this:
-`checkrange = c("A", "C", "1", "8")`}
+\code{checkrange = c("A", "C", "1", "8")}}
 
 \item{checklist}{use this parameter to view selected Wells with full
-Well names. For example, `checklist = c('A01', 'D11')`}
+Well names. For example, \code{checklist = c('A01', 'D11')}}
 }
 \value{
 returns a ggplot graph colors by well IDs

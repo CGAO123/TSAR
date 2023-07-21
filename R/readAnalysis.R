@@ -89,7 +89,7 @@
 #'
 #' @family Read TSA Data
 #' @seealso \code{\link{read_raw_data}} for loading accompanying data.
-#'   \code{\link{merge_tsa}} for joining Analysis Results and Raw Data files
+#'   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
 #'   from the TSA software.
 #' @export
 #'
@@ -127,7 +127,7 @@ read_analysis <- function(
         }
         names(analysis) <- stringr::str_replace_all(names(analysis), "\\.", " ")
         names(analysis)[names(analysis) == "Flag Indicator"] <- "Flags"
-        analysis <- analysis[1:96, ] # Trim to 96 wells
+        analysis <- analysis[seq_len(96), ] # Trim to 96 wells
         analysis$`Tm D` <- as.numeric(analysis$`Tm D`)
         analysis$`Tm B` <- as.numeric(analysis$`Tm B`)
     } else {

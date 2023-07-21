@@ -2,31 +2,36 @@
 % Please edit documentation in R/read_write_analysis.R
 \name{read_tsar}
 \alias{read_tsar}
-\title{read result}
+\title{Read analysis result}
 \usage{
-read_tsar(result, code)
+read_tsar(gam_result, output_content)
 }
 \arguments{
-\item{result}{list; input uses resulting output of gam_analysis() function}
+\item{gam_result}{list; input uses resulting output of
+\code{\link{gam_analysis}}() function}
 
-\item{code}{integer; \code{code = 0} returns only the tm value by wells
-\code{code = 1} returns data table with fitted values
-\code{code = 2} returns the combination of 0 and 1}
+\item{output_content}{integer;
+\code{output_content = 0} returns only the tm value by wells
+\code{output_content = 1} returns data table with fitted values
+\code{output_content = 2} returns the combination of 0 and 1}
 }
 \value{
 output files with select dataset
 }
 \description{
-reads previous pipeline output lists and organizes them into separate
-  data frames
+reads previous pipeline output lists from \code{\link{gam_analysis}}()
+  and organizes them into separate data frames.
 }
 \examples{
 data("qPCR_data1")
-result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
-    "Well.Position", "Temperature", "Fluorescence", "Normalized"
-))
-read_tsar(result, code = 0)
-output_data <- read_tsar(result, code = 2)
+result <- gam_analysis(qPCR_data1,
+    smoothed = TRUE, fluo_col = 5,
+    selections = c(
+        "Well.Position", "Temperature", "Fluorescence", "Normalized"
+    )
+)
+read_tsar(result, output_content = 0)
+output_data <- read_tsar(result, output_content = 2)
 
 }
 \seealso{

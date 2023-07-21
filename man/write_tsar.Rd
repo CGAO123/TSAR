@@ -9,7 +9,8 @@ write_tsar(data, name, file = "txt")
 \arguments{
 \item{data}{input data frame}
 
-\item{name}{naming for file}
+\item{name}{string, name file to be saved as. Final name will be appended
+"tsar_output"}
 
 \item{file}{\code{file = "txt"} writes txt output files;
 \code{file = "csv"} writes csv output files;
@@ -23,12 +24,15 @@ writes output into csv or txt files
 }
 \examples{
 data("qPCR_data1")
-result <- gam_analysis(qPCR_data1, smoothed = TRUE, fluo = 5, selections = c(
-    "Well.Position", "Temperature", "Fluorescence", "Normalized"
-))
-output_data <- read_tsar(result, code = 2)
+result <- gam_analysis(qPCR_data1,
+    smoothed = TRUE, fluo_col = 5,
+    selections = c(
+        "Well.Position", "Temperature", "Fluorescence", "Normalized"
+    )
+)
+output_data <- read_tsar(result, output_content = 2)
 #
-\dontrun{
+\donttest{
 # do not run, will build excessive file in package
 # write_tsar(output_data, name = "2022_03_18_test", file = "txt")
 #

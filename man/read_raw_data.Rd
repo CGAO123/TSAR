@@ -57,7 +57,7 @@ Open TSA Raw Data files. This function is used to load data output from
   \strong{Condition IDs} are generated only in the
   \code{\link{read_analysis}}, see that function's documentation for
   more details. Condition IDs are assigned to raw data in the
-  \code{\link{merge_tsa}} function.
+  \code{\link{merge_TSA}} function.
    \cr\cr
 
   \strong{Well IDs} are similar to Condition IDs, as they are
@@ -74,7 +74,7 @@ Open TSA Raw Data files. This function is used to load data output from
 
 \seealso{
 \code{\link{read_analysis}} for loading accompanying data.
-  \code{\link{merge_tsa}} for joining Analysis Results and Raw Data files
+  \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
   from the TSA software.
 
 Other Read TSA Data: 

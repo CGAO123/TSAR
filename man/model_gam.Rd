@@ -2,22 +2,26 @@
 % Please edit documentation in R/data_preprocess.R
 \name{model_gam}
 \alias{model_gam}
-\title{modeling function}
+\title{Generalized Addidtive Modeling on TSA data}
 \usage{
 model_gam(norm_data, x, y)
 }
 \arguments{
-\item{norm_data}{data frame input}
+\item{norm_data}{data frame input, preferably normalized using
+\code{\link{normalize}}.}
 
 \item{x}{temperature column}
 
 \item{y}{normalized fluorescence column}
 }
 \value{
-gam model fitted with formula set to y ~ s(x, bs = "ad")
+dtaa frame containing gam model fitted values
 }
 \description{
-function finds fitted fluorescence values
+Function finds fitted fluorescence values by imposing generalized
+  additive model on fluorescence data by temperature. Model assumes
+  method = "GACV.Cp" and sets to \code{formula = y ~ s(x, bs = "ad")}.
+  Function inherits function from gam package, \code{\link{gam}}().
 }
 \examples{
 data("qPCR_data1")
