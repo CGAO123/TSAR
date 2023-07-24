@@ -163,18 +163,22 @@ view_model <- function(raw_data) {
         ) +
         geom_line(aes(y = fitted, color = "Fitted Model"), size = 0.5) +
         geom_vline(xintercept = Tm_est(raw_data), color = "red") +
-        labs(color = "Curves") +
+        labs(color = "Curves", y = "RFU") +
         theme_bw() +
         theme(panel.grid.major = element_blank())
 
     raw_data <- na.omit(raw_data)
-    deriv <- ggplot(data = raw_data, aes(x = Temperature, y = norm_deriv)) +
+    deriv <- ggplot(data = raw_data, aes(
+        x = Temperature, y = norm_deriv,
+        color = Well.Position
+    )) +
         geom_point(
-            shape = 1, alpha = 0.5, size = 0.3, color = "blue",
-            aes(fill = "derivative Norm-Fluo")
+            shape = 1, alpha = 0.5, size = 0.3,
+            aes(color = "derivative Norm-Fluo")
         ) +
         geom_vline(xintercept = Tm_est(raw_data), color = "red") +
-        labs(fill = "Curves", y = "derivative Fluorescence") +
+        scale_color_manual(values = "blue") +
+        labs(color = "Curves", y = "dRFU") +
         theme_bw() +
         theme(panel.grid.major = element_blank())
 

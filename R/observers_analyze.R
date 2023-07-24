@@ -215,6 +215,17 @@ save_change <- function(input, output, imported, well_info) {
         }
     })
 }
+save_analysis <- function(input, output, output_data) {
+    shiny::observeEvent(input$savelocal, {
+        assign(input$name, output_data(), envir = .GlobalEnv)
+        if (!input$dialogueToggle) {
+            showModal(modalDialog(
+                title = "Successfully Saved",
+                "Check your R environment for data file."
+            ))
+        }
+    })
+}
 stop_analyze <- function(input, output) {
     shiny::observeEvent(input$stopButton, {
         stopApp()

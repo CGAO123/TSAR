@@ -37,10 +37,6 @@
 weed_raw <- function(raw_data,
                      checkrange = NULL,
                      checklist = NULL) {
-    source("~/Desktop/TSAR/R/observers_weed.R")
-    source("~/Desktop/TSAR/R/outputs_weed.R")
-    source("~/Desktop/TSAR/R/interface_weed.R")
-
     ui <- mainpage(raw_data, data_name = deparse(substitute(raw_data)))
 
     server <- function(input, output) {

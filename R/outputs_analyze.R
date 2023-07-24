@@ -14,10 +14,26 @@ render_data_title <- function(input, output, title) {
 }
 
 build_view <- function(input, output, gg) {
-    output$Plot <- renderPlot({
-        ggarrange(
-            plotlist = gg,
-            ncol = 1, common.legend = TRUE
+    gg[[1]] <- ggplotly(gg[[1]])
+    gg[[2]] <- ggplotly(gg[[2]])
+    gg[[1]] <- layout(gg[[1]],
+        yaxis = list(tickfont = list(size = 8), showgrid = TRUE)
+    )
+    gg[[2]] <- layout(gg[[2]],
+        yaxis = list(tickfont = list(size = 8), showgrid = TRUE)
+    )
+    output$Plot <- renderPlotly({
+        sub <- subplot(gg[[1]], gg[[2]],
+            nrows = 2, shareX = TRUE,
+            shareY = TRUE
+        )
+        layout(sub,
+            width = 500,
+            legend = list(
+                orientation = "h", x = 0, y = 1.15,
+                font = list(size = 8)
+            ),
+            xaxis = list(tickfont = list(size = 8), showgrid = TRUE)
         )
     })
 }

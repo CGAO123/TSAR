@@ -16,14 +16,14 @@ mainpage <- function(raw_data, data_name) {
         fluidRow(
             column(
                 width = 4,
-                checkboxInput("dialogueToggle",
+                shiny::checkboxInput("dialogueToggle",
                     "Hide All Hints and Messages",
                     value = FALSE
                 )
             ),
             column(
                 width = 4,
-                actionButton(
+                shiny::actionButton(
                     "clear",
                     "Clear all Selected"
                 )
@@ -35,7 +35,7 @@ mainpage <- function(raw_data, data_name) {
         ),
         div(
             class = "sticky-panel",
-            plotlyOutput("distPlot")
+            plotly::plotlyOutput("distPlot")
         ),
         verbatimTextOutput("info"),
         fluidRow(
@@ -43,7 +43,7 @@ mainpage <- function(raw_data, data_name) {
             column(
                 width = 2,
                 h5(" "),
-                materialSwitch("toggle_button", "Show Grid",
+                shinyWidgets::materialSwitch("toggle_button", "Show Grid",
                     value = TRUE, right = TRUE
                 )
             )
@@ -83,11 +83,11 @@ mainpage <- function(raw_data, data_name) {
         fluidRow(
             column(
                 width = 2,
-                actionButton("myButton", "Copy Well IDs")
+                shiny::actionButton("myButton", "Copy Well IDs")
             ),
             column(
                 width = 4,
-                actionButton(
+                shiny::actionButton(
                     "removeCall",
                     "Copy in remove_raw() Call"
                 )
@@ -101,14 +101,14 @@ mainpage <- function(raw_data, data_name) {
                 fluidRow(
                     column(
                         width = 4,
-                        actionButton(
+                        shiny::actionButton(
                             "viewRemovedButton",
                             "View Selected"
                         )
                     ),
                     column(
                         width = 2,
-                        actionButton(
+                        shiny::actionButton(
                             "refreshButton",
                             "Refresh Screening"
                         )
@@ -121,7 +121,7 @@ mainpage <- function(raw_data, data_name) {
                 fluidRow(
                     column(
                         width = 2,
-                        actionButton(
+                        shiny::actionButton(
                             "removeButton",
                             "Remove Selected"
                         )
@@ -133,7 +133,7 @@ mainpage <- function(raw_data, data_name) {
         actionButton("stopButton", "Close Window"),
         div(
             id = "hidden",
-            checkboxGroupInput("extractedname",
+            shiny::checkboxGroupInput("extractedname",
                 label = "name",
                 choices = list(data_name),
                 selected = data_name

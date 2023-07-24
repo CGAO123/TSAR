@@ -145,15 +145,7 @@ build_compare <- function(input, output, graph_tsar_data, compare) {
                 control_condition = input$Control_s
             )
             compare(compare_p)
-            output$Plot <- renderPlot({
-                ggarrange(plotlist = compare(), common.legend = TRUE)
-            })
-            output$plot_select <- renderUI({
-                selectInput("plot_selected",
-                    label = "View Only:",
-                    choices = c("Select Option..", names(compare()))
-                )
-            })
+            redner_compare(input, output, compare)
         }
     })
 }
@@ -189,15 +181,7 @@ build_curves <- function(input, output, graph_tsar_data) {
                 Tm_label_nudge = input$num,
                 separate_legend = input$separate_legend
             )
-            output$Plot <- renderPlot({
-                if (input$separate_legend == FALSE) {
-                    curve_graph + theme(text = element_text(size = 18))
-                } else {
-                    curve_graph[[1]] <- curve_graph[[1]] +
-                        theme(text = element_text(size = 18))
-                    ggarrange(plotlist = curve_graph)
-                }
-            })
+            render_selected_condition(input, output, curve_graph)
         }
     })
 }

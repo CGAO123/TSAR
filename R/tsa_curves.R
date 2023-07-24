@@ -430,7 +430,7 @@ TSA_compare_plot <- function(
 
     curve_list <- as.list(rep(NA, condition_IDs(tsa_data, n = TRUE)))
 
-    for (i in 1:condition_IDs(tsa_data, n = TRUE)) {
+    for (i in seq_len(condition_IDs(tsa_data, n = TRUE))) {
         condition_i <- condition_IDs(tsa_data)[i]
         tm_avg_i <- Tms_df$Avg_Tm[Tms_df$condition_ID == condition_i]
 
