@@ -12,7 +12,7 @@ graphpage <- function(tsar_data) {
                   "
             )
         ),
-        checkboxInput("dialogueToggle",
+        shiny::checkboxInput("dialogueToggle",
             "Hide All Hints and Messages",
             value = FALSE
         ),
@@ -24,7 +24,7 @@ graphpage <- function(tsar_data) {
                     "Upload and Merge Data"
                 )
             ),
-            column(width = 2, uiOutput("hideBtn"))
+            column(width = 2, shiny::uiOutput("hideBtn"))
         ),
         shinyjs::hidden(
             div(
@@ -33,43 +33,55 @@ graphpage <- function(tsar_data) {
                 fluidRow(
                     column(
                         width = 6,
-                        fileInput("file",
+                        shiny::fileInput("file",
                             label = "Upload All Analysis Files",
                             multiple = TRUE
                         )
                     ),
                     column(
                         width = 6,
-                        actionButton("generate", "Merge and Save Data")
+                        shiny::actionButton("generate", "Merge and Save Data")
                     )
                 ),
                 div(
                     style = "font-size: 11px;",
-                    tableOutput("table")
+                    shiny::tableOutput("table")
                 ),
-                uiOutput("date_boxes"),
-                actionButton("save_dates", "Save Dates"),
-                verbatimTextOutput("output")
+                shiny::uiOutput("date_boxes"),
+                shiny::actionButton("save_dates", "Save Dates"),
+                shiny::verbatimTextOutput("output")
             )
         ),
         br(),
         div(
+            id = "bplot",
             class = "sticky-panel",
-            plotOutput("Plot")
+            shiny::plotOutput("Plot")
+        ),
+        shinyjs::hidden(
+            div(
+                class = "sticky-panel",
+                id = "alternativeplot",
+                plotly::plotlyOutput("altplot")
+            )
         ),
         verbatimTextOutput("Plot_Message"),
         h3("Boxplot"),
+        shiny::checkboxInput(
+            "makeplotly", "Graph Interactive (legend cannot be separate)",
+            value = FALSE, width = "600px"
+        ),
         fluidRow(
             column(
                 width = 2,
-                selectInput("Color",
+                shiny::selectInput("Color",
                     label = "Color:",
                     choices = c("Protein", "Ligand")
                 )
             ),
             column(
                 width = 2,
-                selectInput("Label",
+                shiny::selectInput("Label",
                     label = "Label:",
                     choices = c("Protein", "Ligand"),
                     selected = "Ligand"
@@ -77,14 +89,14 @@ graphpage <- function(tsar_data) {
             ),
             column(
                 width = 2,
-                selectInput("Legend",
+                shiny::selectInput("Legend",
                     label = "Separate legend:",
                     choices = c(TRUE, FALSE), selected = FALSE
                 )
             ),
             column(
                 width = 3,
-                selectInput("Control",
+                shiny::selectInput("Control",
                     label = "Control Condition",
                     choices = c("NA", condition_IDs(tsar_data))
                 )
@@ -92,14 +104,14 @@ graphpage <- function(tsar_data) {
             column(
                 br(),
                 width = 2,
-                actionButton("Boxplot", "Generate Boxplot")
+                shiny::actionButton("Boxplot", "Generate Boxplot")
             )
         ),
         h3("Compare Plot"),
         fluidRow(
             column(
                 width = 2,
-                selectInput("y_axis",
+                shiny::selectInput("y_axis",
                     label = "Graph y as:",
                     choices = c("Fluorescence", "RFU"),
                     selected = "RFU"
@@ -107,14 +119,14 @@ graphpage <- function(tsar_data) {
             ),
             column(
                 width = 2,
-                selectInput("show_tm",
+                shiny::selectInput("show_tm",
                     label = "Show Tm:",
                     choices = c(TRUE, FALSE)
                 )
             ),
             column(
                 width = 2,
-                selectInput("title_by",
+                shiny::selectInput("title_by",
                     label = "Title by:",
                     choices = c("ligand", "protein", "both"),
                     selected = "both"
@@ -122,7 +134,7 @@ graphpage <- function(tsar_data) {
             ),
             column(
                 width = 3,
-                selectInput("Control_s",
+                shiny::selectInput("Control_s",
                     label = "Control Condition",
                     choices = c(condition_IDs(tsar_data))
                 )
@@ -130,7 +142,7 @@ graphpage <- function(tsar_data) {
             column(
                 br(),
                 width = 2,
-                actionButton("Compareplot", "Generate Compare Plots")
+                shiny::actionButton("Compareplot", "Generate Compare Plots")
             ),
             column(width = 2, uiOutput("plot_select"))
         ),
@@ -138,7 +150,7 @@ graphpage <- function(tsar_data) {
         fluidRow(
             column(
                 width = 2,
-                selectInput("y_axis_c",
+                shiny::selectInput("y_axis_c",
                     label = "Graph y as: ",
                     choices = c("Fluorescence", "RFU"),
                     selected = "RFU"
@@ -146,21 +158,21 @@ graphpage <- function(tsar_data) {
             ),
             column(
                 width = 2,
-                selectInput("show_tm_c",
+                shiny::selectInput("show_tm_c",
                     label = "Show Tm: ",
                     choices = c(TRUE, FALSE)
                 )
             ),
             column(
                 width = 2,
-                selectInput("separate_legend",
+                shiny::selectInput("separate_legend",
                     label = "Separate legend: ",
                     choices = c(TRUE, FALSE), selected = FALSE
                 )
             ),
             column(
                 width = 3,
-                selectInput("Selected_condition",
+                shiny::selectInput("Selected_condition",
                     label = "Select condition: ",
                     choices = c(condition_IDs(tsar_data))
                 )
@@ -168,27 +180,30 @@ graphpage <- function(tsar_data) {
             column(
                 br(),
                 width = 2,
-                actionButton("curves", "Graph Selected Curves")
+                shiny::actionButton("curves", "Graph Selected Curves")
             )
         ),
         fluidRow(
             column(
                 width = 2,
-                selectInput("smooth",
+                shiny::selectInput("smooth",
                     label = "Smooth curve: ",
                     choices = c(TRUE, FALSE)
                 )
             ),
             column(
                 width = 2,
-                selectInput("average",
+                shiny::selectInput("average",
                     label = "Show average: ",
                     choices = c(TRUE, FALSE)
                 )
             ),
             column(
                 width = 2,
-                numericInput("num", label = "Shift Tm Label: ", value = 7.5)
+                shiny::numericInput("num",
+                    label = "Shift Tm Label: ",
+                    value = 7.5
+                )
             )
         ),
         hr(),
@@ -199,22 +214,22 @@ graphpage <- function(tsar_data) {
                 fluidRow(
                     column(
                         width = 5,
-                        actionButton("condition", "List Conditions IDs")
+                        shiny::actionButton("condition", "List Conditions IDs")
                     ),
                     column(
                         width = 4,
-                        actionButton("well", "List Well IDs")
+                        shiny::actionButton("well", "List Well IDs")
                     ),
                     column(
                         width = 2,
-                        actionButton("tm", "List Tm")
+                        shiny::actionButton("tm", "List Tm")
                     ),
                 )
             ),
             column(
                 width = 4,
                 br(),
-                selectInput("control_tm",
+                shiny::selectInput("control_tm",
                     label = "List Delta Tm:",
                     choices = c(
                         "Select Control: ",
@@ -223,10 +238,10 @@ graphpage <- function(tsar_data) {
                 )
             )
         ),
-        verbatimTextOutput("Condition_ID"),
-        verbatimTextOutput("Well_ID"),
-        tableOutput("tmlist"),
+        shiny::verbatimTextOutput("Condition_ID"),
+        shiny::verbatimTextOutput("Well_ID"),
+        shiny::tableOutput("tmlist"),
         br(),
-        actionButton("stopButton", "Close Window")
+        shiny::actionButton("stopButton", "Close Window")
     )
 }

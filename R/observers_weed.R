@@ -229,8 +229,9 @@ view_selected <- function(input, output, dataset, checkrange, checklist,
             } else {
                 showModal(modalDialog(
                     title = "Viewing Selected Curves Only",
-                    "Click remove if selections are correct. Else
-                    refresh screening to select more or unselect curve."
+                    "Click remove if selections are correct. Interact with
+                    graph or grid to select more or unselect curve. Else use
+                    `Refrsh Screen` to return to home graph."
                 ))
             }
         }

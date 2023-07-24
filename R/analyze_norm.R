@@ -26,10 +26,6 @@
 #' }
 #'
 analyze_norm <- function(raw_data) {
-    source("~/Desktop/TSAR/R/interface_analyze.R")
-    source("~/Desktop/TSAR/R/observers_analyze.R")
-    source("~/Desktop/TSAR/R/outputs_analyze.R")
-
     ui <- fluidPage(
         analyzepage(raw_data, deparse(substitute(raw_data)))
     )
@@ -74,6 +70,7 @@ analyze_norm <- function(raw_data) {
         preview_condition(input, output, well_info, data)
         hide(input, output)
         save_change(input, output, imported, well_info)
+        save_analysis(input, output, output_data)
         stop_analyze(input, output)
     }
     app <- shinyApp(ui = ui, server = server)

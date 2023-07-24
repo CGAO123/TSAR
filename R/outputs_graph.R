@@ -15,7 +15,7 @@ tohide <- function(input, output) {
 
 totoggle <- function(input, output) {
     output$hideBtn <- renderUI({
-        actionBttn(
+        shinyWidgets::actionBttn(
             inputId = "hideBtn", label = "hide",
             style = "minimal", color = "success", size = "xs"
         )
@@ -25,7 +25,7 @@ totoggle <- function(input, output) {
 build_dateboxes <- function(input, output) {
     output$date_boxes <- renderUI({
         date_boxes <- lapply(input$file$name, function(i) {
-            dateInput(
+            shiny::dateInput(
                 inputId = paste0("Date for file ", i),
                 label = paste0("Date for file ", i)
             )
@@ -41,10 +41,28 @@ build_table <- function(input, output, graph_tsar_data) {
 }
 
 render_box <- function(input, output, box) {
-    output$Plot <- renderPlot({
-        if (input$Legend == FALSE) {
-            box + theme(text = element_text(size = 18))
+    if (input$Legend == FALSE) {
+        if (input$makeplotly == TRUE) {
+            shinyjs::hide("bplot")
+            shinyjs::show("alternativeplot")
+            output$altplot <- renderPlotly({
+                boxp <- box + labs(y = "Tm (degree Celsius)")
+                layout(ggplotly(boxp, originalData = TRUE),
+                    yaxis = list(title_font = list(size = 18)),
+                    xaxis = list(title_font = list(size = 18))
+                )
+            })
         } else {
+            shinyjs::show("bplot")
+            shinyjs::hide("alternativeplot")
+            output$Plot <- renderPlot({
+                box + theme(text = element_text(size = 18))
+            })
+        }
+    } else {
+        shinyjs::hide("alternativeplot")
+        shinyjs::show("bplot")
+        output$Plot <- renderPlot({
             box[[1]] <- box[[1]] + theme(
                 text = element_text(size = 18)
             )
@@ -52,13 +70,39 @@ render_box <- function(input, output, box) {
                 plotlist = box,
                 font.label = list(size = 20)
             )
-        }
+        })
+    }
+}
+
+
+
+redner_compare <- function(input, output, compare) {
+    output$Plot <- renderPlot({
+        ggarrange(plotlist = compare(), common.legend = TRUE)
+    })
+    output$plot_select <- renderUI({
+        selectInput("plot_selected",
+            label = "View Only:",
+            choices = c("Select Option..", names(compare()))
+        )
     })
 }
 
 render_selected_compare <- function(input, output, compare) {
     output$Plot <- renderPlot({
         compare()[[input$plot_selected]]
+    })
+}
+
+render_selected_condition <- function(input, output, curve_graph) {
+    output$Plot <- renderPlot({
+        if (input$separate_legend == FALSE) {
+            curve_graph + theme(text = element_text(size = 18))
+        } else {
+            curve_graph[[1]] <- curve_graph[[1]] +
+                theme(text = element_text(size = 18))
+            ggarrange(plotlist = curve_graph)
+        }
     })
 }
 
@@ -91,5 +135,18 @@ print_deltatm <- function(input, output, graph_tsar_data) {
 print_dates <- function(input, output, saved_dates) {
     output$output <- renderPrint({
         saved_dates
+    })
+}
+
+dummy_plot <- function(input, output) {
+    waiting_data <- data.frame(
+        x = 0.5, y = 0.5,
+        message = "Awaiting graph :)"
+    )
+    output$Plot <- renderPlot({
+        ggplot(waiting_data, aes(x = x, y = y)) +
+            geom_point(alpha = 0) +
+            geom_text(aes(label = message), size = 18) +
+            theme_void()
     })
 }

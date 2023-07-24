@@ -19,7 +19,7 @@ analyzepage <- function(raw_data, data_name) {
               "
             )
         ),
-        checkboxInput("dialogueToggle",
+        shiny::checkboxInput("dialogueToggle",
             "Hide All Hints and Messages",
             value = FALSE
         ),
@@ -30,31 +30,31 @@ analyzepage <- function(raw_data, data_name) {
                 br(),
                 div(
                     class = "h3-style",
-                    textOutput("table_title")
+                    shiny::textOutput("table_title")
                 ),
                 div(
-                    style = "font-size: 11px;",
-                    dataTableOutput("table")
+                    style = "font-size: 10px;",
+                    shiny::dataTableOutput("table")
                 )
             ),
             column(
                 width = 6,
                 h3("Fit Model"),
-                plotOutput("Plot")
+                plotly::plotlyOutput("Plot")
             )
         ),
         h3("Test fit"),
         fluidRow(
             column(
                 width = 2,
-                selectInput("well",
+                shiny::selectInput("well",
                     label = "Select Well:",
                     choices = c(unique(raw_data$Well.Position))
                 )
             ),
             column(
                 width = 3,
-                numericInput("num",
+                shiny::numericInput("num",
                     label = "Enter y column number:",
                     value = 5
                 )
@@ -62,28 +62,28 @@ analyzepage <- function(raw_data, data_name) {
             column(
                 br(),
                 width = 2,
-                actionButton("model_fit", "View Model Fit")
+                shiny::actionButton("model_fit", "View Model Fit")
             )
         ),
         h3("Derivative Analysis"),
         fluidRow(
             column(
                 width = 3,
-                selectInput("keep",
+                shiny::selectInput("keep",
                     label = "Keep all data",
                     choices = c(TRUE, FALSE), selected = TRUE
                 )
             ),
             column(
                 width = 3,
-                selectInput("fit",
+                shiny::selectInput("fit",
                     label = "Return fit summary: ",
                     choices = c(TRUE, FALSE), selected = FALSE
                 )
             ),
             column(
                 width = 3,
-                selectInput("smooth",
+                shiny::selectInput("smooth",
                     label = "Raw data smoothed?",
                     choices = c(TRUE, FALSE), selected = TRUE
                 )
@@ -92,7 +92,7 @@ analyzepage <- function(raw_data, data_name) {
         fluidRow(
             column(
                 width = 12,
-                checkboxGroupInput("checkGroup",
+                shiny::checkboxGroupInput("checkGroup",
                     label = "Keep variables: (keep x and y)",
                     choices = c(names(raw_data)),
                     inline = TRUE,
@@ -106,52 +106,52 @@ analyzepage <- function(raw_data, data_name) {
             ),
             column(
                 width = 3,
-                numericInput("num_a",
+                shiny::numericInput("num_a",
                     label = "Enter y column number:", value = 5
                 )
             ),
             column(
                 br(),
                 width = 4,
-                actionButton("analyze", "Analyze all Wells")
+                shiny::actionButton("analyze", "Analyze all Wells")
             )
         ),
         h3("Input Well Conditions"),
         fluidRow(
             column(
                 width = 3,
-                fileInput("excelFile", "Upload Well Information.xlsx")
+                shiny::fileInput("excelFile", "Upload Well Information.xlsx")
             ),
             column(
                 width = 2, br(),
-                actionButton("previewBtn", "Preview")
+                shiny::actionButton("previewBtn", "Preview")
             ),
             column(
                 width = 1, br(),
-                actionButton("hideBtn", "Hide")
+                shiny::actionButton("hideBtn", "Hide")
             ),
             column(
                 width = 2, br(),
-                actionButton("blank", "Manual Input")
+                shiny::actionButton("blank", "Manual Input")
             ),
             column(
                 width = 2, br(),
-                actionButton("saveBtn", "Save Changes")
+                shiny::actionButton("saveBtn", "Save Changes")
             ),
             column(
                 width = 1, br(),
-                actionButton("join", "Set Conditions")
+                shiny::actionButton("join", "Set Conditions")
             ),
         ),
         div(
             style = "font-size: 11px;",
-            rHandsontableOutput("excelTable")
+            rhandsontable::rHandsontableOutput("excelTable")
         ),
         h3("Save Data Locally"),
         fluidRow(
             column(
                 width = 5,
-                radioButtons("radio",
+                shiny::radioButtons("radio",
                     label = "Choose dataset",
                     choices = list(
                         "Only Tm" = 0,
@@ -164,7 +164,7 @@ analyzepage <- function(raw_data, data_name) {
             ),
             column(
                 width = 2,
-                radioButtons("file_type",
+                shiny::radioButtons("file_type",
                     label = "file type: ",
                     choices = list("txt", "csv"),
                     inline = TRUE,
@@ -173,7 +173,7 @@ analyzepage <- function(raw_data, data_name) {
             ),
             column(
                 width = 3,
-                selectInput("withCondition",
+                shiny::selectInput("withCondition",
                     label = "With Conditions: ",
                     choices = c(TRUE, FALSE), selected = FALSE
                 )
@@ -182,7 +182,7 @@ analyzepage <- function(raw_data, data_name) {
         fluidRow(
             column(
                 width = 5,
-                textInput("name",
+                shiny::textInput("name",
                     label = "Enter Name: ",
                     value = paste(data_name,
                         Sys.Date(),
@@ -193,15 +193,20 @@ analyzepage <- function(raw_data, data_name) {
             column(
                 br(),
                 width = 2,
-                actionButton("write", "Save File")
+                shiny::actionButton("preview", "Preview Output")
             ),
             column(
                 br(),
                 width = 2,
-                actionButton("preview", "Preview Output")
+                shiny::actionButton("write", "Save to Directory")
+            ),
+            column(
+                br(),
+                width = 2,
+                shiny::actionButton("savelocal", "Save to R")
             )
         ),
         br(),
-        actionButton("stopButton", "Close Window")
+        shiny::actionButton("stopButton", "Close Window")
     )
 }

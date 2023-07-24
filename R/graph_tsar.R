@@ -35,10 +35,6 @@
 #' }
 #'
 graph_tsar <- function(tsar_data = data.frame()) {
-    source("~/Desktop/TSAR/R/interface_graph.R")
-    source("~/Desktop/TSAR/R/observers_graph.R")
-    source("~/Desktop/TSAR/R/outputs_graph.R")
-
     ui <- graphpage(tsar_data)
 
     server <- function(input, output, session) {
@@ -48,6 +44,7 @@ graph_tsar <- function(tsar_data = data.frame()) {
         compare <- reactiveVal(NULL)
         graph_tsar_data <- reactiveVal(tsar_data)
 
+        dummy_plot(input, output)
         hide_p(input, output)
         toggle_p(input, output)
         initialize(input, output, graph_tsar_data)
