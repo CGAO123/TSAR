@@ -7,6 +7,7 @@
 #'
 #' @import shiny
 #' @import ggplot2
+#' @importFrom plotly ggplotly subplot layout plotlyOutput renderPlotly
 #' @importFrom shinyjs toggle hidden
 #' @importFrom ggpubr ggarrange
 #' @importFrom shinyWidgets actionBttn

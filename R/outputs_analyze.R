@@ -14,21 +14,20 @@ render_data_title <- function(input, output, title) {
 }
 
 build_view <- function(input, output, gg) {
-    gg[[1]] <- ggplotly(gg[[1]])
-    gg[[2]] <- ggplotly(gg[[2]])
-    gg[[1]] <- layout(gg[[1]],
+    gg[[1]] <- ggplotly(gg[[1]], width = 500)
+    gg[[2]] <- ggplotly(gg[[2]], width = 500)
+    gg[[1]] <- plotly::layout(gg[[1]],
         yaxis = list(tickfont = list(size = 8), showgrid = TRUE)
     )
-    gg[[2]] <- layout(gg[[2]],
+    gg[[2]] <- plotly::layout(gg[[2]],
         yaxis = list(tickfont = list(size = 8), showgrid = TRUE)
     )
     output$Plot <- renderPlotly({
-        sub <- subplot(gg[[1]], gg[[2]],
+        sub <- plotly::subplot(gg[[1]], gg[[2]],
             nrows = 2, shareX = TRUE,
             shareY = TRUE
         )
-        layout(sub,
-            width = 500,
+        plotly::layout(sub,
             legend = list(
                 orientation = "h", x = 0, y = 1.15,
                 font = list(size = 8)

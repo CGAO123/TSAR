@@ -47,7 +47,7 @@ Tm_est <- function(norm_data, min, max) {
 #' Function pipeline that combines separated functions and iterate through
 #'   each well to estimate the Tm.
 #' @importFrom mgcv gam
-#' @importFrom magrittr %>%
+#' @importFrom dplyr select mutate
 #'
 #' @param raw_data data frame; raw data frame
 #' @param keep Boolean; set to \code{keep = TRUE}
@@ -94,8 +94,7 @@ gam_analysis <- function(
     fitsummaries <- list()
     # iterate through each individual well
     for (i in unique(raw_data$Well.Position)) {
-        by_well <- raw_data %>%
-            filter(raw_data$Well.Position == i)
+        by_well <- subset(raw_data, raw_data$Well.Position == i)
         # normalize data
         by_well <- normalize(
             raw_data = by_well,
@@ -122,9 +121,8 @@ gam_analysis <- function(
         } else {
             # if data smoothing is already present, not modeling required
             # calculate derivatives using smoothed data, append derivatives
-            by_well <- by_well %>%
-                mutate(norm_deriv = c(diff(by_well$Normalized)
-                / diff(by_well$Temperature), NA))
+            by_well <- mutate(by_well, norm_deriv = c(diff(by_well$Normalized)
+            / diff(by_well$Temperature), NA))
         }
 
         # estimate tm values and concat them into one list
@@ -134,12 +132,13 @@ gam_analysis <- function(
         if (keep == TRUE) {
             if (smoothed == FALSE) {
                 # keep selected variables, fitted values, and derivatives
-                by_well <- by_well %>%
-                    dplyr::select(all_of(c(unlist(selections), "fitted")))
+                by_well <- dplyr::select(
+                    by_well,
+                    all_of(c(unlist(selections), "fitted"))
+                )
             } else {
                 # keep selected variables and derivatives
-                by_well <- by_well %>%
-                    dplyr::select(all_of(selections))
+                by_well <- dplyr::select(by_well, all_of(selections))
             }
             # concat data frame of each well into one big data frame
             kept <- rbind(kept, by_well)
