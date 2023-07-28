@@ -68,7 +68,7 @@ read_tsar <- function(gam_result, output_content) {
 #'
 #' writes output into csv or txt files
 #'
-#' @import utils
+#' @importFrom utils write.csv write.table
 #'
 #' @param data input data frame
 #' @param name string, name file to be saved as. Final name will be appended

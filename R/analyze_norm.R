@@ -7,8 +7,7 @@
 #' @importFrom openxlsx read.xlsx
 #' @import shiny
 #' @importFrom rhandsontable rHandsontableOutput rhandsontable
-#' @importFrom ggpubr ggarrange
-#' @import dplyr
+#' @importFrom plotly ggplotly subplot layout plotlyOutput renderPlotly
 #' @import ggplot2
 #'
 #' @export

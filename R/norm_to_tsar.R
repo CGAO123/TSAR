@@ -5,6 +5,7 @@
 #'   set up.
 #'
 #' @importFrom dplyr rename mutate
+#' @importFrom magrittr %>%
 #'
 #' @param data list, a character vector specifying the file paths of the data
 #'   files or data frame objects of analysis data set. For example, given data

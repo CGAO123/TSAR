@@ -163,8 +163,12 @@ Top panel outputs all plots, selected desired graphing features below and click
 generate to output graphs. p.s. Graphing compare plots and selected curves are 
 takes longer than boxplot, please give it few seconds to load.
 
+Boxplot has the option to be loaded interactive. Note interactive graphs have 
+to be produced with legend combined.
+
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/graph_tsar.png")
+knitr::include_graphics("images/graph_tsar1.png")
 ```
 
 ```{r, out.width = "400px", echo = FALSE}
@@ -176,7 +180,6 @@ any specific one, a drop list `View Only:` will be prompted below the button
 `Generate Compare Plots`. Select by condition_ID to zoom in on graphs.
 
 ```{r echo=FALSE, out.width="400px"}
-knitr::include_graphics("images/graph_tsar_31.png")
 knitr::include_graphics("images/graph_tsar_32.png")
 ```
 
@@ -185,7 +188,7 @@ knitr::include_graphics("images/graph_tsar3.png")
 ```
 
 Helper functions include these following:
-```{r}
+```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/graph_tsar4.png")
 ```
 

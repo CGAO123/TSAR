@@ -7,6 +7,7 @@
 #' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
 #'   event_register
 #' @import shiny
+#' @import ggplot2
 #' @importFrom shinyjs runjs useShinyjs
 #' @importFrom jsonlite toJSON
 #' @importFrom shinyWidgets materialSwitch

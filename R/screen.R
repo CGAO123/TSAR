@@ -3,9 +3,8 @@
 #' screens multiple wells of data and prepares to assist identification of
 #'   corrupted wells and odd out behaviors
 #'
-#' @importFrom magrittr %>%
 #' @import ggplot2
-#'
+#' @importFrom dplyr rename
 #'
 #' @param raw_data input raw_data
 #' @param checkrange list type input identifying range of wells to select.
@@ -50,10 +49,10 @@ screen <- function(raw_data,
         }
 
         if ("Well.Position" %in% names(raw_data)) {
-            section <- filter(raw_data, Well.Position %in% checkrange)
+            section <- subset(raw_data, Well.Position %in% checkrange)
         } else if ("Well" %in% names(raw_data)) {
-            section <- filter(raw_data, Well %in% checkrange) %>%
-                rename(Well.Position = Well)
+            section <- subset(raw_data, Well %in% checkrange)
+            section <- dplyr::rename(section, Well.Position = Well)
         } else {
             stop("Error: No valid Well variable was found.
                   Make sure it is named 'Well.Position' or 'Well'")
@@ -61,8 +60,7 @@ screen <- function(raw_data,
     }
     screened <- data.frame()
     for (i in unique(section$Well.Position)) {
-        by_well <- section %>%
-            filter(Well.Position == i)
+        by_well <- subset(section, Well.Position == i)
         by_well <- normalize(by_well,
             selected = c(
                 "Well.Position", "Temperature",
@@ -90,7 +88,6 @@ screen <- function(raw_data,
 #' Remove selected raw curves
 #'
 #' Removes selected curves with specified wells and range.
-#' @import dplyr
 #'
 #' @param raw_data dataframe; to be processed data
 #' @param removerange list type input identifying range of wells to select.
@@ -125,9 +122,9 @@ remove_raw <- function(raw_data,
     removerange <- c(removerange, removelist)
 
     if ("Well.Position" %in% names(raw_data)) {
-        return(filter(raw_data, !Well.Position %in% removerange))
+        return(subset(raw_data, !Well.Position %in% removerange))
     } else if ("Well" %in% names(raw_data)) {
-        return(filter(raw_data, !Well %in% removerange))
+        return(subset(raw_data, !Well %in% removerange))
     } else {
         stop("Error: No valid Well variable was found.
          Make sure it is named 'Well.Position' or 'Well'")
