@@ -263,12 +263,13 @@ tsar_data <- merge_norm(
 ###3.1.1 Jumpstart to Graph
 
 If outputted data from qPCR already contains analysis and data necessary, 
-enter TSAR workflow from here, using functions `merge_tsa()`, `read_raw_data()`,
+enter TSAR workflow from here, using functions `merge_TSA()`, `read_raw_data()`,
 `read_analysis()`.
 
-```{r}
-# insert documentation of merge_tsa(), read_raw_data(), read_analysis()
-# ...
+```{r, eval = FALSE}
+analysis_file <- read_analysis(analysis_file_path)
+raw_data <- read_raw_data(raw_data_path)
+merge_TSA(analysis_file, raw_data)
 ```
 
 After merging, use assisting functions to check and trace data. Use these two 
@@ -277,6 +278,10 @@ graphing and graph comparisons.
 
 -   `condition_IDs()` list all conditions in data
 -   `well_IDs()` list all IDs of individual well
+-   `TSA_proteins()` list all distinct proteins
+-   `TSA_ligands()` list all distinct ligands
+-   `TSA_Tms()` list all Tm estimations by condition
+-   `Tm_difference()` list all delta Tm estimations by control condition
 
 ```{r}
 condition_IDs(tsar_data)
