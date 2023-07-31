@@ -47,7 +47,6 @@
 #'
 #' @export
 #'
-
 merge_norm <- function(data,
                        name,
                        date) {

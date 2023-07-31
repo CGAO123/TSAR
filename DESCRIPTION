@@ -22,9 +22,10 @@ Description: This package automates analysis workflow for Thermal Shift
     both shiny applications and command lines. Package aims to simplify 
 	data analysis and offer front to end workflow, from raw data to 
 	multiple trial analysis.
-License: LGPL-3
+License: AGPL-3
 Encoding: UTF-8
 LazyData: false
+Testthat: true
 RoxygenNote: 7.2.3
 Imports: 
     dplyr (>= 1.0.7),
@@ -45,9 +46,10 @@ Imports:
     shinyWidgets (>= 0.7.6)
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
-biocViews: Workflow, BasicWorkflow
+biocViews: Software, ShinyApps, Visualization, qPCR
 DataRaw: data/qPCR_data1.rda
 DataRaw2: data/qPCR_data2.rda
 DataRaw3: data/Well_Information.rda
@@ -55,3 +57,4 @@ DataRaw4: data/Well_Information_Template.rda
 DataRawr: data/example_tsar_data.rda
 Depends: 
     R (>= 4.3.0)
+Config/testthat/edition: 3

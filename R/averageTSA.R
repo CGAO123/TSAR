@@ -49,17 +49,14 @@
 #' )
 #'
 #' @export
-
 TSA_average <- function(tsa_data,
                         y = "Fluorescence",
                         digits = 1,
                         avg_smooth = TRUE,
                         sd_smooth = TRUE) {
     tsa_data_new <- tsa_data
-    tsa_data_new$Temperature <- round(tsa_data_new$Temperature,
-        digits = digits
+    tsa_data_new$Temperature <- round(tsa_data_new$Temperature, digits = digits
     )
-
     if (y == "Fluorescence") {
         tsa_data_new <- tsa_data_new %>%
             group_by(Temperature) %>%
@@ -78,26 +75,20 @@ TSA_average <- function(tsa_data,
                 sd = sd(Normalized)
             )
     }
-
-    # Upper and Lower ranges for standard dev.
     tsa_data_new$sd_max <- tsa_data_new$average + tsa_data_new$sd
     tsa_data_new$sd_min <- tsa_data_new$average - tsa_data_new$sd
-
     if (avg_smooth) {
-        # -- smooth average by gam
-        df <- tsa_data_new[, c("Temperature", "average")] # temp df
-        names(df) <- c("x", "y") # rename for prediction
-        m <- gam(y ~ s(x), data = df) # model to smooth over
-        p <- predict(m, newdata = data.frame(x = df$x)) # calculate line
+        df <- tsa_data_new[, c("Temperature", "average")]
+        names(df) <- c("x", "y")
+        m <- gam(y ~ s(x), data = df)
+        p <- predict(m, newdata = data.frame(x = df$x))
         tsa_data_new$avg_smooth <- p
     }
-
     if (sd_smooth) {
-        # -- smooth sd_min and sd_max by gam
-        df <- tsa_data_new[, c("Temperature", "sd_min")] # temp df
-        names(df) <- c("x", "y") # rename for prediction
-        m <- gam(y ~ s(x), data = df) # model to smooth over
-        p <- predict(m, newdata = data.frame(x = df$x)) # calculate line
+        df <- tsa_data_new[, c("Temperature", "sd_min")]
+        names(df) <- c("x", "y")
+        m <- gam(y ~ s(x), data = df)
+        p <- predict(m, newdata = data.frame(x = df$x))
         tsa_data_new$sd_min_smooth <- p
 
         df <- tsa_data_new[, c("Temperature", "sd_max")]

@@ -44,8 +44,6 @@ normalize <- function(
         "Normalized"
     )) {
     norm_data <- raw_data %>%
-        # make sure fluorescence and temperature variable is in double type
-        # step to ensure that calculations do not return error
         transform(
             Fluorescence =
                 as.double(gsub(",", "", raw_data$Fluorescence))
@@ -64,27 +62,22 @@ normalize <- function(
         ))
 
     if (is.na(fluo)) {
-        # assign min and max
         min_f <- min(norm_data$Fluorescence)
         max_f <- max(norm_data$Fluorescence)
         norm_data <- norm_data %>%
-            # normalize by max and min
             mutate(
                 Normalized =
                     (norm_data$Fluorescence - min_f) / (max_f - min_f)
             ) %>%
-            # select only desired variables (e.g. drop raw derivative values)
-            dplyr::select(selected)
+            dplyr::select(all_of(selected))
     } else {
         norm_data <- norm_data %>%
-            # normalize by max and min
             mutate(
                 Normalized =
                     (norm_data[[fluo]] - min(norm_data[[fluo]])) /
                         (max(norm_data[[fluo]]) - min(norm_data[[fluo]]))
             ) %>%
-            # select only desired variables (e.g. drop raw derivative values)
-            dplyr::select(selected)
+            dplyr::select(all_of(selected))
     }
 }
 

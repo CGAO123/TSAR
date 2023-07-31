@@ -29,10 +29,6 @@
 screen <- function(raw_data,
                    checkrange = NULL,
                    checklist = NULL) {
-    # check for variable name, if Well.Position is not found throw error
-    # do the same for Temperature and fluorescence
-
-
     if (is.null(checkrange) && (is.null(checklist))) {
         section <- raw_data
     } else {
@@ -47,7 +43,6 @@ screen <- function(raw_data,
             )
             checkrange <- paste0(grid$Var1, grid$Var2)
         }
-
         if ("Well.Position" %in% names(raw_data)) {
             section <- subset(raw_data, Well.Position %in% checkrange)
         } else if ("Well" %in% names(raw_data)) {
@@ -69,17 +64,14 @@ screen <- function(raw_data,
         )
         screened <- rbind(screened, by_well)
     }
-
     if (nrow(screened) == 0) {
         stop("Error: Select of Wells do not exist or are already removed.")
         return()
     }
-
     ggplot(data = screened, aes(
         x = Temperature,
         y = Fluorescence,
-        color = Well.Position
-    )) +
+        color = Well.Position)) +
         geom_line(size = 0.2) +
         theme_bw() +
         theme(panel.grid.major = element_blank())

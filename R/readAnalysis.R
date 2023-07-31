@@ -91,6 +91,10 @@
 #' @seealso \code{\link{read_raw_data}} for loading accompanying data.
 #'   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
 #'   from the TSA software.
+#' @examples
+#' path <- "~/Desktop/analysis_data"
+#' #note: example does not contain example data to run
+#' #read_analysis(path)
 #' @export
 #'
 #'
