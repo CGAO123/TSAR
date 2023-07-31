@@ -23,14 +23,9 @@
 #' Tm_difference(example_tsar_data, control_condition = control)
 #'
 #' @export
-
-
-
-
-
 Tm_difference <-
     function(tsa_data,
-             control_condition = "CA-FL_DMSO" # Cond. ID of Tms to compare
+             control_condition
     ) {
         TM_DF <- TSA_Tms(tsa_data)
 

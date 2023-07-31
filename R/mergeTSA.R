@@ -75,9 +75,11 @@
 #' @family TSAR Formatting
 #' @seealso \code{\link{read_raw_data}} and \code{\link{read_analysis}}
 #' for loading data.
+#' @examples
+#' #note: example does not contain example data to run
+#' #merge_TSA(analysis_file_path, raw_data_path)
+#'
 #' @export
-
-
 merge_TSA <- function(
     analysis_file_path,
     raw_data_path,

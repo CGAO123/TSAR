@@ -31,12 +31,9 @@ result <- gam_analysis(qPCR_data1,
     )
 )
 output_data <- read_tsar(result, output_content = 2)
-#
-\donttest{
-# do not run, will build excessive file in package
+# example does not run, will build excessive file in package
 # write_tsar(output_data, name = "2022_03_18_test", file = "txt")
-#
-}
+
 }
 \seealso{
 Other read_write_analysis: 

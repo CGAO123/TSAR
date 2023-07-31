@@ -72,6 +72,12 @@ Open TSA Raw Data files. This function is used to load data output from
   \cr\cr
 }
 
+\examples{
+path <- "~/Desktop/raw_data"
+#note: example does not contain example data to run
+#read_raw_data(path)
+
+}
 \seealso{
 \code{\link{read_analysis}} for loading accompanying data.
   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files

@@ -80,6 +80,11 @@ This function is used to load both the Raw Data and the Analysis Results
   \cr\cr
 }
 
+\examples{
+#note: example does not contain example data to run
+#merge_TSA(analysis_file_path, raw_data_path)
+
+}
 \seealso{
 \code{\link{read_raw_data}} and \code{\link{read_analysis}}
 for loading data.

@@ -53,6 +53,11 @@ rescale <- function(x) { # Rescale values between two values.
 #' @family TSAR Formatting
 #' @seealso \code{\link{read_raw_data}} and  \code{\link{merge_TSA}}
 #'   for loading data.
+#' @examples
+#' #examples not ran without example dataset
+#' #raw_data <- read_raw_data(raw_data_path)
+#' #normalize_fluorescence(raw_data, by == "control)
+#'
 #' @export
 #'
 

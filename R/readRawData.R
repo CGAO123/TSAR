@@ -68,20 +68,20 @@
 #' @seealso \code{\link{read_analysis}} for loading accompanying data.
 #'   \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
 #'   from the TSA software.
+#' @examples
+#' path <- "~/Desktop/raw_data"
+#' #note: example does not contain example data to run
+#' #read_raw_data(path)
+#'
 #' @export
-
 read_raw_data <- function(
     path,
-    manual_file = NA, # In the case of errors or renamed files,
-    # stating the .eds file is needed to generate IDs for merging w/ analysis
-    #---
+    manual_file = NA,
     type = "fluorescence") {
-    #--- Loading and formatting
     if (!str_detect(path, "RawData")) {
         warning('Check the input file,
                     The path name does not include "RawData"')
     }
-
     if (str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
         if (str_detect(path, pattern = "(.*\\.txt$)")) {
             raw_data <- read.delim(path)
@@ -89,11 +89,8 @@ read_raw_data <- function(
         if (str_detect(path, pattern = "(.*\\.csv$)")) {
             raw_data <- read.csv(path)
         }
-        #--- determine what type of raw data to load.
-
         derivative_start <- which(grepl("Derivative", raw_data$Fluorescence))
         boltzman_start <- which(grepl("Boltzmann", raw_data$Fluorescence))
-
         if (type %in% c("fluorescence", "boltzmann", "derivative")) {
             if (type == "fluorescence") {
                 data_start <- 1
@@ -110,11 +107,9 @@ read_raw_data <- function(
         } else {
             stop('type must be c("fluorescence", "boltzmann", "derivative")')
         }
-
         raw_data <- raw_data[data_start:data_end, ]
         raw_data$Temperature <- as.numeric(raw_data$Temperature)
         raw_data$Fluorescence <- as.numeric(raw_data$Fluorescence)
-        #--- Get the file name from the path name
         if (is.na(manual_file)) {
             file_name <- stringr::str_extract(path, "(?<=RawData\\_).*(\\.eds)")
         } else {
@@ -126,6 +121,5 @@ read_raw_data <- function(
     } else {
         stop("File type not .csv or .txt")
     }
-
     return(raw_data)
 }
