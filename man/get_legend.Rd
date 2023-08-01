@@ -29,6 +29,8 @@ Other TSA Plots:
 \code{\link{TSA_boxplot}()},
 \code{\link{TSA_compare_plot}()},
 \code{\link{TSA_wells_plot}()},
-\code{\link{graph_tsar}()}
+\code{\link{animante_deriv}()},
+\code{\link{graph_tsar}()},
+\code{\link{view_deriv}()}
 }
 \concept{TSA Plots}

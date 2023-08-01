@@ -23,9 +23,6 @@
 #' @family data_preprocess
 #'
 #' @export
-
-
-
 screen <- function(raw_data,
                    checkrange = NULL,
                    checklist = NULL) {
@@ -172,4 +169,70 @@ view_model <- function(raw_data) {
         theme(panel.grid.major = element_blank())
 
     return(list(fit, deriv))
+}
+
+
+#' View Derivative Curves
+#'
+#' Function reviews data by well and output a graph of the all derivatives
+#'   wanted. Function called within graph_tsar function but also runnable
+#'   outside.
+#'
+#' @import ggplot2
+#' @importFrom plotly ggplotly layout
+#' @param norm_data dataset input, analyzed must norm_deriv as a variable;
+#'   dataset qualifying norm_data or tsar_data both fulfills this parameter
+#' @examples
+#' data("example_tsar_data")
+#' view_deriv(example_tsar_data)
+#'
+#' @return plotly object of derivative curves
+#' @family TSA Plots
+#' @export
+#'
+view_deriv <- function(norm_data) {
+    graphed <- ggplot(data = norm_data,
+           aes(x=Temperature, y=norm_deriv,
+               color = Well, frame = Well)) +
+        geom_line() +
+        labs(y = "dRFU") +
+        theme_bw() +
+        theme(panel.grid.major = element_blank())
+    graphed <- ggplotly(graphed)
+    plotly::layout(graphed,
+                   yaxis = list(tickfont = list(size = 8), showgrid = TRUE),
+                   xaxis = list(tickfont = list(size = 8), showgrid = TRUE)
+    )
+}
+
+#' View Animated Derivative Curves
+#'
+#' Function reviews data by well and output animated graph first derivatives
+#'   Content are animated by Well IDs. Potentiall, when experiment are set wth
+#'   concentration gradients down the plate, graph would reflect than change
+#'   induced by such change.
+#'
+#' @import ggplot2
+#' @importFrom plotly ggplotly layout animation_slider plot_ly
+#' @param norm_data dataset input, analyzed must norm_deriv as a variable;
+#'   dataset qualifying norm_data or tsar_data both fulfills this parameter
+#' @examples
+#' data("example_tsar_data")
+#' animante_deriv(example_tsar_data)
+#'
+#' @return plotly object of derivative curves by well
+#' @family TSA Plots
+#' @export
+#'
+animante_deriv <- function(norm_data) {
+    plotly_object <- plot_ly(
+        data = norm_data, x = ~Temperature, y = ~norm_deriv,
+        type = 'scatter', mode = 'lines', colors = "Set1",
+        color = ~Well, frame = ~Well)
+
+    plotly::layout(plotly_object,
+           xaxis = list(title = "Temperature"),
+           yaxis = list(title = "norm_deriv"))
+
+    animation_slider(plotly_object, currentvalue = list(prefix = "Well "))
 }

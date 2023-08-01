@@ -47,7 +47,9 @@ render_box <- function(input, output, box) {
             shinyjs::show("alternativeplot")
             output$altplot <- renderPlotly({
                 boxp <- box + labs(y = "Tm (degree Celsius)")
-                layout(ggplotly(boxp, originalData = TRUE),
+                boxp <- suppressWarnings(print(
+                    ggplotly(boxp, originalData = TRUE)))
+                layout(boxp,
                     yaxis = list(title_font = list(size = 18)),
                     xaxis = list(title_font = list(size = 18))
                 )
@@ -74,9 +76,9 @@ render_box <- function(input, output, box) {
     }
 }
 
-
-
 redner_compare <- function(input, output, compare) {
+    shinyjs::show("bplot")
+    shinyjs::hide("alternativeplot")
     output$Plot <- renderPlot({
         ggarrange(plotlist = compare(), common.legend = TRUE)
     })
@@ -89,12 +91,16 @@ redner_compare <- function(input, output, compare) {
 }
 
 render_selected_compare <- function(input, output, compare) {
+    shinyjs::show("bplot")
+    shinyjs::hide("alternativeplot")
     output$Plot <- renderPlot({
         compare()[[input$plot_selected]]
     })
 }
 
 render_selected_condition <- function(input, output, curve_graph) {
+    shinyjs::show("bplot")
+    shinyjs::hide("alternativeplot")
     output$Plot <- renderPlot({
         if (input$separate_legend == FALSE) {
             curve_graph + theme(text = element_text(size = 18))

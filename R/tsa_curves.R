@@ -268,7 +268,8 @@ TSA_boxplot <- function(
             aes(
                 x = condition_ID,
                 y = Tm,
-                color = Ligand
+                color = Ligand,
+                label = well_ID
             )
         ) +
             geom_boxplot(alpha = 0.25) +
@@ -283,7 +284,8 @@ TSA_boxplot <- function(
             aes(
                 x = condition_ID,
                 y = Tm,
-                color = Protein
+                color = Protein,
+                label = well_ID
             )
         ) +
             geom_boxplot(alpha = 0.25) +

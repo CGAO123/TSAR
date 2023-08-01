@@ -63,7 +63,9 @@ TSA_compare_plot(example_tsar_data,
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},
 \code{\link{TSA_wells_plot}()},
+\code{\link{animante_deriv}()},
 \code{\link{get_legend}()},
-\code{\link{graph_tsar}()}
+\code{\link{graph_tsar}()},
+\code{\link{view_deriv}()}
 }
 \concept{TSA Plots}
