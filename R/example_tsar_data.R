@@ -12,6 +12,7 @@
 #'     \item{Temperature}{Temperature in degrees}
 #'     \item{Fluorescence}{Fluorescence reading}
 #'     \item{Normalized}{Normalized value}
+#'     \item{norm_deriv}{Calculated first derivative}
 #'     \item{Tm}{Tm value}
 #'     \item{Protein}{Protein information}
 #'     \item{Ligand}{Ligand information}

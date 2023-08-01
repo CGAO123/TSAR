@@ -39,6 +39,8 @@ Other TSA Plots:
 \code{\link{TSA_boxplot}()},
 \code{\link{TSA_compare_plot}()},
 \code{\link{TSA_wells_plot}()},
-\code{\link{get_legend}()}
+\code{\link{animante_deriv}()},
+\code{\link{get_legend}()},
+\code{\link{view_deriv}()}
 }
 \concept{TSA Plots}

@@ -59,8 +59,8 @@ graph_tsar <- function(tsar_data = data.frame()) {
         render_condition(input, output, graph_tsar_data)
         render_well(input, output, graph_tsar_data)
         render_tm(input, output, graph_tsar_data)
-        render_deltatm(input, output, graph_tsar_data)
         render_message(input, output)
+        remove_selected_graph(input, output, graph_tsar_data)
         closegraph(input, output)
     }
 

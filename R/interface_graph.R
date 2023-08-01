@@ -207,39 +207,56 @@ graphpage <- function(tsar_data) {
             )
         ),
         hr(),
+        h4("helper functions: "),
+        fluidRow(
+            column(width = 4,
+                   shiny::selectInput("remove_condition",
+                                      label = "Remove Condition_ID:",
+                                      multiple = TRUE,
+                                      choices = condition_IDs(tsar_data)
+                   )
+            ),
+            column(width = 4,
+                   shiny::selectInput("remove_well",
+                                      label = "Remove Well_ID:",
+                                      multiple = TRUE,
+                                      choices = well_IDs(tsar_data)
+                   )),
+            column(width = 2,
+                   br(),
+                   shiny::actionButton("Remove", "Remove Selected"))
+        ),
         fluidRow(
             column(
-                width = 6,
-                h4("helper functions: "),
-                fluidRow(
-                    column(
-                        width = 5,
-                        shiny::actionButton("condition", "List Conditions IDs")
-                    ),
-                    column(
-                        width = 4,
-                        shiny::actionButton("well", "List Well IDs")
-                    ),
-                    column(
-                        width = 2,
-                        shiny::actionButton("tm", "List Tm")
-                    ),
+                width = 2,
+                shiny::actionButton("condition", "List Conditions IDs")
+            ),
+            column(
+                width = 2,
+                shiny::actionButton("well", "List Well IDs")
+            )
+        ),
+        br(),
+        shiny::verbatimTextOutput("Condition_ID"),
+        shiny::verbatimTextOutput("Well_ID"),
+        br(),
+        fluidRow(
+            column(
+                width = 4,
+                shiny::selectInput("control_tm",
+                                   label = "List Delta Tm:",
+                                   choices = c(
+                                       "N/A",
+                                       condition_IDs(tsar_data)
+                                   )
                 )
             ),
             column(
-                width = 4,
                 br(),
-                shiny::selectInput("control_tm",
-                    label = "List Delta Tm:",
-                    choices = c(
-                        "Select Control: ",
-                        condition_IDs(tsar_data)
-                    )
-                )
-            )
+                width = 2,
+                shiny::actionButton("tm", "List Tm")
+            ),
         ),
-        shiny::verbatimTextOutput("Condition_ID"),
-        shiny::verbatimTextOutput("Well_ID"),
         shiny::tableOutput("tmlist"),
         br(),
         shiny::actionButton("stopButton", "Close Window")

@@ -94,6 +94,14 @@ merge_update <- function(input, output, dated, graph_tsar_data,
                     condition_IDs(graph_tsar_data())
                 )
             )
+            updateSelectInput(session, "remove_condition",
+                label = "Select By Condition_ID:",
+                choices = condition_IDs(graph_tsar_data())
+            )
+            updateSelectInput(session, "remove_well",
+                label = "Select By Well_ID:",
+                choices = well_IDs(graph_tsar_data())
+            )
         }
     })
 }
@@ -116,12 +124,12 @@ build_boxplot <- function(input, output, graph_tsar_data) {
             } else {
                 control_option_b <- as.character(input$Control)
             }
-            box <- TSA_boxplot(graph_tsar_data(),
+            box <- suppressWarnings(print(TSA_boxplot(graph_tsar_data(),
                 color_by = input$Color,
                 label_by = input$Label,
                 separate_legend = input$Legend,
                 control_condition = control_option_b
-            )
+            )))
             render_box(input, output, box)
         }
     })
@@ -197,14 +205,19 @@ render_well <- function(input, output, graph_tsar_data) {
 }
 render_tm <- function(input, output, graph_tsar_data) {
     shiny::observeEvent(input$tm, {
-        print_tm(input, output, graph_tsar_data)
-    })
-}
-render_deltatm <- function(input, output, graph_tsar_data) {
-    shiny::observeEvent(input$control_tm, {
-        if (input$control_tm != "Select Control: ") {
+        if (input$control_tm == "N/A") {
+            print_tm(input, output, graph_tsar_data)
+        } else {
             print_deltatm(input, output, graph_tsar_data)
         }
+    })
+}
+remove_selected_graph <- function(input, output, graph_tsar_data) {
+    shiny::observeEvent(input$Remove, {
+        cur <- graph_tsar_data()
+        cur <- subset(cur, !condition_ID %in% input$remove_condition)
+        cur <- subset(cur, !well_ID %in% input$remove_well)
+        graph_tsar_data(cur)
     })
 }
 closegraph <- function(input, output) {
