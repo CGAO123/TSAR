@@ -68,7 +68,8 @@ screen <- function(raw_data,
     ggplot(data = screened, aes(
         x = Temperature,
         y = Fluorescence,
-        color = Well.Position)) +
+        color = Well.Position
+    )) +
         geom_line(size = 0.2) +
         theme_bw() +
         theme(panel.grid.major = element_blank())
@@ -197,15 +198,23 @@ view_model <- function(raw_data) {
 #' @export
 #'
 view_deriv <- function(tsar_data, frame_by = "Well") {
-    if (frame_by == "NA"){
-        graphed <- ggplot(data = tsar_data,
-                          aes(x=Temperature, y=norm_deriv,
-                              color = well_ID))
+    if (frame_by == "NA") {
+        graphed <- ggplot(
+            data = tsar_data,
+            aes(
+                x = Temperature, y = norm_deriv,
+                color = well_ID
+            )
+        )
     } else if (!missing(frame_by)) {
-        graphed <- ggplot(data = tsar_data,
-                          aes(x=Temperature, y=norm_deriv,
-                              color = well_ID, frame = !!sym(frame_by),
-                              label = Tm))
+        graphed <- ggplot(
+            data = tsar_data,
+            aes(
+                x = Temperature, y = norm_deriv,
+                color = well_ID, frame = !!sym(frame_by),
+                label = Tm
+            )
+        )
     } else {
         stop("No frames specified; data does not contain Well or Well.Postion.")
     }
@@ -217,18 +226,17 @@ view_deriv <- function(tsar_data, frame_by = "Well") {
         theme(panel.grid.major = element_blank())
     graphed <- ggplotly(graphed)
     graphed <- animation_opts(graphed, mode = "next")
-    if (frame_by == "NA"){
+    if (frame_by == "NA") {
         plotly::layout(graphed,
-                    yaxis = list(tickfont = list(size = 10), showgrid = TRUE),
-                    xaxis = list(tickfont = list(size = 10), showgrid = TRUE),
-                    showlegend = TRUE
+            yaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+            xaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+            showlegend = TRUE
         )
     } else {
         plotly::layout(graphed,
-                    yaxis = list(tickfont = list(size = 10), showgrid = TRUE),
-                    xaxis = list(tickfont = list(size = 10), showgrid = TRUE),
-                    showlegend = FALSE
+            yaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+            xaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+            showlegend = FALSE
         )
-
     }
 }

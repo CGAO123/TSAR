@@ -131,7 +131,7 @@ p.s. make to select `both` under `Choose dataset` if intending to use
 #3. Data Visualization
 
 Use function `graph_tsar()` to start a Shiny application for graphing options. 
-Run `na.omit()` on data if error occurs. Three graphing options are allowed, 
+Run `na.omit()` on data if error occurs. Four graphing options are allowed, 
 boxplot of Tm, compare plots, and conditions plot.
 
 Function takes optional data parameter. If analysis file is already imported 
@@ -145,18 +145,17 @@ data of all test trials. Simply call `graph_tsar()` and click
 runApp(graph_tsar())
 ```
 
-Upload is limited to 30MB in size, but not count size. After upload, user will 
+Upload is limited to 30MB in size, but not count. After upload, user will 
 be prompted corresponding numbers of input boxes to specify date of each 
 experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview 
-of tsar_data will be prompted. For a full list of well_ID and conditions_ID, 
-refer to the helper buttons at the bottom of page.
+of tsar_data will be prompted. For full lists and filters of well_ID and 
+conditions_ID, refer to the helper buttons at the bottom of page.
 
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/graph_tsar_01.png")
 knitr::include_graphics("images/graph_tsar_02.png")
 knitr::include_graphics("images/graph_tsar_03.png")
 knitr::include_graphics("images/graph_tsar_04.png")
-knitr::include_graphics("images/graph_tsar5.png")
 ```
 
 Top panel outputs all plots, selected desired graphing features below and click 
@@ -187,8 +186,15 @@ knitr::include_graphics("images/graph_tsar_32.png")
 knitr::include_graphics("images/graph_tsar3.png")
 ```
 
+Compare plots for first derivative graphs are interactive graphs grouped by 
+specified variable.
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/graph_tsar6.png")
+```
+
 Helper functions include these following:
 ```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/graph_tsar5.png")
 knitr::include_graphics("images/graph_tsar4.png")
 ```
 

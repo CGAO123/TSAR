@@ -112,8 +112,8 @@ Open TSA Analysis files. This function is used to load data output from
 
 \examples{
 path <- "~/Desktop/analysis_data"
-#note: example does not contain example data to run
-#read_analysis(path)
+# note: example does not contain example data to run
+# read_analysis(path)
 }
 \seealso{
 \code{\link{read_raw_data}} for loading accompanying data.

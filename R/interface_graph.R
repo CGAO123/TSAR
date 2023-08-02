@@ -218,12 +218,16 @@ graphpage <- function(tsar_data) {
             column(
                 width = 2,
                 shiny::selectInput("frame_by",
-                                label = "Compare by: ",
-                                choices = c("NA", subset(names(tsar_data),
-                                    !names(tsar_data) %in% c("Temperature",
-                                                             "Fluorescence",
-                                                             "norm_deriv"))),
-                                selected = "NA"
+                    label = "Compare by: ",
+                    choices = c("NA", subset(
+                        names(tsar_data),
+                        !names(tsar_data) %in% c(
+                            "Temperature",
+                            "Fluorescence",
+                            "norm_deriv"
+                        )
+                    )),
+                    selected = "NA"
                 )
             ),
             column(
@@ -235,25 +239,32 @@ graphpage <- function(tsar_data) {
         hr(),
         h4("helper functions: "),
         fluidRow(
-            column(width = 4,
-                   shiny::selectInput("remove_condition",
-                                      label = "Remove Condition_ID:",
-                                      multiple = TRUE,
-                                      choices = condition_IDs(tsar_data)
-                   )
+            column(
+                width = 4,
+                shiny::selectInput("remove_condition",
+                    label = "Remove Condition_ID:",
+                    multiple = TRUE,
+                    choices = condition_IDs(tsar_data)
+                )
             ),
-            column(width = 4,
-                   shiny::selectInput("remove_well",
-                                      label = "Remove Well_ID:",
-                                      multiple = TRUE,
-                                      choices = well_IDs(tsar_data)
-                   )),
-            column(width = 2,
-                   br(),
-                   shiny::actionButton("Remove", "Remove Selected")),
-            column(width = 2,
-                   br(),
-                   shiny::actionButton("Restore", "Restore Data"))
+            column(
+                width = 4,
+                shiny::selectInput("remove_well",
+                    label = "Remove Well_ID:",
+                    multiple = TRUE,
+                    choices = well_IDs(tsar_data)
+                )
+            ),
+            column(
+                width = 2,
+                br(),
+                shiny::actionButton("Remove", "Remove Selected")
+            ),
+            column(
+                width = 2,
+                br(),
+                shiny::actionButton("Restore", "Restore Data")
+            )
         ),
         fluidRow(
             column(
@@ -273,11 +284,11 @@ graphpage <- function(tsar_data) {
             column(
                 width = 4,
                 shiny::selectInput("control_tm",
-                                   label = "List Delta Tm:",
-                                   choices = c(
-                                       "N/A",
-                                       condition_IDs(tsar_data)
-                                   )
+                    label = "List Delta Tm:",
+                    choices = c(
+                        "N/A",
+                        condition_IDs(tsar_data)
+                    )
                 )
             ),
             column(

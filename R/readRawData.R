@@ -70,8 +70,8 @@
 #'   from the TSA software.
 #' @examples
 #' path <- "~/Desktop/raw_data"
-#' #note: example does not contain example data to run
-#' #read_raw_data(path)
+#' # note: example does not contain example data to run
+#' # read_raw_data(path)
 #'
 #' @export
 read_raw_data <- function(

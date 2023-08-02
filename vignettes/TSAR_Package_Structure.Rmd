@@ -335,6 +335,12 @@ ABA_Cond <- conclusion %>% filter(condition_ID == "CA FL_4-ABA")
 TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```
 
+###3.2.4 First Derivative Comparison
+To further visualization comparison, graph first derivatives grouped by needs.
+```{r, message=FALSE, warning=FALSE}
+view_deriv(conclusion, frame_by = "condition_ID")
+```
+
 All of the above functions are also wrapped in an interactive window call
 through `graph_tsar()`. Simply call function on merged tsar_data and access all 
 graphing features in one window. Refer to separate vignette, 

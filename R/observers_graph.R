@@ -63,8 +63,8 @@ saved_merged <- function(input, output, graph_tsar_data) {
             showModal(modalDialog(
                 title = "Data Saved Successfully",
                 "Data saved to global environment of r console.
-                Check for variable 'tsar_data'")
-            )
+                Check for variable 'tsar_data'"
+            ))
         }
     })
 }

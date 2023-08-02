@@ -42,9 +42,9 @@ This function will take the TSA data and normalize the arbitrary fluorescence
   containing the normalized TSA data.
 }
 \examples{
-#examples not ran without example dataset
-#raw_data <- read_raw_data(raw_data_path)
-#normalize_fluorescence(raw_data, by == "control)
+# examples not ran without example dataset
+# raw_data <- read_raw_data(raw_data_path)
+# normalize_fluorescence(raw_data, by == "control)
 
 }
 \seealso{

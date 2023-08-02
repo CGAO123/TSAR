@@ -172,14 +172,13 @@ saved_weeded <- function(input, output, graph_tsar_data) {
             showModal(modalDialog(
                 title = "Data Saved Successfully",
                 "Data saved to global environment of r console.
-                Check for variable 'tsar_data'")
-            )
+                Check for variable 'tsar_data'"
+            ))
         }
     })
 }
 stop_window <- function(input, output, dataset) {
     shiny::observeEvent(input$stopButton, {
-
         stopApp()
     })
 }
