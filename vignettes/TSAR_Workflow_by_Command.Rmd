@@ -241,7 +241,7 @@ TSA_boxplot(conclusion,
 ## 9. TSA Curve Visualization
 
 Specify Control condition by assigning condition_ID to control.
-tsa_compare_plot generated multiple line graphs for comparison.
+TSA_compare_plot generated multiple line graphs for comparison.
 
 ```{r}
 control_ID <- "CA FL_DMSO"
@@ -252,18 +252,19 @@ TSA_compare_plot(conclusion,
 )
 ```
 
-## 10. Data Correction
+Select by condition or well IDs to view curves and estimated Tm values.
 
-If data correction is needed, select by condition or well IDs to view
-curves and estimated Tm values. Assess the validity of analysis and edit
-with caution.
-
-```{r Data Correction}
+```{r}
 error <- conclusion %>% filter(condition_ID == "CA FL_PyxINE HCl")
 TSA_wells_plot(error, separate_legend = FALSE)
 ```
 
-## 11. Session Info
+To further visualization comparison, graph first derivatives grouped by needs.
+```{r, message=FALSE, warning=FALSE}
+view_deriv(conclusion, frame_by = "condition_ID")
+```
+
+## 10. Session Info
 ```{r}
 sessionInfo()
 ```

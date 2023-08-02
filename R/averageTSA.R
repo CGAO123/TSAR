@@ -55,8 +55,7 @@ TSA_average <- function(tsa_data,
                         avg_smooth = TRUE,
                         sd_smooth = TRUE) {
     tsa_data_new <- tsa_data
-    tsa_data_new$Temperature <- round(tsa_data_new$Temperature, digits = digits
-    )
+    tsa_data_new$Temperature <- round(tsa_data_new$Temperature, digits = digits)
     if (y == "Fluorescence") {
         tsa_data_new <- tsa_data_new %>%
             group_by(Temperature) %>%

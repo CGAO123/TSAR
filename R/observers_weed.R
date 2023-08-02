@@ -165,9 +165,20 @@ copy_click_full <- function(input, output, highlighted_cells, clicked_points) {
         }
     })
 }
+saved_weeded <- function(input, output, graph_tsar_data) {
+    shiny::observeEvent(input$savetoR, {
+        assign("new_raw_data", dataset(), envir = .GlobalEnv)
+        if (!input$dialogueToggle) {
+            showModal(modalDialog(
+                title = "Data Saved Successfully",
+                "Data saved to global environment of r console.
+                Check for variable 'tsar_data'"
+            ))
+        }
+    })
+}
 stop_window <- function(input, output, dataset) {
     shiny::observeEvent(input$stopButton, {
-        assign("new_raw_data", dataset(), envir = .GlobalEnv)
         stopApp()
     })
 }

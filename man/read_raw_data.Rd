@@ -74,8 +74,8 @@ Open TSA Raw Data files. This function is used to load data output from
 
 \examples{
 path <- "~/Desktop/raw_data"
-#note: example does not contain example data to run
-#read_raw_data(path)
+# note: example does not contain example data to run
+# read_raw_data(path)
 
 }
 \seealso{

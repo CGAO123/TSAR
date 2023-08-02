@@ -93,8 +93,8 @@
 #'   from the TSA software.
 #' @examples
 #' path <- "~/Desktop/analysis_data"
-#' #note: example does not contain example data to run
-#' #read_analysis(path)
+#' # note: example does not contain example data to run
+#' # read_analysis(path)
 #' @export
 #'
 #'

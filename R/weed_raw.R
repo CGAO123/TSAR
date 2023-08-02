@@ -75,6 +75,7 @@ weed_raw <- function(raw_data,
             input, output, dataset, checkrange, checklist,
             highlighted_cells, clicked_points, gg1
         )
+        saved_weeded(input, output, graph_tsar_data)
         print_plot(input, output, dataset, checkrange, checklist, gg1)
     }
     app <- shinyApp(ui = ui, server = server)

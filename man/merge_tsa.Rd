@@ -81,8 +81,8 @@ This function is used to load both the Raw Data and the Analysis Results
 }
 
 \examples{
-#note: example does not contain example data to run
-#merge_TSA(analysis_file_path, raw_data_path)
+# note: example does not contain example data to run
+# merge_TSA(analysis_file_path, raw_data_path)
 
 }
 \seealso{

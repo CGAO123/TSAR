@@ -25,8 +25,7 @@
 #' @export
 Tm_difference <-
     function(tsa_data,
-             control_condition
-    ) {
+             control_condition) {
         TM_DF <- TSA_Tms(tsa_data)
 
         if (!is.na(control_condition)) {

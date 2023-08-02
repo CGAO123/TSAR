@@ -138,8 +138,10 @@ gam_analysis <- function(
                 )
             } else {
                 # keep selected variables and derivatives
-                by_well <- dplyr::select(by_well,
-                                all_of(c(unlist(selections), "norm_deriv")))
+                by_well <- dplyr::select(
+                    by_well,
+                    all_of(c(unlist(selections), "norm_deriv"))
+                )
             }
             # concat data frame of each well into one big data frame
             kept <- rbind(kept, by_well)

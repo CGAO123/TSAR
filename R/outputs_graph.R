@@ -40,6 +40,14 @@ build_table <- function(input, output, graph_tsar_data) {
     })
 }
 
+render_derivative <- function(input, output, graph_tsar_data) {
+    shinyjs::hide("bplot")
+    shinyjs::show("alternativeplot")
+    output$altplot <- renderPlotly({
+        view_deriv(graph_tsar_data(), frame_by = input$frame_by)
+    })
+}
+
 render_box <- function(input, output, box) {
     if (input$Legend == FALSE) {
         if (input$makeplotly == TRUE) {
@@ -48,7 +56,8 @@ render_box <- function(input, output, box) {
             output$altplot <- renderPlotly({
                 boxp <- box + labs(y = "Tm (degree Celsius)")
                 boxp <- suppressWarnings(print(
-                    ggplotly(boxp, originalData = TRUE)))
+                    ggplotly(boxp, originalData = TRUE)
+                ))
                 layout(boxp,
                     yaxis = list(title_font = list(size = 18)),
                     xaxis = list(title_font = list(size = 18))
