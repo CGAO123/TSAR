@@ -39,9 +39,16 @@ graphpage <- function(tsar_data) {
                         )
                     ),
                     column(
-                        width = 6,
+                        width = 3,
                         shiny::actionButton("generate", "Merge and Save Data")
-                    )
+                    ),
+                    column(
+                        width = 3,
+                        actionButton(
+                            "savetolocal",
+                            "Save to R"
+                        )
+                    ),
                 ),
                 div(
                     style = "font-size: 11px;",
@@ -206,6 +213,25 @@ graphpage <- function(tsar_data) {
                 )
             )
         ),
+        h3("Derivative Comparisons"),
+        fluidRow(
+            column(
+                width = 2,
+                shiny::selectInput("frame_by",
+                                label = "Compare by: ",
+                                choices = c("NA", subset(names(tsar_data),
+                                    !names(tsar_data) %in% c("Temperature",
+                                                             "Fluorescence",
+                                                             "norm_deriv"))),
+                                selected = "NA"
+                )
+            ),
+            column(
+                br(),
+                width = 2,
+                shiny::actionButton("build_deriv", "Compare Derivatives")
+            )
+        ),
         hr(),
         h4("helper functions: "),
         fluidRow(
@@ -224,7 +250,10 @@ graphpage <- function(tsar_data) {
                    )),
             column(width = 2,
                    br(),
-                   shiny::actionButton("Remove", "Remove Selected"))
+                   shiny::actionButton("Remove", "Remove Selected")),
+            column(width = 2,
+                   br(),
+                   shiny::actionButton("Restore", "Restore Data"))
         ),
         fluidRow(
             column(

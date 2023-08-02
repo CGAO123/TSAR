@@ -179,60 +179,56 @@ view_model <- function(raw_data) {
 #'   outside.
 #'
 #' @import ggplot2
-#' @importFrom plotly ggplotly layout
-#' @param norm_data dataset input, analyzed must norm_deriv as a variable;
-#'   dataset qualifying norm_data or tsar_data both fulfills this parameter
+#' @importFrom plotly ggplotly layout animation_opts
+#' @param tsar_data dataset input, analyzed must have norm_deriv as a variable;
+#'   dataset qualifying norm_data or tsar_data both fulfills this parameter,
+#'   although tsar_data is more recommended given more data options.
+#' @param frame_by builds plotly by specified frame variable. To graph by a
+#'   concentration gradient, well position, or other specified variable,
+#'   simple specify \code{frame_by = "condition_ID"}. To view all derivative
+#'   curves without frames, set to \code{frame_by = FALSE}, else it is
+#'   defaulted to frame by well labels.
 #' @examples
 #' data("example_tsar_data")
-#' view_deriv(example_tsar_data)
+#' view_deriv(example_tsar_data, frame_by = "condition_ID")
 #'
 #' @return plotly object of derivative curves
 #' @family TSA Plots
 #' @export
 #'
-view_deriv <- function(norm_data) {
-    graphed <- ggplot(data = norm_data,
-           aes(x=Temperature, y=norm_deriv,
-               color = Well, frame = Well)) +
+view_deriv <- function(tsar_data, frame_by = "Well") {
+    if (frame_by == "NA"){
+        graphed <- ggplot(data = tsar_data,
+                          aes(x=Temperature, y=norm_deriv,
+                              color = well_ID))
+    } else if (!missing(frame_by)) {
+        graphed <- ggplot(data = tsar_data,
+                          aes(x=Temperature, y=norm_deriv,
+                              color = well_ID, frame = !!sym(frame_by),
+                              label = Tm))
+    } else {
+        stop("No frames specified; data does not contain Well or Well.Postion.")
+    }
+
+    graphed <- graphed +
         geom_line() +
         labs(y = "dRFU") +
         theme_bw() +
         theme(panel.grid.major = element_blank())
     graphed <- ggplotly(graphed)
-    plotly::layout(graphed,
-                   yaxis = list(tickfont = list(size = 8), showgrid = TRUE),
-                   xaxis = list(tickfont = list(size = 8), showgrid = TRUE)
-    )
-}
+    graphed <- animation_opts(graphed, mode = "next")
+    if (frame_by == "NA"){
+        plotly::layout(graphed,
+                    yaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+                    xaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+                    showlegend = TRUE
+        )
+    } else {
+        plotly::layout(graphed,
+                    yaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+                    xaxis = list(tickfont = list(size = 10), showgrid = TRUE),
+                    showlegend = FALSE
+        )
 
-#' View Animated Derivative Curves
-#'
-#' Function reviews data by well and output animated graph first derivatives
-#'   Content are animated by Well IDs. Potentiall, when experiment are set wth
-#'   concentration gradients down the plate, graph would reflect than change
-#'   induced by such change.
-#'
-#' @import ggplot2
-#' @importFrom plotly ggplotly layout animation_slider plot_ly
-#' @param norm_data dataset input, analyzed must norm_deriv as a variable;
-#'   dataset qualifying norm_data or tsar_data both fulfills this parameter
-#' @examples
-#' data("example_tsar_data")
-#' animante_deriv(example_tsar_data)
-#'
-#' @return plotly object of derivative curves by well
-#' @family TSA Plots
-#' @export
-#'
-animante_deriv <- function(norm_data) {
-    plotly_object <- plot_ly(
-        data = norm_data, x = ~Temperature, y = ~norm_deriv,
-        type = 'scatter', mode = 'lines', colors = "Set1",
-        color = ~Well, frame = ~Well)
-
-    plotly::layout(plotly_object,
-           xaxis = list(title = "Temperature"),
-           yaxis = list(title = "norm_deriv"))
-
-    animation_slider(plotly_object, currentvalue = list(prefix = "Well "))
+    }
 }

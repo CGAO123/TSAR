@@ -40,6 +40,14 @@ build_table <- function(input, output, graph_tsar_data) {
     })
 }
 
+render_derivative <- function(input, output, graph_tsar_data) {
+    shinyjs::hide("bplot")
+    shinyjs::show("alternativeplot")
+    output$altplot <- renderPlotly({
+        view_deriv(graph_tsar_data(), frame_by = input$frame_by)
+    })
+}
+
 render_box <- function(input, output, box) {
     if (input$Legend == FALSE) {
         if (input$makeplotly == TRUE) {

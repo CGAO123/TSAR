@@ -79,17 +79,24 @@ mainpage <- function(raw_data, data_name) {
             )
         ),
         verbatimTextOutput("highlighted_list"),
-        h4("Copy Selections"),
+        h4("Copy Edited"),
         fluidRow(
             column(
-                width = 2,
-                shiny::actionButton("myButton", "Copy Well IDs")
+                width = 3,
+                shiny::actionButton("myButton", "Copy Selected Wells")
             ),
             column(
                 width = 4,
                 shiny::actionButton(
                     "removeCall",
                     "Copy in remove_raw() Call"
+                )
+            ),
+            column(
+                width = 3,
+                actionButton(
+                    "savetoR",
+                    "Save changes to R"
                 )
             ),
         ),

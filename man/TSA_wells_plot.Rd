@@ -74,7 +74,6 @@ TSA_wells_plot(check, separate_legend = FALSE)
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},
 \code{\link{TSA_compare_plot}()},
-\code{\link{animante_deriv}()},
 \code{\link{get_legend}()},
 \code{\link{graph_tsar}()},
 \code{\link{view_deriv}()}

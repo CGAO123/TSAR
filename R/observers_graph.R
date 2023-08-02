@@ -56,6 +56,18 @@ save_dates <- function(input, output, dated, datelist) {
         }
     })
 }
+saved_merged <- function(input, output, graph_tsar_data) {
+    shiny::observeEvent(input$savetolocal, {
+        assign("tsar_data", graph_tsar_data(), envir = .GlobalEnv)
+        if (!input$dialogueToggle) {
+            showModal(modalDialog(
+                title = "Data Saved Successfully",
+                "Data saved to global environment of r console.
+                Check for variable 'tsar_data'")
+            )
+        }
+    })
+}
 merge_update <- function(input, output, dated, graph_tsar_data,
                          datelist, session) {
     shiny::observeEvent(input$generate, {
@@ -193,6 +205,12 @@ build_curves <- function(input, output, graph_tsar_data) {
         }
     })
 }
+build_derivatives <- function(input, output, graph_tsar_data) {
+    shiny::observeEvent(input$build_deriv, {
+        render_derivative(input, output, graph_tsar_data)
+    })
+}
+
 render_condition <- function(input, output, graph_tsar_data) {
     shiny::observeEvent(input$condition, {
         print_condition(input, output, graph_tsar_data)
@@ -218,6 +236,24 @@ remove_selected_graph <- function(input, output, graph_tsar_data) {
         cur <- subset(cur, !condition_ID %in% input$remove_condition)
         cur <- subset(cur, !well_ID %in% input$remove_well)
         graph_tsar_data(cur)
+        if (!input$dialogueToggle) {
+            showModal(modalDialog(
+                title = "Selection Removed",
+                "All selected condition_ID and well_ID are removed.
+                To revert to original data, click 'Restore Removal'."
+            ))
+        }
+    })
+}
+restore_removal <- function(input, output, graph_tsar_data, stock_tsar_data) {
+    shiny::observeEvent(input$Restore, {
+        graph_tsar_data(stock_tsar_data())
+        if (!input$dialogueToggle) {
+            showModal(modalDialog(
+                title = "All removals restored",
+                "Data restored to original status."
+            ))
+        }
     })
 }
 closegraph <- function(input, output) {

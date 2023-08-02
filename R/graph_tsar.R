@@ -44,6 +44,7 @@ graph_tsar <- function(tsar_data = data.frame()) {
         dated <- reactiveVal(FALSE)
         compare <- reactiveVal(NULL)
         graph_tsar_data <- reactiveVal(tsar_data)
+        stock_tsar_data <- reactiveVal(tsar_data)
 
         dummy_plot(input, output)
         hide_p(input, output)
@@ -51,16 +52,19 @@ graph_tsar <- function(tsar_data = data.frame()) {
         initialize(input, output, graph_tsar_data)
         build_dates(input, output)
         save_dates(input, output, dated, datelist)
+        saved_merged(input, output, graph_tsar_data)
         merge_update(input, output, dated, graph_tsar_data, datelist, session)
         build_boxplot(input, output, graph_tsar_data)
         build_compare(input, output, graph_tsar_data, compare)
         view_compare(input, output, compare)
         build_curves(input, output, graph_tsar_data)
+        build_derivatives(input, output, graph_tsar_data)
         render_condition(input, output, graph_tsar_data)
         render_well(input, output, graph_tsar_data)
         render_tm(input, output, graph_tsar_data)
         render_message(input, output)
         remove_selected_graph(input, output, graph_tsar_data)
+        restore_removal(input, output, graph_tsar_data, stock_tsar_data)
         closegraph(input, output)
     }
 

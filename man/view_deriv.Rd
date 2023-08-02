@@ -4,11 +4,18 @@
 \alias{view_deriv}
 \title{View Derivative Curves}
 \usage{
-view_deriv(norm_data)
+view_deriv(tsar_data, frame_by = "Well")
 }
 \arguments{
-\item{norm_data}{dataset input, analyzed must norm_deriv as a variable;
-dataset qualifying norm_data or tsar_data both fulfills this parameter}
+\item{tsar_data}{dataset input, analyzed must have norm_deriv as a variable;
+dataset qualifying norm_data or tsar_data both fulfills this parameter,
+although tsar_data is more recommended given more data options.}
+
+\item{frame_by}{builds plotly by specified frame variable. To graph by a
+concentration gradient, well position, or other specified variable,
+simple specify \code{frame_by = "condition_ID"}. To view all derivative
+curves without frames, set to \code{frame_by = FALSE}, else it is
+defaulted to frame by well labels.}
 }
 \value{
 plotly object of derivative curves
@@ -20,7 +27,7 @@ Function reviews data by well and output a graph of the all derivatives
 }
 \examples{
 data("example_tsar_data")
-view_deriv(example_tsar_data)
+view_deriv(example_tsar_data, frame_by = "condition_ID")
 
 }
 \seealso{
@@ -28,7 +35,6 @@ Other TSA Plots:
 \code{\link{TSA_boxplot}()},
 \code{\link{TSA_compare_plot}()},
 \code{\link{TSA_wells_plot}()},
-\code{\link{animante_deriv}()},
 \code{\link{get_legend}()},
 \code{\link{graph_tsar}()}
 }
