@@ -1,6 +1,6 @@
 # TSAR
 
-TSAR Package is contains three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser. All functions can be run outside shiny applications, refer to vignette, "TSAR Workflow by Command" for instructions.
+TSAR Package contains three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser. All functions can be run outside shiny applications, refer to vignette, "TSAR Workflow by Command" for instructions.
 Using package `remotes` to install package from Github repository. When installing, ensure to set `build_vignettes = TRUE`.
 
 ```r
