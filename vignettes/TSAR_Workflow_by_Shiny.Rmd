@@ -21,7 +21,7 @@ data pre-processing, data analysis, and data visualization. All application
 can be opened in both interactive window or browsing engine by copy pasting 
 server address into web browser.
 
-#1. Data Pre-Processing
+## 1. Data Pre-Processing
 
 Load data and remove blank wells by specifying a range of wells with 
 `removerange = c()` or individual wells with `removelist = c()`. User may 
@@ -72,7 +72,7 @@ the call back into console or script and run to propagate changes locally.
 knitr::include_graphics("images/weed_raw2.png")
 ```
 
-#2. Data Analysis
+## 2. Data Analysis
 
 Analyze data by calling function `analyze_norm()` and follow the workflow from 
 top to bottom. Preview data table for changes occurring at each step and refer 
@@ -128,7 +128,7 @@ Lastly, to save all analysis locally, click `Save File` after previewing output.
 p.s. make to select `both` under `Choose dataset` if intending to use 
 `graph_tsar()` or other graphing tools within the package.
 
-#3. Data Visualization
+## 3. Data Visualization
 
 Use function `graph_tsar()` to start a Shiny application for graphing options. 
 Run `na.omit()` on data if error occurs. Four graphing options are allowed, 
@@ -193,12 +193,13 @@ knitr::include_graphics("images/graph_tsar6.png")
 ```
 
 Helper functions include these following:
+
 ```{r, out.width = "400px", echo = FALSE}
 knitr::include_graphics("images/graph_tsar5.png")
 knitr::include_graphics("images/graph_tsar4.png")
 ```
 
-#4. Session Info
+## 4. Session Info
 ```{r}
 sessionInfo()
 ```

@@ -19,7 +19,7 @@ library(shiny)
 library(utils)
 ```
 
-```{r, out.width = "400px", echo = FALSE}
+```{r, fig.width=4, out.width="400px"}
 knitr::include_graphics("images/TSAR_logo.png")
 ```
 
@@ -337,7 +337,7 @@ TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 
 ###3.2.4 First Derivative Comparison
 To further visualization comparison, graph first derivatives grouped by needs.
-```{r, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 view_deriv(conclusion, frame_by = "condition_ID")
 ```
 
