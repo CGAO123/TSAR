@@ -19,12 +19,12 @@ Well names. For example, \code{checklist = c('A01', 'D11')}}
 }
 \value{
 prompts separate app window for user interaction,
-  does not return specific value
+    does not return specific value
 }
 \description{
 The weed_raw function allows users to interact with a screening graph
-  and select curves to weed out before entering analysis. Function wraps
-  together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
+    and select curves to weed out before entering analysis. Function wraps
+    together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 }
 \examples{
 data("qPCR_data1")
@@ -37,10 +37,12 @@ if (interactive()) {
 \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}
 
 Other data_preprocess: 
+\code{\link{model_boltzmann}()},
 \code{\link{model_fit}()},
 \code{\link{model_gam}()},
 \code{\link{normalize}()},
 \code{\link{remove_raw}()},
+\code{\link{run_boltzmann}()},
 \code{\link{screen}()},
 \code{\link{view_model}()}
 }

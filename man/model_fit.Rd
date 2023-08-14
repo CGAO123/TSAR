@@ -13,16 +13,16 @@ model_fit(norm_data, model, smoothed)
 
 \item{smoothed}{inform whether data already contains a smoothed model; Input
 the column name of the smoothed data to override values of gam model
-fitting. For example, existing "Fluorescence" column contains data already
-smoothed, set \code{smoothed = "Flourescence"} to calculate derivative
-function upon the called smoothed data.}
+fitting. For example, existing "Fluorescence" column contains data
+already smoothed, set \code{smoothed = "Flourescence"} to calculate
+derivative function upon the called smoothed data.}
 }
 \value{
 data frame; with calculated derivative columns
 }
 \description{
 Model_fit calculates derivatives by refitting model onto data. Only runs
-  on data of a single well.
+    on data of a single well.
 }
 \examples{
 data("qPCR_data1")
@@ -39,9 +39,11 @@ model_fit(test, smoothed = "Fluorescence")
 }
 \seealso{
 Other data_preprocess: 
+\code{\link{model_boltzmann}()},
 \code{\link{model_gam}()},
 \code{\link{normalize}()},
 \code{\link{remove_raw}()},
+\code{\link{run_boltzmann}()},
 \code{\link{screen}()},
 \code{\link{view_model}()},
 \code{\link{weed_raw}()}

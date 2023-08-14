@@ -16,30 +16,30 @@ If multiple wells need to be normalized, use \code{\link{gam_analysis}}()
 for 96 well application. If only preliminary screening is needed, use
 \code{\link[TSAR]{screen}}().}
 
-\item{fluo}{integer; the Fluorescence variable column id
-(e.g. fluo = 5 when 5th column of the data frame is the Fluorescence value)
-  if fluorescence variable is named exactly as "Fluorescence", fluo does not
-  need to be specified. i.e. fluo is set to NA by default,
-  suggesting the variable is named "Fluorescence".}
+\item{fluo}{integer; the Fluorescence variable column id (e.g. fluo = 5
+when 5th column of the data frame is the Fluorescence value)
+if fluorescence variable is named exactly as "Fluorescence", fluo does
+not need to be specified. i.e. fluo is set to NA by default,
+suggesting the variable is named "Fluorescence".}
 
 \item{selected}{list of character strings;
 variables from the original data set users intend to keep.
 Variable default set to c("Well.Position", "Temperature", "Fluorescence",
-"Normalized") if not otherwise specified. If data frame variables are named
-differently, user needs to specify what column variables to keep.}
+"Normalized") if not otherwise specified. If data frame variables are
+named differently, user needs to specify what column variables to keep.}
 }
 \value{
 cleaned up data framed with selected columns
 }
 \description{
 normalize() reads in raw_data. This function normalizes data by standardizing
-  them according to maximum and minimum fluorescence per well, with maximum
-  set to 1 and minimum set to 0. It also reformats data types by checking
-  for potential error. i.e. a string speicfying 100,000 will be read in
-  as number, 100000, without issue.
-  Function is applicable only to data of a single well, do not call on
-  an entire data frame of all 96 well data. It is intended for single well
-  screening purposes.
+    them according to maximum and minimum fluorescence per well, with maximum
+    set to 1 and minimum set to 0. It also reformats data types by checking
+    for potential error. i.e. a string specifying 100,000 will be read in
+    as number, 100000, without issue.
+    Function is applicable only to data of a single well, do not call on
+    an entire data frame of all 96 well data. It is intended for single well
+    screening purposes.
 }
 \examples{
 data("qPCR_data1")
@@ -49,9 +49,11 @@ normalize(test)
 }
 \seealso{
 Other data_preprocess: 
+\code{\link{model_boltzmann}()},
 \code{\link{model_fit}()},
 \code{\link{model_gam}()},
 \code{\link{remove_raw}()},
+\code{\link{run_boltzmann}()},
 \code{\link{screen}()},
 \code{\link{view_model}()},
 \code{\link{weed_raw}()}

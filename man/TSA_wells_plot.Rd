@@ -52,13 +52,14 @@ This is to help with readability. One ggplot is returned when FALSE.}
 }
 \value{
 by default, two ggplots are returned: one TSA curve and one key.
-  When \code{separate_legend = FALSE} one ggplot is returned.
+    When \code{separate_legend = FALSE} one ggplot is returned.
 }
 \description{
 Generates the individual curves for each well in the merged tsa data input.
-  Options to create an average and standard deviation sd of the plot
-  in addition to the individual curves. The average and sd will be smoothened
-  by linear regression; see \code{\link{TSA_average}} for details.
+    Options to create an average and standard deviation sd of the plot
+    in addition to the individual curves. The average and sd will be
+    smoothened by linear regression; see \code{\link{TSA_average}} for
+    details.
 }
 \examples{
 data("example_tsar_data")
@@ -68,8 +69,8 @@ TSA_wells_plot(check, separate_legend = FALSE)
 }
 \seealso{
 \code{\link{merge_TSA}} and \code{\link{normalize_fluorescence}}
-  for preparing data. See \code{\link{TSA_average}} and
-  \code{\link{get_legend}} for details on function parameters.
+    for preparing data. See \code{\link{TSA_average}} and
+    \code{\link{get_legend}} for details on function parameters.
 
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},

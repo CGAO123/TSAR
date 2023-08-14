@@ -55,9 +55,7 @@ render_box <- function(input, output, box) {
             shinyjs::show("alternativeplot")
             output$altplot <- renderPlotly({
                 boxp <- box + labs(y = "Tm (degree Celsius)")
-                boxp <- suppressWarnings(print(
-                    ggplotly(boxp, originalData = TRUE)
-                ))
+                boxp <- ggplotly(boxp, originalData = TRUE)
                 layout(boxp,
                     yaxis = list(title_font = list(size = 18)),
                     xaxis = list(title_font = list(size = 18))

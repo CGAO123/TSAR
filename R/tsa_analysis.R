@@ -1,17 +1,17 @@
 #' Find inflection point function
 #'
 #' Looks for Tm temperature values by finding the inflection point in the
-#'   fluorescence data. The inflection point is approximated by
-#'   locating the maximum first derivative stored in "norm_deriv" column.
+#'     fluorescence data. The inflection point is approximated by
+#'     locating the maximum first derivative stored in "norm_deriv" column.
 #'
 #' @param norm_data data frame; data frame input containing derivative values
-#'   can only be data frames for one well; finding inflections points across
-#'   multiple wells require iteration through individual wells
+#'     can only be data frames for one well; finding inflections points across
+#'     multiple wells require iteration through individual wells
 #' @param min restricts finding to be above the given minimum temperature
 #' @param max restricts finding to be below the given maximum temperature
-#'   parameter min and max can be used to remove messy or undesired data
-#'   for better accuracy in tm estimation; removing data is  before fitting the
-#'   model is more recommended than removing here
+#'     parameter min and max can be used to remove messy or undesired data
+#'     for better accuracy in tm estimation; removing data is  before fitting
+#'     the model is more recommended than removing here
 #'
 #' @return integer; tm estimation
 #'
@@ -45,35 +45,42 @@ Tm_est <- function(norm_data, min, max) {
 #' Analysis of all 96 wells through gam modeling
 #'
 #' Function pipeline that combines separated functions and iterate through
-#'   each well to estimate the Tm.
+#'     each well to estimate the Tm.
 #' @importFrom mgcv gam
 #' @importFrom dplyr select mutate
 #'
 #' @param raw_data data frame; raw data frame
 #' @param keep Boolean; set to \code{keep = TRUE}
-#'   by default to return normalized data and fitted data
+#'     by default to return normalized data and fitted data
 #' @param smoothed Boolean; set to \code{smoothed = FALSE} by default,
-#'   if data is already smoothed, set smoothed to true
+#'     if data is already smoothed, set smoothed to true
+#' @param boltzmann Boolean; set to \code{boltzmann = FALSE} by default. Set
+#'     to \code{boltzmann = TRUE} if a botlzmann fit is preferred.
 #' @param fit Boolean; set to \code{fit = FALSE} by default, \code{fit = TRUE}
-#'   returns access to information of each model fit. Not accessible in shiny.
+#'     returns access to information of each model fit. Not accessible in shiny.
 #' @param selections list of characters; the variables in raw data user intends
-#'   to keep. It is set, by default, to \code{c("Well.Position", "Temperature",
-#'   "Fluorescence", "Normalized")}.
+#'     to keep. It is set, by default, to \code{c("Well.Position",
+#'     "Temperature", "Fluorescence", "Normalized")}.
 #' @param fluo_col integer; the Fluorescence variable column id
-#'   (e.g. fluo = 5 when 5th column of data frame is the Fluorescence value)
-#'   if fluorescence variable is named exactly as "Fluorescence", fluo does not
-#'   need to be specified.
+#'     (e.g. fluo = 5 when 5th column of data frame is the Fluorescence value)
+#'     if fluorescence variable is named exactly as "Fluorescence", fluo does
+#'     not need to be specified.
 #'
 #' @return List of data frames, list of three data frame outputs,
-#'   Tm estimation by well, data set, fit of model by well.
+#'     Tm estimation by well, data set, fit of model by well.
 #'
 #' @family tsa_analysis
 #'
 #' @examples
 #' data("qPCR_data1")
-#' gam_analysis(qPCR_data1, smoothed = TRUE, fluo_col = 5, selections = c(
-#'     "Well.Position", "Temperature", "Fluorescence", "Normalized"
-#' ))
+#' gam_analysis(qPCR_data1,
+#'     smoothed = TRUE, boltzmann = FALSE, fluo_col = 5,
+#'     selections = c(
+#'         "Well.Position", "Temperature", "Fluorescence",
+#'         "Normalized"
+#'     )
+#' )
+#' model <- gam_analysis(qPCR_data1, smoothed = FALSE, boltzmann = TRUE)
 #'
 #' @export
 gam_analysis <- function(
@@ -81,6 +88,7 @@ gam_analysis <- function(
     keep = TRUE,
     fit = FALSE,
     smoothed = FALSE,
+    boltzmann = FALSE,
     fluo_col = NA,
     selections = c(
         "Well.Position",
@@ -102,22 +110,25 @@ gam_analysis <- function(
             selected = selections
         )
 
-        # check is data is already smooth
         # fit model if not smoothed
         if (smoothed == FALSE) {
-            gammodel <- model_gam(
-                norm_data = by_well,
-                x = by_well$Temperature,
-                y = by_well$Normalized
-            )
+            if (boltzmann == TRUE) {
+                model <- run_boltzmann(norm_data = by_well)
+            } else {
+                model <- model_gam(
+                    norm_data = by_well,
+                    x = by_well$Temperature,
+                    y = by_well$Normalized
+                )
+            }
             # check if user wishes to keep summaries of each well's model fit
             if (fit == TRUE) {
-                newsum <- list(summary(gammodel))
+                newsum <- list(summary(model))
                 # concat fit summaries
                 fitsummaries <- append(fitsummaries, newsum)
             }
             # calculate derivatives and append derivated using fitted values
-            by_well <- model_fit(norm_data = by_well, model = gammodel)
+            by_well <- model_fit(norm_data = by_well, model = model)
         } else {
             # if data smoothing is already present, not modeling required
             # calculate derivatives using smoothed data, append derivatives

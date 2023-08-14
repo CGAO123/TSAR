@@ -20,7 +20,7 @@ output files with select dataset
 }
 \description{
 reads previous pipeline output lists from \code{\link{gam_analysis}}()
-  and organizes them into separate data frames.
+    and organizes them into separate data frames.
 }
 \examples{
 data("qPCR_data1")

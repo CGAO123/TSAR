@@ -24,7 +24,8 @@ average Tm for the specified condition. When NA, this is skipped.}
 
 \item{color_by}{character string, either c("Ligand", "Protein").
 The condition category to color the boxes within the box
-plot for comparison. This is represented in the legend. Set to NA to skip.}
+plot for comparison. This is represented in the legend.
+Set to NA to skip.}
 
 \item{label_by}{character string, either c("Ligand", "Protein").
 The condition category to group the boxes within the box
@@ -36,12 +37,12 @@ This is to help with readability. One ggplot is returned when FALSE.}
 }
 \value{
 by default, two ggplots are returned: one TSA curve and one key.
-  When \code{separate_legend = FALSE} one ggplot is returned.
+    When \code{separate_legend = FALSE} one ggplot is returned.
 }
 \description{
 Generates a box and whiskers plot for each condition specified. This
-is used to compare Tm values between the data set.
-See \code{\link{Tm_difference}} for details.
+    is used to compare Tm values between the data set.
+    See \code{\link{Tm_difference}} for details.
 }
 \examples{
 data("example_tsar_data")
@@ -52,8 +53,8 @@ TSA_boxplot(example_tsar_data,
 }
 \seealso{
 \code{\link{merge_TSA}}
-  for preparing data. See \code{\link{Tm_difference}} and
-  \code{\link{get_legend}} for details on function parameters.
+    for preparing data. See \code{\link{Tm_difference}} and
+    \code{\link{get_legend}} for details on function parameters.
 
 Other TSA Plots: 
 \code{\link{TSA_compare_plot}()},

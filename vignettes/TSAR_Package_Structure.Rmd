@@ -128,7 +128,8 @@ are not necessary as they are wrapped together in `gam_analysis()`, if viewing
 the validity of model is desired, one can prompt analysis of one well.
 
 TSAR package performs derivative analysis using a generalized additive model 
-through package `mgcv`.
+through package `mgcv` or boltzmann analysis using nlsLM from package 
+`minpack.lm`.
 
 ###2.2.1 Individual Well Application
 
@@ -157,13 +158,13 @@ Tm_est(test)
 
 ###2.2.2 96 Well Application
 
-All analysis necessary if formatted in function `gam_analysis()`. Parameters 
+All analysis necessary are formatted in function `gam_analysis()`. Parameters 
 are inherited from functions noted in section "Individual Well Application". 
 Hence, if any errors are prompted, check through individual well application 
 for correct parameter input and other potential errors.
 
--   model_fit(): `smoothed`
--   normalize(): `fluo` and `selections`
+-   `smoothed` inherited from model_fit()
+-   `fluo` and `selections` inherited from normalize()
 
 ```{r}
 x <- gam_analysis(raw_data,
@@ -336,7 +337,9 @@ TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```
 
 ###3.2.4 First Derivative Comparison
-To further visualization comparison, graph first derivatives grouped by needs.
+To further visualization comparison, graph first derivatives grouped by needs. 
+Note if modeling was set to boltzman fit, frist derivatives will be excessively 
+smooth and contains no information beyond specified minimum and maximum.
 ```{r message=FALSE, warning=FALSE}
 view_deriv(conclusion, frame_by = "condition_ID")
 ```

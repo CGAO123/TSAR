@@ -1,7 +1,7 @@
 #' Well information input function
 #'
 #' Reads in the ligand and protein information and joins them accordingly
-#' to the big data frame for graphing purposes.
+#'     to the big data frame for graphing purposes.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom readxl read_excel
@@ -10,21 +10,21 @@
 #'
 #' @param file_path string; file path to read in the file
 #' @param file object; use file to override the need of file_path if
-#'   information is already read in
+#'     information is already read in
 #' @param analysis_file data frame; data frame containing smoothed fluorescence
-#'   data and tm values
+#'     data and tm values
 #' @param skips integer; number indicating the number of headers present in
-#'   input file, default set to 0 when file input is "by_well"
-#'   If the input follows the excel template, this parameter does not apply.
+#'     input file, default set to 0 when file input is "by_well"
+#'     If the input follows the excel template, this parameter does not apply.
 #' @param nrows integer; number indicating the number of rows the data is.
-#'   Default set to 96 assuming analysis on 96 well plate. Parameter is only
-#'   applicable when file input is "by_well". If inputting by excel
-#'   template, this parameter does not apply, please ignore.
+#'     Default set to 96 assuming analysis on 96 well plate. Parameter is only
+#'     applicable when file input is "by_well". If inputting by excel
+#'     template, this parameter does not apply, please ignore.
 #' @param type string; variable specifies the type of input read in.
-#'   type = "by_well" requires input of csv or txt files of three variables:
-#'   Well, Protein, Ligand.
-#'   type = "by_template" requires input of excel file following the template
-#'   format provided
+#'     type = "by_well" requires input of csv or txt files of three variables:
+#'     Well, Protein, Ligand.
+#'     type = "by_template" requires input of excel file following the template
+#'     format provided
 #' @return outputs data frame joining data information with well information
 #'
 #' @family read_write_analysis

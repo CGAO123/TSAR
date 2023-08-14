@@ -136,12 +136,12 @@ build_boxplot <- function(input, output, graph_tsar_data) {
             } else {
                 control_option_b <- as.character(input$Control)
             }
-            box <- suppressWarnings(print(TSA_boxplot(graph_tsar_data(),
+            box <- TSA_boxplot(graph_tsar_data(),
                 color_by = input$Color,
                 label_by = input$Label,
                 separate_legend = input$Legend,
                 control_condition = control_option_b
-            )))
+            )
             render_box(input, output, box)
         }
     })

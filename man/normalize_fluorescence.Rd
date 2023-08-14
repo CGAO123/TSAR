@@ -26,20 +26,20 @@ to it. The vector will need to align with tsa_data$Fluorescence. Ensure
 }
 \value{
 a data frame identical to the tsa_data input with a new column
-  named "RFU" containing the normalized values
+    named "RFU" containing the normalized values
 }
 \description{
 This function will take the TSA data and normalize the arbitrary fluorescence
-  measurements based on the specified method. Each well, determined by a
-  unique well ID, is normalized independently.
-  All measurements can be normalized to either the minimum or maximum value.
-  Alternatively, setting  \code{by = "rescale"} (the default) will cause
-  all values to be normalized between the minimum and
-  maximum values, with the maximum  = 1 and the minimum = 0 and all other
-  values normalized in-between. Finally, the user can supply a single
-  value or vector of values to normalize the data to. The returned data
-  frame will be the input tsa data frame with a new column named "RFU"
-  containing the normalized TSA data.
+    measurements based on the specified method. Each well, determined by a
+    unique well ID, is normalized independently.
+    All measurements can be normalized to the minimum or maximum value.
+    Alternatively, setting  \code{by = "rescale"} (the default) will cause
+    all values to be normalized between the minimum and
+    maximum values, with the maximum  = 1 and the minimum = 0 and all other
+    values normalized in-between. Finally, the user can supply a single
+    value or vector of values to normalize the data to. The returned data
+    frame will be the input tsa data frame with a new column named "RFU"
+    containing the normalized TSA data.
 }
 \examples{
 # examples not ran without example dataset
@@ -49,7 +49,7 @@ This function will take the TSA data and normalize the arbitrary fluorescence
 }
 \seealso{
 \code{\link{read_raw_data}} and  \code{\link{merge_TSA}}
-  for loading data.
+    for loading data.
 
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},
