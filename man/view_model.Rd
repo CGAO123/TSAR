@@ -14,7 +14,7 @@ list of two ggplot graphs
 }
 \description{
 Function reviews data by well and output a graph of the fit and a graph of
-  derivative. Function called within analyze_norm function.
+    derivative. Function called within analyze_norm function.
 }
 \examples{
 data("qPCR_data1")
@@ -27,10 +27,12 @@ view_model(test)
 }
 \seealso{
 Other data_preprocess: 
+\code{\link{model_boltzmann}()},
 \code{\link{model_fit}()},
 \code{\link{model_gam}()},
 \code{\link{normalize}()},
 \code{\link{remove_raw}()},
+\code{\link{run_boltzmann}()},
 \code{\link{screen}()},
 \code{\link{weed_raw}()}
 }

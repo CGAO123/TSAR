@@ -39,7 +39,7 @@ calculations displayed in the subtitle of each plot..}
 }
 \value{
 Generates a number of ggplot objects equal to the number of unique
- Condition IDs present in the input data.
+    Condition IDs present in the input data.
 }
 \description{
 Generate a number of plots based on the input data to compare the average
@@ -55,10 +55,10 @@ TSA_compare_plot(example_tsar_data,
 }
 \seealso{
 \code{\link{merge_TSA}} and \code{\link{normalize_fluorescence}}
-  for preparing data. See \code{\link{TSA_average}} and
-  \code{\link{get_legend}} for details on function parameters.
-  See \code{\link{TSA_wells_plot}} for individual curves of the averaged
-  conditions shown.
+    for preparing data. See \code{\link{TSA_average}} and
+    \code{\link{get_legend}} for details on function parameters.
+    See \code{\link{TSA_wells_plot}} for individual curves of the averaged
+    conditions shown.
 
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},

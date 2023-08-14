@@ -48,66 +48,67 @@ A data frame of TSA analysis data.
 }
 \description{
 Open TSA Analysis files. This function is used to load data output from
-  the thermal shift software
-  analysis tab. Can be either .txt or .csv file with a path / file name
-  including the string "AnalysisResults" due to its automatic naming from
-  the software. The values assigned to wells within the TSA software are
-  automatically extracted from the loaded file; values must be assigned
-  within the TSA software for the automated workflow (See IDs Section Below).
-  \strong{Note:} Wells that do not have an Analysis Group assigned are
-  removed.
-  The TSA software automatically assigns all wells to Analysis Group 1 by
-  default, and can be changed but not removed by the software.
+    the thermal shift software
+    analysis tab. Can be either .txt or .csv file with a path / file name
+    including the string "AnalysisResults" due to its automatic naming from
+    the software. The values assigned to wells within the TSA software are
+    automatically extracted from the loaded file; values must be assigned
+    within the TSA software for the automated workflow (See IDs Section
+    Below).
+    \strong{Note:} Wells that do not have an Analysis Group assigned are
+    removed.
+    The TSA software automatically assigns all wells to Analysis Group 1 by
+    default, and can be changed but not removed by the software.
 }
 \section{IDs}{
 
-  The TSAR package relies on matching conditions and file names for each well
-  and for each set of conditions between multiple files output by the TSA
-  software. Conditions are
-  assigned to individual wells within the TSA software; these assigned
-  values are detected by
-  \code{\link{read_analysis}} and
-  \code{\link{read_raw_data}} then are converted into IDs.
-  Ensure your labeling of values within the TSA software is consistent
-  so that similar values can be merged - typos or varying terms will be
-  treated as distinct values within TSAR unless the values
-  are manually specified by the user.
-  Automatically generated well IDs within a TSA file can be found using the
-  \code{\link{well_IDs}} function; condition IDs can be found using the
-  \code{\link{condition_IDs}} function. \cr\cr
+    The TSAR package relies on matching conditions and file names for each
+    well and for each set of conditions between multiple files output by
+    the TSA software. Conditions are
+    assigned to individual wells within the TSA software; these assigned
+    values are detected by
+    \code{\link{read_analysis}} and
+    \code{\link{read_raw_data}} then are converted into IDs.
+    Ensure your labeling of values within the TSA software is consistent
+    so that similar values can be merged - typos or varying terms will be
+    treated as distinct values within TSAR unless the values
+    are manually specified by the user.
+    Automatically generated well IDs within a TSA file can be found using the
+    \code{\link{well_IDs}} function; condition IDs can be found using the
+    \code{\link{condition_IDs}} function. \cr\cr
 
 
-  \strong{Condition IDs} are generated from columns in TSA output
-  specified by the 'conditions' argument.
-  Protein and Ligand values, the default conditions within the TSA
-  software, are the values used to create these IDs. You can manually
-  specify the
-  condition categories from the TSA software, including user-made conditions.
-  Condition IDs are used to match equivalent observations between technical
-  and biological replicates. Wells with identical condition IDs, specified by
-  the 'conditions' argument, will be aggregated in down-stream analysis;
-  user-specified conditions must remain consistent in use and order to
-  create compatible IDs between TSA files from the same experiment and
-  between replicates. \cr\cr
+    \strong{Condition IDs} are generated from columns in TSA output
+    specified by the 'conditions' argument.
+    Protein and Ligand values, the default conditions within the TSA
+    software, are the values used to create these IDs. You can manually
+    specify the
+    condition categories from the TSA software, including user-made
+    conditions. Condition IDs are used to match equivalent observations
+    between technical and biological replicates. Wells with identical
+    condition IDs, specified by the 'conditions' argument, will be
+    aggregated in down-stream analysis; user-specified conditions must
+    remain consistent in use and order to create compatible IDs between TSA
+    files from the same experiment and between replicates. \cr\cr
 
-  \strong{Well IDs} are similar to Condition IDs, as they are
-  generated from columns in TSA output that are
-  specified by the 'conditions' argument. Well IDs are used to match
-  the analysis and raw data files for the same experiment, as both files
-  contain unique, useful information for each well. In addition to the
-  condition ID, the well ID includes the .eds file name saved from the
-  PCR machine to match equivalent wells between files of the same experiment.
-  Each well on all plates should have a unique well ID.
-  If you wish to change or specify the file name used for the well ID,
-  a new name can be manually assigned with the "manual_file" argument.
-  \cr\cr
+    \strong{Well IDs} are similar to Condition IDs, as they are
+    generated from columns in TSA output that are
+    specified by the 'conditions' argument. Well IDs are used to match
+    the analysis and raw data files for the same experiment, as both files
+    contain unique, useful information for each well. In addition to the
+    condition ID, the well ID includes the .eds file name saved from the
+    PCR machine to match equivalent wells between files of the same
+    experiment. Each well on all plates should have a unique well ID.
+    If you wish to change or specify the file name used for the well ID,
+    a new name can be manually assigned with the "manual_file" argument.
+    \cr\cr
 
-  The user may manually assign condition IDs using the
-  'manual_conditions' argument rather than using the automatically
-  generated IDs. The same is true for well IDs, which can be manually
-  assigned with 'manual_wells'. This is not suggested, as there may be
-  issues with matching if well/conditions are not properly matching. This
-  gives the potential for errors in downstream applications as well.
+    The user may manually assign condition IDs using the
+    'manual_conditions' argument rather than using the automatically
+    generated IDs. The same is true for well IDs, which can be manually
+    assigned with 'manual_wells'. This is not suggested, as there may be
+    issues with matching if well/conditions are not properly matching. This
+    gives the potential for errors in downstream applications as well.
 }
 
 \examples{
@@ -117,8 +118,8 @@ path <- "~/Desktop/analysis_data"
 }
 \seealso{
 \code{\link{read_raw_data}} for loading accompanying data.
-  \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
-  from the TSA software.
+    \code{\link{merge_TSA}} for joining Analysis Results and Raw Data files
+    from the TSA software.
 
 Other Read TSA Data: 
 \code{\link{read_raw_data}()}

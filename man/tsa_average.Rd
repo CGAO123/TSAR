@@ -32,26 +32,26 @@ by regression via mgcv::gam()}
 }
 \value{
 a data frame of each temperature measured with the average, sd, and
- n (# of averaged values) calculated. Depending on avg_smooth and sd_smooth,
- the smoothened lines for the maximum and mimimum sd and the average will
- also be returned.
+   n(# of averaged values) calculated. Depending on avg_smooth and sd_smooth,
+   the smoothened lines for the maximum and mimimum sd and the average will
+   also be returned.
 }
 \description{
 This function will take either Fluorescence or Normalized Fluorescence
-  curves from the submitted data frame and find the average (mean) and
-  standard deviation (sd) for each temperature measured in the TSA curve.
-  Mean and sd are smoothened by default to generate cleaner curves.
-  The function \code{\link[mgcv]{gam}} from the mgcv package is used for
-  regression to smoothen lines. Smoothing can be turned off and the true
-  average for each point can be given, however, plots will look messier.
-  The qPCR machine may return temperatures with many decimal places,
-  and TSAR only merges identical values, therefore rounding is necessary.
-  Data is rounded to one decimal place to improve regression smoothing.
-  \cr \cr
-  \strong{Note:} All submitted data is averaged, regardless of condition or
-  well ID.
-  If you wish to average by condition, you will need to sort the data frame
-  and run this function on subsets.
+    curves from the submitted data frame and find the average (mean) and
+    standard deviation (sd) for each temperature measured in the TSA curve.
+    Mean and sd are smoothened by default to generate cleaner curves.
+    The function \code{\link[mgcv]{gam}} from the mgcv package is used for
+    regression to smoothen lines. Smoothing can be turned off and the true
+    average for each point can be given, however, plots will look messier.
+    The qPCR machine may return temperatures with many decimal places,
+    and TSAR only merges identical values, therefore rounding is necessary.
+    Data is rounded to one decimal place to improve regression smoothing.
+    \cr \cr
+    \strong{Note:} All submitted data is averaged, regardless of condition or
+    well ID.
+    If you wish to average by condition, you will need to sort the data frame
+    and run this function on subsets.
 }
 \examples{
 data("example_tsar_data")

@@ -30,9 +30,11 @@ remove_raw(qPCR_data1, removelist = c("A01", "D11"))
 }
 \seealso{
 Other data_preprocess: 
+\code{\link{model_boltzmann}()},
 \code{\link{model_fit}()},
 \code{\link{model_gam}()},
 \code{\link{normalize}()},
+\code{\link{run_boltzmann}()},
 \code{\link{screen}()},
 \code{\link{view_model}()},
 \code{\link{weed_raw}()}

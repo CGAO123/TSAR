@@ -108,6 +108,10 @@ to all 96 wells. `smoothed = T` infers current data is smoothed and no
 separate modeling is needed. If modeling is needed, input argument as
 `smoothed = F`.
 
+TSAR package performs derivative analysis using a generalized additive model 
+through package `mgcv` or boltzmann analysis using nlsLM from package 
+`minpack.lm`.
+
 ```{r, echo = FALSE}
 x <- gam_analysis(raw_data,
     smoothed = TRUE, fluo_col = 5,

@@ -22,8 +22,8 @@ plotly object of derivative curves
 }
 \description{
 Function reviews data by well and output a graph of the all derivatives
-  wanted. Function called within graph_tsar function but also runnable
-  outside.
+    wanted. Function called within graph_tsar function but also runnable
+    outside.
 }
 \examples{
 data("example_tsar_data")

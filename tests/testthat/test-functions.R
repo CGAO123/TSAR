@@ -1,5 +1,4 @@
 test_that("Test remove_raw", {
-    # Test case 1: Test my_function with specific input and check the output
     data("qPCR_data1")
     output <- remove_raw(qPCR_data1, removelist = c("A01", "D11"))
     result <- ("A01" %in% output$Well.Position)
@@ -27,7 +26,8 @@ test_that("Test merge_norm for correct merging", {
         name = c("Thermal Shift_162.eds.csv", "Thermal Shift_168.eds.csv"),
         date = c("20230203", "20230209")
     )
-    result <- ("well_ID" %in% names(tsar_data)) && ("condition_ID" %in% names(tsar_data))
+    result <- ("well_ID" %in% names(tsar_data)) &&
+        ("condition_ID" %in% names(tsar_data))
     expect_equal(result, TRUE)
 })
 

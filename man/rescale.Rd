@@ -14,9 +14,9 @@ A numeric vector of rescaled values.
 }
 \description{
 For a vector of numeric values, the minimum and maximum values are determined
-  and each value of the vector is rescaled between 0 and 1.
-  Values near 0 are close to the minimum, values near 1 are close to the max.
-  This function is utilized by other TSAR functions.
+    and each value of the vector is rescaled between 0 and 1.
+    Values near 0 are close to the minimum, values near 1 are close to the
+    max. This function is utilized by other TSAR functions.
 }
 \examples{
 x <- c(0, 1, 3)

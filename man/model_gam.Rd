@@ -7,21 +7,21 @@
 model_gam(norm_data, x, y)
 }
 \arguments{
-\item{norm_data}{data frame input, preferably normalized using
-\code{\link{normalize}}.}
+\item{norm_data}{data frame input of only one well's reading, preferably
+normalized using \code{\link{normalize}}.}
 
 \item{x}{temperature column}
 
 \item{y}{normalized fluorescence column}
 }
 \value{
-dtaa frame containing gam model fitted values
+data frame containing gam model fitted values
 }
 \description{
 Function finds fitted fluorescence values by imposing generalized
-  additive model on fluorescence data by temperature. Model assumes
-  method = "GACV.Cp" and sets to \code{formula = y ~ s(x, bs = "ad")}.
-  Function inherits function from gam package, \code{\link{gam}}().
+    additive model on fluorescence data by temperature. Model assumes
+    method = "GACV.Cp" and sets to \code{formula = y ~ s(x, bs = "ad")}.
+    Function inherits function from gam package, \code{\link{gam}}().
 }
 \examples{
 data("qPCR_data1")
@@ -35,9 +35,11 @@ model_gam(test, x = test$Temperature, y = test$Normalized)
 }
 \seealso{
 Other data_preprocess: 
+\code{\link{model_boltzmann}()},
 \code{\link{model_fit}()},
 \code{\link{normalize}()},
 \code{\link{remove_raw}()},
+\code{\link{run_boltzmann}()},
 \code{\link{screen}()},
 \code{\link{view_model}()},
 \code{\link{weed_raw}()}
