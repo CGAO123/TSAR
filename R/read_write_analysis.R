@@ -1,14 +1,14 @@
 #' Read analysis result
 #'
 #' reads previous pipeline output lists from \code{\link{gam_analysis}}()
-#'   and organizes them into separate data frames.
+#'     and organizes them into separate data frames.
 #'
 #' @param gam_result list; input uses resulting output of
-#'   \code{\link{gam_analysis}}() function
+#'     \code{\link{gam_analysis}}() function
 #' @param output_content integer;
-#'   \code{output_content = 0} returns only the tm value by wells
-#'   \code{output_content = 1} returns data table with fitted values
-#'   \code{output_content = 2} returns the combination of 0 and 1
+#'     \code{output_content = 0} returns only the tm value by wells
+#'     \code{output_content = 1} returns data table with fitted values
+#'     \code{output_content = 2} returns the combination of 0 and 1
 #' @return output files with select dataset
 #'
 #' @family read_write_analysis
@@ -72,10 +72,10 @@ read_tsar <- function(gam_result, output_content) {
 #'
 #' @param data input data frame
 #' @param name string, name file to be saved as. Final name will be appended
-#'   "tsar_output"
+#'     "tsar_output"
 #' @param file \code{file = "txt"} writes txt output files;
-#'             \code{file = "csv"} writes csv output files;
-#'             default set to \code{file = "txt"}
+#'     \code{file = "csv"} writes csv output files;
+#'     default set to \code{file = "txt"}
 #' @return file output on the working directory where data was read in
 #'
 #' @family read_write_analysis

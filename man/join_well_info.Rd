@@ -42,7 +42,7 @@ outputs data frame joining data information with well information
 }
 \description{
 Reads in the ligand and protein information and joins them accordingly
-to the big data frame for graphing purposes.
+    to the big data frame for graphing purposes.
 }
 \examples{
 data("qPCR_data1")

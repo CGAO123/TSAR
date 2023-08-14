@@ -14,22 +14,22 @@ averaging.}
 
 \item{condition_average}{logical value; \code{n = TRUE} by default.
 When TRUE, the average Tm is calculated by matched condition IDs within
-the data frame. When FALSE, each well is reported as a unique value with the
-corresponding Tm.}
+the data frame. When FALSE, each well is reported as a unique value with
+the corresponding Tm.}
 }
 \value{
 A data frame of Tm values.
 }
 \description{
 This function is used to output calculated Tm data from TSA analysis. The
-  input data frame will be transformed into
-  a new format that is helpful for user reading and automated analysis.
-  The Tm values can be listed as a data frame of individual wells or the Tms
-  from identical conditions can be averaged. When condition_average is TRUE
-  (the default), samples with identical condition IDs will be aggregated and
-  the average / standard deviation will be calculated where appropriate.
-  To analyze multiple TSA experiments, use merge_TSA() to make a single
-  data frame for analysis.
+    input data frame will be transformed into
+    a new format that is helpful for user reading and automated analysis.
+    The Tm values can be listed as a data frame of individual wells or the
+    Tms from identical conditions can be averaged. When condition_average
+    is TRUE (the default), samples with identical condition IDs will be
+    aggregated and the average / standard deviation will be calculated
+    where appropriate. To analyze multiple TSA experiments, use merge_TSA()
+    to make a single data frame for analysis.
 }
 \examples{
 data("example_tsar_data")
@@ -37,7 +37,7 @@ TSA_Tms(example_tsar_data)
 }
 \seealso{
 \code{\link{merge_TSA}}, \code{\link{read_raw_data}},
-and \code{\link{read_analysis}} for preparing input.
+    and \code{\link{read_analysis}} for preparing input.
 
 Other TSAR Formatting: 
 \code{\link{TSA_average}()},

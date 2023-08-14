@@ -9,6 +9,7 @@ gam_analysis(
   keep = TRUE,
   fit = FALSE,
   smoothed = FALSE,
+  boltzmann = FALSE,
   fluo_col = NA,
   selections = c("Well.Position", "Temperature", "Fluorescence", "Normalized")
 )
@@ -25,28 +26,36 @@ returns access to information of each model fit. Not accessible in shiny.}
 \item{smoothed}{Boolean; set to \code{smoothed = FALSE} by default,
 if data is already smoothed, set smoothed to true}
 
+\item{boltzmann}{Boolean; set to \code{boltzmann = FALSE} by default. Set
+to \code{boltzmann = TRUE} if a botlzmann fit is preferred.}
+
 \item{fluo_col}{integer; the Fluorescence variable column id
 (e.g. fluo = 5 when 5th column of data frame is the Fluorescence value)
-if fluorescence variable is named exactly as "Fluorescence", fluo does not
-need to be specified.}
+if fluorescence variable is named exactly as "Fluorescence", fluo does
+not need to be specified.}
 
 \item{selections}{list of characters; the variables in raw data user intends
-to keep. It is set, by default, to \code{c("Well.Position", "Temperature",
-"Fluorescence", "Normalized")}.}
+to keep. It is set, by default, to \code{c("Well.Position",
+"Temperature", "Fluorescence", "Normalized")}.}
 }
 \value{
 List of data frames, list of three data frame outputs,
-  Tm estimation by well, data set, fit of model by well.
+    Tm estimation by well, data set, fit of model by well.
 }
 \description{
 Function pipeline that combines separated functions and iterate through
-  each well to estimate the Tm.
+    each well to estimate the Tm.
 }
 \examples{
 data("qPCR_data1")
-gam_analysis(qPCR_data1, smoothed = TRUE, fluo_col = 5, selections = c(
-    "Well.Position", "Temperature", "Fluorescence", "Normalized"
-))
+gam_analysis(qPCR_data1,
+    smoothed = TRUE, boltzmann = FALSE, fluo_col = 5,
+    selections = c(
+        "Well.Position", "Temperature", "Fluorescence",
+        "Normalized"
+    )
+)
+model <- gam_analysis(qPCR_data1, smoothed = FALSE, boltzmann = TRUE)
 
 }
 \seealso{

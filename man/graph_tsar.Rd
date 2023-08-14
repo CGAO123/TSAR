@@ -13,14 +13,14 @@ to merge norm_data into tsar_data.}
 }
 \value{
 prompts separate app window for user interaction,
-  does not return specific value; generates boxplot and compare plots
-  according to user input
+    does not return specific value; generates boxplot and compare plots
+    according to user input
 }
 \description{
 Function allows users to graph out tsar_data, building boxplot, compare
-  plots, and curves by condition. Input of data as parameter is optional.
-  graph_tsar wraps together all graphing functions and relative helper
-  functions.
+    plots, and curves by condition. Input of data as parameter is optional.
+    graph_tsar wraps together all graphing functions and relative helper
+    functions.
 }
 \examples{
 if (interactive()) {
@@ -31,9 +31,9 @@ if (interactive()) {
 }
 \seealso{
 \code{\link{TSA_boxplot}}, \code{\link{TSA_compare_plot}},
-  \code{\link{condition_IDs}}, \code{\link{well_IDs}},
-  \code{\link{merge_norm}}, \code{\link{TSA_Tms}},
-  \code{\link{Tm_difference}}
+    \code{\link{condition_IDs}}, \code{\link{well_IDs}},
+    \code{\link{merge_norm}}, \code{\link{TSA_Tms}},
+    \code{\link{Tm_difference}}
 
 Other TSA Plots: 
 \code{\link{TSA_boxplot}()},

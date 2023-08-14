@@ -1,11 +1,11 @@
 #' Weed raw data for corrupt curves
 #'
 #' The weed_raw function allows users to interact with a screening graph
-#'   and select curves to weed out before entering analysis. Function wraps
-#'   together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
+#'     and select curves to weed out before entering analysis. Function wraps
+#'     together \code{\link[TSAR]{screen}} and \code{\link{remove_raw}}.
 #'
 #' @importFrom plotly ggplotly plotlyOutput renderPlotly event_data
-#'   event_register
+#'     event_register
 #' @import shiny
 #' @import ggplot2
 #' @importFrom shinyjs runjs useShinyjs
@@ -16,14 +16,14 @@
 #'
 #' @param raw_data The raw data for screening.
 #' @param checkrange list type input identifying range of wells to select.
-#'   For example, if viewing first 8 wells from row A to C is needed, one can
-#'   specify the row letters and column numbers like this:
-#'   \code{checkrange = c("A", "C", "1", "8")}
+#'     For example, if viewing first 8 wells from row A to C is needed, one can
+#'     specify the row letters and column numbers like this:
+#'     \code{checkrange = c("A", "C", "1", "8")}
 #' @param checklist use this parameter to view selected Wells with full
-#'   Well names. For example, \code{checklist = c('A01', 'D11')}
+#'     Well names. For example, \code{checklist = c('A01', 'D11')}
 #'
 #' @return prompts separate app window for user interaction,
-#'   does not return specific value
+#'     does not return specific value
 #'
 #' @family data_preprocess
 #'

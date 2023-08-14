@@ -15,16 +15,16 @@ multiple wells require iteration through individual wells}
 
 \item{max}{restricts finding to be below the given maximum temperature
 parameter min and max can be used to remove messy or undesired data
-for better accuracy in tm estimation; removing data is  before fitting the
-model is more recommended than removing here}
+for better accuracy in tm estimation; removing data is  before fitting
+the model is more recommended than removing here}
 }
 \value{
 integer; tm estimation
 }
 \description{
 Looks for Tm temperature values by finding the inflection point in the
-  fluorescence data. The inflection point is approximated by
-  locating the maximum first derivative stored in "norm_deriv" column.
+    fluorescence data. The inflection point is approximated by
+    locating the maximum first derivative stored in "norm_deriv" column.
 }
 \examples{
 data("qPCR_data1")

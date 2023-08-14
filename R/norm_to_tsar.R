@@ -1,23 +1,23 @@
 #' Merge and format norm_data into tsar_data
 #'
 #' This function merges data of experiment replicates across different dates.
-#'   It merges and produces information variables used to group wells of same
-#'   set up.
+#'     It merges and produces information variables used to group wells of same
+#'     set up.
 #'
 #' @importFrom dplyr rename mutate
 #' @importFrom magrittr %>%
 #'
 #' @param data list, a character vector specifying the file paths of the data
-#'   files or data frame objects of analysis data set. For example, given data
-#'   frames named "data1" and "data2", specify parameter as
-#'   \code{data = list(data1, data2)}.
+#'     files or data frame objects of analysis data set. For example, given data
+#'     frames named "data1" and "data2", specify parameter as
+#'     \code{data = list(data1, data2)}.
 #' @param name list, character vector specifying the experiment names.
 #' @param date list, character vector specifying the dates. Does not require
-#'   any date format restrictions.
+#'     any date format restrictions.
 #'
 #' @details This function merges and normalizes test data from multiple files.
-#'   The lengths of the \code{data}, \code{name}, and \code{date} vectors
-#'   must match, otherwise an error is thrown.
+#'     The lengths of the \code{data}, \code{name}, and \code{date} vectors
+#'     must match, otherwise an error is thrown.
 #'
 #' @examples
 #' data("qPCR_data1")

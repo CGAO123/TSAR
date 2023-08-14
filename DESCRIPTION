@@ -43,7 +43,8 @@ Imports:
     jsonlite (>= 1.8.7),
     rhandsontable (>= 0.3.8),
     openxlsx (>= 4.2.5.2),
-    shinyWidgets (>= 0.7.6)
+    shinyWidgets (>= 0.7.6),
+    minpack.lm (>= 1.2.3)
 Suggests: 
     knitr,
     rmarkdown,

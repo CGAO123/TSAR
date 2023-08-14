@@ -20,10 +20,10 @@ Either a character vector of condition_IDs or a numeric value.
 }
 \description{
 This function is used to extract information of the condition IDs from a
-  loaded TSA Analysis Data file. Condition IDs are automatically generated
-  by the read_analysis function in the automated workflow. This returns
-  either a character vector of unique IDs present or a numeric value of the
-  number of unique IDs.
+    loaded TSA Analysis Data file. Condition IDs are automatically generated
+    by the read_analysis function in the automated workflow. This returns
+    either a character vector of unique IDs present or a numeric value of the
+    number of unique IDs.
 }
 \examples{
 data("example_tsar_data")

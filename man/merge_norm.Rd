@@ -22,13 +22,13 @@ data frame in the format of tsar_data
 }
 \description{
 This function merges data of experiment replicates across different dates.
-  It merges and produces information variables used to group wells of same
-  set up.
+    It merges and produces information variables used to group wells of same
+    set up.
 }
 \details{
 This function merges and normalizes test data from multiple files.
-  The lengths of the \code{data}, \code{name}, and \code{date} vectors
-  must match, otherwise an error is thrown.
+    The lengths of the \code{data}, \code{name}, and \code{date} vectors
+    must match, otherwise an error is thrown.
 }
 \examples{
 data("qPCR_data1")

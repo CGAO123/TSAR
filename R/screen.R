@@ -1,18 +1,18 @@
 #' Screen raw curves
 #'
 #' screens multiple wells of data and prepares to assist identification of
-#'   corrupted wells and odd out behaviors
+#'     corrupted wells and odd out behaviors
 #'
 #' @import ggplot2
 #' @importFrom dplyr rename
 #'
 #' @param raw_data input raw_data
 #' @param checkrange list type input identifying range of wells to select.
-#'   For example, if viewing first 8 wells from row A to C is needed, one can
-#'   specify the row letters and column numbers like this:
-#'   \code{checkrange = c("A", "C", "1", "8")}
+#'     For example, if viewing first 8 wells from row A to C is needed, one can
+#'     specify the row letters and column numbers like this:
+#'     \code{checkrange = c("A", "C", "1", "8")}
 #' @param checklist use this parameter to view selected Wells with full
-#'   Well names. For example, \code{checklist = c('A01', 'D11')}
+#'     Well names. For example, \code{checklist = c('A01', 'D11')}
 #'
 #' @examples
 #' data("qPCR_data1")
@@ -81,11 +81,11 @@ screen <- function(raw_data,
 #'
 #' @param raw_data dataframe; to be processed data
 #' @param removerange list type input identifying range of wells to select.
-#'   For example, if removing all 12 wells from row D to H is needed, one can
-#'   specify the row letters and column numbers like this:
-#'   \code{removerange = c("D", "H", "1", "12")}
+#'     For example, if removing all 12 wells from row D to H is needed, one can
+#'     specify the row letters and column numbers like this:
+#'     \code{removerange = c("D", "H", "1", "12")}
 #' @param removelist use this parameter to remove selected Wells with full
-#'   Well names. For example, \code{removelist = c('A01', 'D11')}
+#'     Well names. For example, \code{removelist = c('A01', 'D11')}
 #'
 #' @examples
 #' data("qPCR_data1")
@@ -126,7 +126,7 @@ remove_raw <- function(raw_data,
 #' View Model
 #'
 #' Function reviews data by well and output a graph of the fit and a graph of
-#'   derivative. Function called within analyze_norm function.
+#'     derivative. Function called within analyze_norm function.
 #'
 #' @import ggplot2
 #' @param raw_data dataset input, not processing needed
@@ -176,19 +176,19 @@ view_model <- function(raw_data) {
 #' View Derivative Curves
 #'
 #' Function reviews data by well and output a graph of the all derivatives
-#'   wanted. Function called within graph_tsar function but also runnable
-#'   outside.
+#'     wanted. Function called within graph_tsar function but also runnable
+#'     outside.
 #'
 #' @import ggplot2
 #' @importFrom plotly ggplotly layout animation_opts
 #' @param tsar_data dataset input, analyzed must have norm_deriv as a variable;
-#'   dataset qualifying norm_data or tsar_data both fulfills this parameter,
-#'   although tsar_data is more recommended given more data options.
+#'     dataset qualifying norm_data or tsar_data both fulfills this parameter,
+#'     although tsar_data is more recommended given more data options.
 #' @param frame_by builds plotly by specified frame variable. To graph by a
-#'   concentration gradient, well position, or other specified variable,
-#'   simple specify \code{frame_by = "condition_ID"}. To view all derivative
-#'   curves without frames, set to \code{frame_by = FALSE}, else it is
-#'   defaulted to frame by well labels.
+#'     concentration gradient, well position, or other specified variable,
+#'     simple specify \code{frame_by = "condition_ID"}. To view all derivative
+#'     curves without frames, set to \code{frame_by = FALSE}, else it is
+#'     defaulted to frame by well labels.
 #' @examples
 #' data("example_tsar_data")
 #' view_deriv(example_tsar_data, frame_by = "condition_ID")

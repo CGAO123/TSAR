@@ -18,14 +18,14 @@ with \code{\link{condition_IDs}}.}
 }
 \value{
 a data frame of reformatted data with the \code{\link{TSA_average}}
-  data and the Tm.
+    data and the Tm.
 }
 \description{
 From a specified control condition, the change in Tm is calculated for
-  each condition in the tsa_data. Specifically,
-  \eqn{Tm = condition - control}. Individual Tm values are averaged by
-  condition, see \code{\link{TSA_average}} for details.
-  To see all conditions use \code{condition_IDs(tsa_data)}.
+    each condition in the tsa_data. Specifically,
+    \eqn{Tm = condition - control}. Individual Tm values are averaged by
+    condition, see \code{\link{TSA_average}} for details.
+    To see all conditions use \code{condition_IDs(tsa_data)}.
 }
 \examples{
 data("example_tsar_data")
@@ -35,10 +35,10 @@ Tm_difference(example_tsar_data, control_condition = control)
 }
 \seealso{
 \code{\link{merge_TSA}} for preparing data.
-  \code{\link{TSA_average}} for more information on the output data.
-  \code{\link{condition_IDs}} to get unique Condition IDs within the
-  input.
-  \code{\link{TSA_boxplot}} for application.
+    \code{\link{TSA_average}} for more information on the output data.
+    \code{\link{condition_IDs}} to get unique Condition IDs within the
+    input.
+    \code{\link{TSA_boxplot}} for application.
 
 Other TSAR Formatting: 
 \code{\link{TSA_Tms}()},
