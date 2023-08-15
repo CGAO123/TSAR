@@ -11,6 +11,13 @@ vignette: >
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
 ```
 
+## 0. Load TSAR Package
+```{r eval=FALSE}
+install.packages(remotes)
+library(remotes)
+remotes::install_github("CGAO123/TSAR", build_vignettes = TRUE)
+```
+
 ```{r setup}
 library(TSAR)
 library(shiny)
@@ -51,7 +58,7 @@ p.s. It is recommended to remove large areas of blank wells before calling
 knitr::include_graphics("images/weed_raw.png")
 ```
 
-Selection by grid is also possible. Click on grid to highlight wells of 
+Selection by grid is also possible; click on grid to highlight wells of 
 selection. Click again to un-highlight. Click too fast may lead to error due to 
 speed of reaction, use `Clear All Selected` button at the top of page to reset 
 selection. Note that clearing selections alters to-be-copied selections, but 
@@ -200,6 +207,18 @@ knitr::include_graphics("images/graph_tsar4.png")
 ```
 
 ## 4. Session Info
+
+### 4.1 Citation
+```{r}
+citation("TSAR")
+citation()
+citation("dplyr")
+citation("ggplot2")
+citation("shiny")
+citation("utils")
+```
+
+### 4.2 Session Info
 ```{r}
 sessionInfo()
 ```

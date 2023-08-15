@@ -1,7 +1,7 @@
 Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
-Version: 0.1.1
+Version: 0.1.2
 Date: 2023
 Authors@R: c(person("Xinlin", 
 			"Gao", 
@@ -11,11 +11,13 @@ Authors@R: c(person("Xinlin",
 		person(c("William", "M."), 
 			"McFadden", 
 			email = "wmm27@pitt.edu", 
-			role = c("aut","fnd")),
+			role = c("aut","fnd"),
+			comment = c(ORCID = "0000-0001-6911-2172")),
 		person(c("Stefan", "G."),
 			"Sarafianos",
 			email = "stefanos.sarafianos@emory.edu",
-			role = c("fnd","aut","ths"))
+			role = c("fnd","aut","ths"),
+			comment = c(ORCID = "0000-0002-5840-154X"))
 		)
 Description: This package automates analysis workflow for Thermal Shift 
     Analysis (TSAS) data. Processing, analyzing, and visualizing data through 
