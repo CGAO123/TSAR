@@ -11,11 +11,16 @@ Pipeline analysis from raw data reading to graphic visualization
 
 ## 1. Load Package and other relevant packages
 
-Install package using devtools. Usage of dplyr and ggplot2 along with
-TSAR package is recommended for enhanced analysis.
+Install package using remotes, `install_github()`. Usage of dplyr and ggplot2 
+along with TSAR package is recommended for enhanced analysis.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
+```
+```{r eval=FALSE}
+install.packages(remotes)
+library(remotes)
+remotes::install_github("CGAO123/TSAR", build_vignettes = TRUE)
 ```
 ```{r setup, message=FALSE, warning=FALSE}
 library(TSAR)
@@ -28,8 +33,9 @@ library(ggplot2)
 Read data in .txt or .csv format. Use read.delim function to input tab
 delimited file; use read.csv to input comma separated files. Other
 formats of input are welcomed as long as data is stored in data frame
-structure as numeric type. Ensure excessive lines are removed. (e.g.
-skip = , nrows = ) Means to check these are view(), pre-opening data
+structure as numeric type (calculation-required data) and characters 
+(non-calculation-required data). Ensure excessive lines are removed (e.g.
+skip = , nrows = ). Means to check these are View(), pre-opening data
 file in excel, or manually removing all excessive data before input
 reading. Package defaults variable names as "Well.Position",
 "Temperature", "Fluorescence", "Normalized". Consider renaming data
@@ -63,8 +69,8 @@ gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
 test <- model_fit(test, model = gammodel)
 ```
 
-Output analysis result using ggplot to view normalized data and fitted
-model. Determine is any noise need to be removed (i.e. subsetting by
+Output analysis result using `view_model()` to view normalized data and fitted
+model. Determine if any noise need to be removed (i.e. subsetting by
 temperature range). Determine which model is the best (i.e. is currrent
 data already smoothed, does fitted model suit well.) Determine if
 Tm-estimation is proper. \*current model assumes derivative estimation
@@ -149,8 +155,9 @@ For downstream analysis, data need to be mapped towards specific ligand
 and compound. Use may input by default excel template included in the
 package or input as .txt or .csv table, specifying Ligand and Compound
 by Well ID. Data with coumpound and ligand labels can also be stored
-locally using the same mean as previous step. All data are kept despite
-blank input. In case removal is needed, call function na.omit().
+locally using the same mean as previous step. All data are kept including
+wells with blank condition information (specified as NA). 
+In case removal is needed, call function na.omit().
 
 ```{r, echo = FALSE}
 # join protein and ligand information
@@ -263,12 +270,23 @@ error <- conclusion %>% filter(condition_ID == "CA FL_PyxINE HCl")
 TSA_wells_plot(error, separate_legend = FALSE)
 ```
 
-To further visualization comparison, graph first derivatives grouped by needs.
+To further visualize the comparison, graph first derivatives grouped by needs 
+(i.e. well_ID, condition_ID, or other separately appended conditions).
 ```{r, message=FALSE, warning=FALSE}
 view_deriv(conclusion, frame_by = "condition_ID")
 ```
 
 ## 10. Session Info
+
+### 10.1 Citation
+```{r}
+citation("TSAR")
+citation()
+citation("dplyr")
+citation("ggplot2")
+```
+
+### 10.2 Session Info
 ```{r}
 sessionInfo()
 ```

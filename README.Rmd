@@ -2,8 +2,7 @@
 
     TSAR Package is contains three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser. All functions can be run outside shiny applications, refer to vignette, "TSAR Workflow by Command" for instructions.
     Using package `remotes` to install package from Github repository. When installing, ensure to set `build_vignettes = TRUE`.
-
-```r
+```{r eval=FALSE, message=FALSE, warning=FALSE}
 install.packages(remotes)
 library(remotes)
 remotes::install_github("CGAO123/TSAR", build_vignettes = TRUE)
@@ -13,8 +12,7 @@ library(shiny)
 
 ## Data Pre-Processing
     Load data using RStudio import, read.csv, or read.delim. Select and preview raw curve using `weed_raw()`.
-
-```r
+```{r eval=FALSE, message=FALSE, warning=FALSE}
 data("qPCR_data1")
 runApp(weed_raw(qPCR_data1))
 qPCR_data1 <- remove_raw(qPCR_data1, removerange = c("B", "H", "1", "12"))
@@ -25,8 +23,7 @@ qPCR_data1 <- remove_raw(qPCR_data1, removerange = c("B", "H", "1", "12"))
 ## Data Analysis
 
     Analyze data by calling function `analyze_norm()` and follow the workflow from top to bottom. Preview data table for changes occurring at each step and refer to graph to view fit of model on each well. Remember to save analysis output locally by clicking `Save File`. Always preview data before saving to ensure data contains all necessary information.
-
-```r
+```{r eval=FALSE, message=FALSE, warning=FALSE}
 runApp(analyze_norm(qPCR_data1))
 ```
     The top left panel output a preview of current data set. The right panel allows user to view the fit of model and Tm estimation by individual wells of selection. Once confirming correct data input and modeling effects,
@@ -38,8 +35,7 @@ runApp(analyze_norm(qPCR_data1))
 
     Use function `graph_tsar()` to start a Shiny application for graphing options. Run `na.omit()` on data if error occurs. Three graphing options are allowed, boxplot of Tm, compare plots, and conditions plot.
     Function takes optional data parameter. If analysis file is already imported in the environment, call function as `graph_tsar(tsar_data)`. Else, user may use the merge data panel to upload and merge data of all test trials. Simply call `graph_tsar()` and click `Upload and Merge Data` button to reveal the panel to merge data.
-
-```r
+```{r eval = FALSE}
 runApp(graph_tsar())
 ```
     Upload is limited to 30MB in size, but not count size. After upload, user will be prompted corresponding numbers of input boxes to specify date of each experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview of tsar_data will be prompted. For a full list of well_ID and conditions_ID, refer to the helper buttons at the bottom of page.
