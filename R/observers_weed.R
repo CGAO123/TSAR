@@ -165,7 +165,7 @@ copy_click_full <- function(input, output, highlighted_cells, clicked_points) {
         }
     })
 }
-saved_weeded <- function(input, output, graph_tsar_data) {
+saved_weeded <- function(input, output, dataset) {
     shiny::observeEvent(input$savetoR, {
         assign("new_raw_data", dataset(), envir = .GlobalEnv)
         if (!input$dialogueToggle) {
