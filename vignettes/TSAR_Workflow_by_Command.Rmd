@@ -272,7 +272,7 @@ TSA_wells_plot(error, separate_legend = FALSE)
 
 To further visualize the comparison, graph first derivatives grouped by needs 
 (i.e. well_ID, condition_ID, or other separately appended conditions).
-```{r, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
 view_deriv(conclusion, frame_by = "condition_ID")
 ```
 
