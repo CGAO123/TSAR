@@ -348,7 +348,6 @@ TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 To further visualization comparison, graph first derivatives grouped by needs. 
 Note if modeling was set to boltzman fit, frist derivatives will be excessively 
 smooth and contains no information beyond specified minimum and maximum.
-
 Below is an example command. Due to size limit of vignette, graph will not be
 displayed.
 `view_deriv(conclusion, frame_by = "condition_ID")`
