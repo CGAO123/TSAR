@@ -251,8 +251,8 @@ TSA_boxplot <- function(
     separate_legend = TRUE # Logical
     ) {
 
-    color_by <- match.arg(color_by, choices = c("Protein", "Ligan", "NA"))
-    label_by <- match.arg(label_by, choices = c("Protein", "Ligan", "NA"))
+    color_by <- match.arg(color_by, choices = c("Protein", "Ligand", "NA"))
+    label_by <- match.arg(label_by, choices = c("Protein", "Ligand", "NA"))
 
     plot_data <- TSA_Tms(
         analysis_data = tsa_data,
