@@ -10,7 +10,8 @@ get_legend(input_plot)
 \item{input_plot}{a ggplot2 object}
 }
 \value{
-two ggplots, one containing the legend and another containg all else.
+two ggplots, one containing the legend and another containing
+  all else.
 }
 \description{
 Function enables separation of legends from plots within the TSAR package.

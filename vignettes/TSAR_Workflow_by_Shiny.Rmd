@@ -11,24 +11,35 @@ vignette: >
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
 ```
 
-## 0. Load TSAR Package
-```{r eval=FALSE}
-install.packages(remotes)
-library(remotes)
-remotes::install_github("CGAO123/TSAR", build_vignettes = TRUE)
-```
+## 1. Introduction
+TSAR, short for Thermal Shift Analysis in R, provides simple solution to qPCR 
+data processing, computing thermal shift analysis given either raw fluorescent 
+data or smoothed curves. 
+The functions provide users with the protocol to conduct preliminary data checks
+and also expansive analysis on large scale of data. Furthermore, it showcases 
+simple graphic presentation of analysis, generating clear box plot and line 
+graphs given input of desired designs. Overall, TSAR Package offers a workflow
+easy to manage and visualize.
+TSAR Package is wrapped within a three separate shiny application regarding, 
+data pre-processing, data analysis, and data visualization. All application 
+can be opened in both interactive window or browsing engine by copy pasting 
+server address into web browser.
+
+## 2. Installation
+
+## 3. Load TSAR Package
+Use commands below to install TSAR package:
+library(BiocManager)
+BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
 
 ```{r setup}
 library(TSAR)
 library(shiny)
 ```
 
-TSAR Package is wrapped within a three separate shiny application regarding, 
-data pre-processing, data analysis, and data visualization. All application 
-can be opened in both interactive window or browsing engine by copy pasting 
-server address into web browser.
 
-## 1. Data Pre-Processing
+
+## 4. Data Pre-Processing
 
 Load data and remove blank wells by specifying a range of wells with 
 `removerange = c()` or individual wells with `removelist = c()`. User may 
@@ -37,9 +48,11 @@ curves and remove by curve selection. To propagate change to data to local
 change, close window properly by clicking `Close Window`. The updated data 
 set will be stored in the global environment as `new_raw_data`.
 
-```{r, eval = FALSE}
+```{r}
 data("qPCR_data1")
 qPCR_data1 <- remove_raw(qPCR_data1, removerange = c("B", "H", "1", "12"))
+```
+```{r, eval = FALSE}
 runApp(weed_raw(qPCR_data1))
 ```
 
@@ -79,7 +92,7 @@ the call back into console or script and run to propagate changes locally.
 knitr::include_graphics("images/weed_raw2.png")
 ```
 
-## 2. Data Analysis
+## 5. Data Analysis
 
 Analyze data by calling function `analyze_norm()` and follow the workflow from 
 top to bottom. Preview data table for changes occurring at each step and refer 
@@ -135,7 +148,7 @@ Lastly, to save all analysis locally, click `Save File` after previewing output.
 p.s. make to select `both` under `Choose dataset` if intending to use 
 `graph_tsar()` or other graphing tools within the package.
 
-## 3. Data Visualization
+## 6. Data Visualization
 
 Use function `graph_tsar()` to start a Shiny application for graphing options. 
 Run `na.omit()` on data if error occurs. Four graphing options are allowed, 
@@ -206,9 +219,9 @@ knitr::include_graphics("images/graph_tsar5.png")
 knitr::include_graphics("images/graph_tsar4.png")
 ```
 
-## 4. Session Info
+## 7. Session Info
 
-### 4.1 Citation
+### 7.1 Citation
 ```{r}
 citation("TSAR")
 citation()
@@ -218,7 +231,7 @@ citation("shiny")
 citation("utils")
 ```
 
-### 4.2 Session Info
+### 7.2 Session Info
 ```{r}
 sessionInfo()
 ```

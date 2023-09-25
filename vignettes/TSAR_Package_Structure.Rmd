@@ -11,12 +11,19 @@ vignette: >
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
 ```
 
-# 0. Load TSAR Package
-```{r eval=FALSE}
-install.packages(remotes)
-library(remotes)
-remotes::install_github("CGAO123/TSAR", build_vignettes = TRUE)
-```
+# 1. Introduction
+TSAR Package provides simple solution to qPCR data processing, computing 
+thermal shift analysis given either raw fluorescent data or smoothed curves. 
+The functions provide users with the protocol to conduct preliminary data checks
+and also expansive analysis on large scale of data. Furthermore, it showcases 
+simple graphic presentation of analysis, generating clear box plot and line 
+graphs given input of desired designs. Overall, TSAR Package offers a workflow
+easy to manage and visualize.
+
+# 2. Installation
+Use commands below to install TSAR package:
+library(BiocManager)
+BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(TSAR)
@@ -30,15 +37,7 @@ library(utils)
 knitr::include_graphics("images/TSAR_logo.png")
 ```
 
-TSAR Package provides simple solution to qPCR data processing, computing 
-thermal shift analysis given either raw fluorescent data or smoothed curves. 
-The functions provide users with the protocol to conduct preliminary data checks
-and also expansive analysis on large scale of data. Furthermore, it showcases 
-simple graphic presentation of analysis, generating clear box plot and line 
-graphs given input of desired designs. Overall, TSAR Package offers a workflow
-easy to manage and visualize.
-
-# 1. Data Structure
+# 3. Data Structure
 
 TSAR segregates data structure into three tiers:
 
@@ -56,7 +55,7 @@ achieved within user-interactive window, also open-able in local browser.
 with conditions specified
 - `graph_tsar()`; input: tsar_data or output of analyze_norm; output: graphs
 
-# 2. From `raw_data` to `norm_data`
+# 4. From `raw_data` to `norm_data`
 
 To access the workflow of `TSAR`, user can input raw fluorescent readings 
 through built in functions from utils: `read.delim()` or `read.csv()`. Built 
@@ -72,7 +71,7 @@ head(raw_data)
 tail(raw_data)
 ```
 
-## 2.1 Data Preprocessing
+## 4.1 Data Preprocessing
 
 From raw data to ready-for-analysis data, there are few functions to assist the 
 selection and normalization of data.
@@ -107,8 +106,8 @@ Both functions above are wrapped inside an interactive window through function
 select curves using cursor and remove selected curves easily. Refer to separate 
 vignette, `"TSAR Workflow by Shiny"`, and README.md file for more documentation.
 
-```{r, eval=FALSE}
-weed_raw(raw_data)
+```{r eval = FALSE}
+runApp(weed_raw(raw_data))
 ```
 
 Running the window, we can spot that the curve at A12 has an abnormally high 
@@ -131,7 +130,7 @@ raw_data <- remove_raw(raw_data,
 )
 ```
 
-## 2.2 Data Analysis
+## 4.2 Data Analysis
 
 Normalizing data is prompted through `normalize()`. Although individual calls 
 are not necessary as they are wrapped together in `gam_analysis()`, if viewing 
@@ -141,7 +140,7 @@ TSAR package performs derivative analysis using a generalized additive model
 through package `mgcv` or boltzmann analysis using nlsLM from package 
 `minpack.lm`.
 
-### 2.2.1 Individual Well Application
+### 4.2.1 Individual Well Application
 
 For analysis of an idividual well, refer to these following functions:
 
@@ -166,7 +165,7 @@ view[[2]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 Tm_est(test)
 ```
 
-### 2.2.2 96-Well Plate Application
+### 4.2.2 96-Well Plate Application
 
 All analysis necessary are formatted in function `gam_analysis()`. Parameters 
 are inherited from functions noted in section "Individual Well Application". 
@@ -187,7 +186,7 @@ x <- gam_analysis(raw_data,
 )
 ```
 
-## 2.3 Data Summary
+## 4.3 Data Summary
 
 Data summary offers an exit point from the workflow if no further graphic 
 outputs are required. Output is allowed in three formats: 
@@ -210,9 +209,8 @@ output <- join_well_info(
 )
 ```
 
-```{r, eval = FALSE}
-write_tsar(output, name = "vitamin_analysis", file = "csv")
-```
+Write output using command write_tsar
+`write_tsar(output, name = "vitamin_analysis", file = "csv")`
 
 To streamline to the following graphic analysis, make sure `output_content = 2` 
 to maintain all necessary data.
@@ -228,11 +226,11 @@ All of the function above in section 2 are wrapped together in a shiny
 application named `analyze_norm()`. Refer to separate vignette, 
 `"TSAR Workflow by Shiny"`, and README.md file for more documentation.
 
-```{r, eval=FALSE}
-analyze_norm(raw_data)
+```{r eval = FALSE}
+runApp(analyze_norm(raw_data))
 ```
 
-# 3. From `norm_data` to `tsar_data`
+# 5. From `norm_data` to `tsar_data`
 
 `norm_data` contains normalized fluorescent data on a scale of 0 to 1 based 
 on the maximum and minimum fluorescence reading. `norm_data` also contains a 
@@ -240,7 +238,7 @@ first derivative column. `tsar_data` is the final format of project data
 encapsulating all replication. Therefore, it contains all condition data 
 including experiment date and analysis file source.
 
-## 3.1 Merge Replicates
+## 5.1 Merge Replicates
 
 Use `merge_norm()` to merge all norm_data and specify original data file name 
 and experiment date for latter tracking purposes.
@@ -271,16 +269,16 @@ tsar_data <- merge_norm(
 )
 ```
 
-### 3.1.1 Jumpstart to Graph
+### 5.1.1 Jumpstart to Graph
 
 If outputted data from qPCR already contains analysis and data necessary, 
 enter TSAR workflow from here, using functions `merge_TSA()`, `read_raw_data()`,
 `read_analysis()`.
 
-```{r, eval = FALSE}
-analysis_file <- read_analysis(analysis_file_path)
-raw_data <- read_raw_data(raw_data_path)
-merge_TSA(analysis_file, raw_data)
+```{r}
+#analysis_file <- read_analysis(analysis_file_path)
+#raw_data <- read_raw_data(raw_data_path)
+#merge_TSA(analysis_file, raw_data)
 ```
 
 After merging, use assisting functions to check and trace data. Use these two 
@@ -305,9 +303,9 @@ conclusion <- tsar_data %>%
     filter(condition_ID != "CA FL_Riboflavin")
 ```
 
-## 3.2 Graphic Analysis
+## 5.2 Graphic Analysis
 
-### 3.2.1 Tm Boxplot
+### 5.2.1 Tm Boxplot
 
 Use `TSA_boxplot()` to generate comparison boxplot graphs. Stylistics choices 
 include coloring by protein or ligand, and legend separation. Function returns 
@@ -320,7 +318,7 @@ TSA_boxplot(conclusion,
 )
 ```
 
-### 3.2.2 TSA Curve Visualization
+### 5.2.2 TSA Curve Visualization
 
 `TSA_compare_plot()` generates multiple line graphs for comparison. Specify 
 Control condition by assigning condition_ID to control. Functions allows 
@@ -336,7 +334,7 @@ TSA_compare_plot(conclusion,
 )
 ```
 
-### 3.2.3 Curves by Condition
+### 5.2.3 Curves by Condition
 
 Users may also graph by condition IDs or well IDs using function 
 `TSA_wells_plot()`.
@@ -346,26 +344,27 @@ ABA_Cond <- conclusion %>% filter(condition_ID == "CA FL_4-ABA")
 TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
 ```
 
-### 3.2.4 First Derivative Comparison
+### 5.2.4 First Derivative Comparison
 To further visualization comparison, graph first derivatives grouped by needs. 
 Note if modeling was set to boltzman fit, frist derivatives will be excessively 
 smooth and contains no information beyond specified minimum and maximum.
-```{r echo=FALSE, eval = FALSE, message=FALSE, warning=FALSE}
-view_deriv(conclusion, frame_by = "condition_ID")
-```
+
+Below is an example command. Due to size limit of vignette, graph will not be
+displayed.
+`view_deriv(conclusion, frame_by = "condition_ID")`
 
 All of the above functions are also wrapped in an interactive window call
 through `graph_tsar()`. Simply call function on merged tsar_data and access all 
 graphing features in one window. Refer to separate vignette, 
 `"TSAR Workflow by Shiny"`, and readme.md file for more documentation.
 
-```{r, eval=FALSE}
-graph_tsar(tsar_data)
+```{r eval = FALSE}
+runApp(graph_tsar(tsar_data))
 ```
 
-# 4. Session Info
+# 6. Session Info
 
-## 4.1 Citation
+## 6.1 Citation
 ```{r}
 citation("TSAR")
 citation()
@@ -375,7 +374,7 @@ citation("shiny")
 citation("utils")
 ```
 
-## 4.2 Session Info
+## 6.2 Session Info
 ```{r}
 sessionInfo()
 ```

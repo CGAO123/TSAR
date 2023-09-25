@@ -52,6 +52,9 @@ TSA_wells_plot <- function(
     plot_subtitle = NA,
     smooth = TRUE,
     separate_legend = TRUE) {
+
+    y <- match.arg(y, choices = c("Fluorescence", "RFU"))
+
     if (!"well_ID" %in% names(tsa_data) ||
         !"condition_ID" %in% names(tsa_data)) {
         stop("tsa_data must be a data frame merged by
@@ -247,6 +250,10 @@ TSA_boxplot <- function(
     label_by = "Ligand", # If not "Ligand" or "Protein", default order is used
     separate_legend = TRUE # Logical
     ) {
+
+    color_by <- match.arg(color_by, choices = c("Protein", "Ligan", "NA"))
+    label_by <- match.arg(label_by, choices = c("Protein", "Ligan", "NA"))
+
     plot_data <- TSA_Tms(
         analysis_data = tsa_data,
         condition_average = FALSE
@@ -389,6 +396,9 @@ TSA_compare_plot <- function(
     show_Tm = FALSE,
     title_by = "both",
     digits = 1) {
+
+    y <- match.arg(y, choices = c("Fluorescence", "RFU"))
+
     if (!"well_ID" %in% names(tsa_data) ||
         !"condition_ID" %in% names(tsa_data)) {
         stop("tsa_data must be a data frame merged by merge_TSA()")

@@ -46,6 +46,8 @@ join_well_info <- function(
     nrows = 96,
     type) {
     # input by well
+    type <- match.arg(type, choices = c("by_well", "by_template"))
+
     if (type == "by_well") {
         well_info <- utils::read.delim(
             header = TRUE,

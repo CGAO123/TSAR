@@ -25,5 +25,6 @@ Dataset Description:
     vitamins. It provides fluorescence measurements obtained using
     QuantStudio3. A different experiemnt trial containing data of similar
     property as data, qPCR_data1.
+    Dataset is experimentally obtained by author of this package.
 }
 \keyword{dataset}
