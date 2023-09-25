@@ -9,26 +9,34 @@ vignette: >
 
 Pipeline analysis from raw data reading to graphic visualization
 
-## 1. Load Package and other relevant packages
+## 1. Introduction
+TSAR Package provides simple solution to qPCR data processing, computing 
+thermal shift analysis given either raw fluorescent data or smoothed curves. 
+The functions provide users with the protocol to conduct preliminary data checks
+and also expansive analysis on large scale of data. Furthermore, it showcases 
+simple graphic presentation of analysis, generating clear box plot and line 
+graphs given input of desired designs. Overall, TSAR Package offers a workflow
+easy to manage and visualize.
 
-Install package using remotes, `install_github()`. Usage of dplyr and ggplot2 
+## 2. Installation
+Load Package and other relevant packages. Usage of dplyr and ggplot2 
 along with TSAR package is recommended for enhanced analysis.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
 ```
-```{r eval=FALSE}
-install.packages(remotes)
-library(remotes)
-remotes::install_github("CGAO123/TSAR", build_vignettes = TRUE)
-```
+
+Use commands below to install TSAR package:
+library(BiocManager)
+BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
+
 ```{r setup, message=FALSE, warning=FALSE}
 library(TSAR)
 library(dplyr)
 library(ggplot2)
 ```
 
-## 2. Load Data
+## 3. Load Data
 
 Read data in .txt or .csv format. Use read.delim function to input tab
 delimited file; use read.csv to input comma separated files. Other
@@ -46,7 +54,7 @@ data("qPCR_data1")
 raw_data <- qPCR_data1
 ```
 
-## 3. Data Pre-Processing
+## 4. Data Pre-Processing
 
 Select data of individual cell for pre-analysis screening. e.g. select
 well A1
@@ -107,7 +115,7 @@ screen(raw_data) + theme(
     guides(color = guide_legend(nrow = 2, byrow = TRUE))
 ```
 
-## 4. 96-well Analysis Application
+## 5. 96-well Analysis Application
 
 TSAR package excels in mass analysis by propagating identical protocols
 to all 96 wells. `smoothed = T` infers current data is smoothed and no
@@ -129,7 +137,7 @@ x <- gam_analysis(raw_data,
 x <- na.omit(x)
 ```
 
-## 5. Intermediate Data Output
+## 6. Intermediate Data Output
 
 Read analysis using read_tsar() function and view head and tail to
 ensure appropriate output was achieved. Data output can also be saved
@@ -144,12 +152,11 @@ head(output)
 tail(output)
 ```
 
-```{r, eval = FALSE}
-# write output data file
-write_tsar(read_tsar(x, output_content = 2), name = "0923_tm_val", file = "csv")
-```
+write output data file
+`write_tsar(read_tsar(x, output_content = 2),`
+    `name = "0923_tm_val", file = "csv")`
 
-## 6. Complete Dataset with Ligand and Protein Information
+## 7. Complete Dataset with Ligand and Protein Information
 
 For downstream analysis, data need to be mapped towards specific ligand
 and compound. Use may input by default excel template included in the
@@ -172,11 +179,11 @@ head(norm_data)
 tail(norm_data)
 ```
 
-```{r, eval = FALSE}
-write_tsar(norm_data, name = "vitamin_tm_val_norm", file = "csv")
-```
+Write output into the working directory with write_tsar
+`write_tsar(norm_data, name = "vitamin_tm_val_norm", file = "csv")`
 
-## 7. Merge Data across Biological Replicates
+
+## 8. Merge Data across Biological Replicates
 
 Repeat step 2 through 6 on replicate data set. A five step function call
 will complete all analysis. If additional screening is desired, a two
@@ -231,7 +238,7 @@ tsar_data <- merge_norm(
 )
 ```
 
-## 8. Tm Estimation Shift Visualization
+## 9. Tm Estimation Shift Visualization
 
 Use condition_IDs() and well_IDs() to select or remove condition to
 visualize. Visualize Tm estimation by compound or ligand type in the
@@ -249,7 +256,7 @@ TSA_boxplot(conclusion,
 )
 ```
 
-## 9. TSA Curve Visualization
+## 10. TSA Curve Visualization
 
 Specify Control condition by assigning condition_ID to control.
 TSA_compare_plot generated multiple line graphs for comparison.
@@ -272,13 +279,13 @@ TSA_wells_plot(error, separate_legend = FALSE)
 
 To further visualize the comparison, graph first derivatives grouped by needs 
 (i.e. well_ID, condition_ID, or other separately appended conditions).
-```{r echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
-view_deriv(conclusion, frame_by = "condition_ID")
-```
+Below is an example command. Due to size limit of vignette, graph will not be
+displayed.
+`view_deriv(conclusion, frame_by = "condition_ID")`
 
-## 10. Session Info
+## 11. Session Info
 
-### 10.1 Citation
+### 11.1 Citation
 ```{r}
 citation("TSAR")
 citation()
@@ -286,7 +293,7 @@ citation("dplyr")
 citation("ggplot2")
 ```
 
-### 10.2 Session Info
+### 11.2 Session Info
 ```{r}
 sessionInfo()
 ```

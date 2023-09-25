@@ -94,6 +94,8 @@ read_tsar <- function(gam_result, output_content) {
 #' @export
 #'
 write_tsar <- function(data, name, file = "txt") {
+    file <- match.arg(file, choices = c("txt", "csv"))
+    # write csv
     if (file == "csv") {
         rename <- paste(name, "tsar_output.csv", sep = "_")
         utils::write.csv(data,
@@ -101,6 +103,7 @@ write_tsar <- function(data, name, file = "txt") {
             row.names = FALSE,
             quote = FALSE
         )
+    #write txt file
     } else if (file == "txt") {
         rename <- paste(name, "tsar_output.txt", sep = "_")
         utils::write.table(data,

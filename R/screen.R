@@ -32,6 +32,7 @@ screen <- function(raw_data,
         if (!(is.null(checklist))) {
             checkrange <- checklist
         } else {
+            #translate checkrange into well position labels
             grid <- expand.grid(
                 LETTERS[match(checkrange[1], LETTERS):
                 match(checkrange[2], LETTERS)],
@@ -51,6 +52,7 @@ screen <- function(raw_data,
         }
     }
     screened <- data.frame()
+    #perform normalization
     for (i in unique(section$Well.Position)) {
         by_well <- subset(section, Well.Position == i)
         by_well <- normalize(by_well,
@@ -101,12 +103,14 @@ remove_raw <- function(raw_data,
     if (is.null(removerange) && is.null(removelist)) {
         return(raw_data)
     } else if (!is.null(removerange)) {
+        #translate variable removerange into labels
         grid <- expand.grid(
             LETTERS[match(removerange[1], LETTERS):match(
                 removerange[2], LETTERS
             )],
             sprintf("%02d", removerange[3]:removerange[4])
         )
+        #remove
         removerange <- paste0(grid$Var1, grid$Var2)
     }
     removerange <- c(removerange, removelist)
@@ -143,6 +147,7 @@ remove_raw <- function(raw_data,
 #' @export
 #'
 view_model <- function(raw_data) {
+    #fit model
     fit <- ggplot(data = raw_data, aes(x = Temperature, y = Normalized)) +
         geom_point(
             shape = 1, alpha = 0.5,
@@ -155,6 +160,7 @@ view_model <- function(raw_data) {
         theme(panel.grid.major = element_blank())
 
     raw_data <- na.omit(raw_data)
+    #create derivative graph aligned with model
     deriv <- ggplot(data = raw_data, aes(
         x = Temperature, y = norm_deriv,
         color = Well.Position
@@ -198,6 +204,8 @@ view_model <- function(raw_data) {
 #' @export
 #'
 view_deriv <- function(tsar_data, frame_by = "Well") {
+
+    #when no framing variable is specified, graph all data in one panel
     if (frame_by == "NA") {
         graphed <- ggplot(
             data = tsar_data,
@@ -206,6 +214,7 @@ view_deriv <- function(tsar_data, frame_by = "Well") {
                 color = well_ID
             )
         )
+    #if framing variable is specified, graph by frames
     } else if (!missing(frame_by)) {
         graphed <- ggplot(
             data = tsar_data,
@@ -226,6 +235,7 @@ view_deriv <- function(tsar_data, frame_by = "Well") {
         theme(panel.grid.major = element_blank())
     graphed <- ggplotly(graphed)
     graphed <- animation_opts(graphed, mode = "next")
+    #graph features sevring rShiny module details
     if (frame_by == "NA") {
         plotly::layout(graphed,
             yaxis = list(tickfont = list(size = 10), showgrid = TRUE),
