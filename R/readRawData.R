@@ -79,10 +79,15 @@ read_raw_data <- function(
     path,
     manual_file = NA,
     type = "fluorescence") {
+
+    type <- match.arg(type, choices = c("fluorescence",
+                                    "derivative", "boltzmann"))
+
     if (!str_detect(path, "RawData")) {
         warning('Check the input file,
                     The path name does not include "RawData"')
     }
+    #read and format input
     if (str_detect(path, pattern = "(.*\\.txt$)|(.*\\.csv$)")) {
         if (str_detect(path, pattern = "(.*\\.txt$)")) {
             raw_data <- read.delim(path)
@@ -108,6 +113,7 @@ read_raw_data <- function(
         } else {
             stop('type must be c("fluorescence", "boltzmann", "derivative")')
         }
+        #stored read-in data
         raw_data <- raw_data[data_start:data_end, ]
         raw_data$Temperature <- as.numeric(raw_data$Temperature)
         raw_data$Fluorescence <- as.numeric(raw_data$Fluorescence)

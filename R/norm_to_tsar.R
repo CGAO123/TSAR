@@ -50,6 +50,7 @@
 merge_norm <- function(data,
                        name,
                        date) {
+    #check for matching lengths of parameters
     if (length(data) != length(name) || length(date) != length(name)) {
         stop("Data, name, and date counts do not match.")
     } else if (length(data) == 0) {
@@ -59,7 +60,7 @@ merge_norm <- function(data,
     tsar_data <- c()
     dataset <- c()
 
-
+    #pivot data input
     for (i in seq_len(length(data))) {
         if (is.data.frame(data[[i]]) == FALSE) {
             dataset[[i]] <- data.frame(read.csv(
@@ -71,7 +72,7 @@ merge_norm <- function(data,
         }
     }
 
-
+    #create well ID and combine datasets
     for (i in seq_len(length(dataset))) {
         cur <- dataset[[i]]
         cur <- mutate(cur, ExperimentFileName = name[i])
@@ -82,7 +83,7 @@ merge_norm <- function(data,
             ))
         tsar_data <- rbind(tsar_data, tsar_cur)
     }
-
+    #create condition ID
     tsar_data <- data.frame(tsar_data)
     tsar_data <- tsar_data %>%
         mutate(condition_ID = paste(tsar_data$Protein,

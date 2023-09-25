@@ -43,6 +43,7 @@ normalize <- function(
         "Fluorescence",
         "Normalized"
     )) {
+    #format inputs and cast them into desired types
     norm_data <- raw_data %>%
         transform(
             Fluorescence =
@@ -61,6 +62,7 @@ normalize <- function(
             sep = ""
         ))
 
+    # normalize fluorescence by min max
     if (is.na(fluo)) {
         min_f <- min(norm_data$Fluorescence)
         max_f <- max(norm_data$Fluorescence)
@@ -111,6 +113,7 @@ normalize <- function(
 #'
 #' @export
 model_gam <- function(norm_data, x, y) {
+    #model data with gam
     mgcv::gam(
         formula = y ~ s(x, bs = "ad"),
         data = norm_data,
@@ -138,6 +141,7 @@ model_gam <- function(norm_data, x, y) {
 #'
 #' @export
 model_boltzmann <- function(norm_data) {
+    #check for pre-written min max
     if (is.null(norm_data$minB) && is.null(norm_data$maxB)) {
         maxfluo <- 0
         minfluo <- 100
@@ -161,7 +165,9 @@ model_boltzmann <- function(norm_data) {
         norm_data <- subset(norm_data, Temperature >= norm_data$minB[1] &
             Temperature <= norm_data$maxB[1] + 5)
     }
+    #normalize
     norm_data <- TSAR::normalize(norm_data)
+    #fit boltzmann equation
     f <- minpack.lm::nlsLM(y ~ 1 / (1 + exp(-k * (x - x2))),
         data = data.frame(
             x = norm_data$Temperature,
@@ -169,6 +175,7 @@ model_boltzmann <- function(norm_data) {
         ),
         start = list(k = 100, x2 = maxfluo)
     )
+    #pack fitted numbers and summaries into one variable
     fitted <- unlist(f$m$fitted())
     fitted <- append(
         rep(0, which(stock$Temperature ==

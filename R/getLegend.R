@@ -4,7 +4,8 @@
 #'
 #' @import ggplot2
 #' @param input_plot a ggplot2 object
-#' @return two ggplots, one containing the legend and another containg all else.
+#' @return two ggplots, one containing the legend and another containing
+#'   all else.
 #' @family TSA Plots
 #' @export
 #'
@@ -17,12 +18,14 @@
 #' get_legend(boxplot)
 #'
 get_legend <- function(input_plot) {
+    #obtain plot
     legend_plot <- input_plot
     legend_plot <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(legend_plot))
     legend <- which(vapply(legend_plot$grobs, function(x) x$name,
         FUN.VALUE = character(1)
     )
     == "guide-box")
+    #obtain legend only if it exists
     if (length(legend) == 0) { # Prevents error
         warning("No Legend to Return")
     } else {

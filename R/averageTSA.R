@@ -54,6 +54,8 @@ TSA_average <- function(tsa_data,
                         digits = 1,
                         avg_smooth = TRUE,
                         sd_smooth = TRUE) {
+
+    y <- match.arg(y, choices = c("Fluorescence", "RFU"))
     tsa_data_new <- tsa_data
     tsa_data_new$Temperature <- round(tsa_data_new$Temperature, digits = digits)
     if (y == "Fluorescence") {

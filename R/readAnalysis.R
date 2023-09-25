@@ -107,9 +107,12 @@ read_analysis <- function(
     manual_wells = NA,
     skip_flags = FALSE,
     manual_file = NA) {
+
+    type <- match.arg(type, choices = c("fluorescence",
+                                        "derivative", "boltzmann"))
+    conditions <- match.arg(conditions, choices = c("Protein", "Ligand"))
+
     # Note: Wells that do not have an Analysis Group assigned are removed
-
-
     #--- Loading and formatting
 
 
