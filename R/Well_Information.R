@@ -3,6 +3,8 @@
 #' Dataset Description:
 #'     This file is a readin using well_information_template. File contains the
 #'     conditions of well, specifying protein and ligand content in well.
+#'     All experimental setup and relevant information are determined and
+#'     manually put in by the author of this package.
 #'
 #' @name well_information
 #'

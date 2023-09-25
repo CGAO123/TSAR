@@ -2,8 +2,9 @@
 #'
 #' Dataset Description:
 #'     This dataset contains qPCR data for the CA121 protein and common
-#'     vitamins. It provides  fluorescence measurements obtained
+#'     vitamins. It provides fluorescence measurements obtained
 #'     using QuantStudio3.
+#'     Dataset is experimentally obtained by author of this package.
 #'
 #' @name qPCR_data1
 #'

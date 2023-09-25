@@ -65,6 +65,9 @@ normalize_fluorescence <- function(
     tsa_data = tsa_data,
     by = "rescale",
     control_vect = NA) {
+
+    by <- match.arg(by, choices = c("rescale", "max", "min", "control"))
+
     if ("well_ID" %in% names(tsa_data)) {
         well_ids <- unique(tsa_data$well_ID)
         n_well_ids <- length(well_ids)

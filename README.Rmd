@@ -1,20 +1,28 @@
-# TSAR
+---
+title: "readme file"
+output: github_document
+---
 
+# TSAR
+    TSAR, short for Thermal Shift Analysis in R, presents the simple interface to TSA data analysis and visualization.
     TSAR Package is contains three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser. All functions can be run outside shiny applications, refer to vignette, "TSAR Workflow by Command" for instructions.
-    Using package `remotes` to install package from Github repository. When installing, ensure to set `build_vignettes = TRUE`.
-```{r eval=FALSE, message=FALSE, warning=FALSE}
-install.packages(remotes)
-library(remotes)
-remotes::install_github("CGAO123/TSAR", build_vignettes = TRUE)
+    Download TSAR package from Bioconductor branch using the below command lines.
+```{r message=FALSE, warning=FALSE}
+library(BiocManager)
+BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
 library(TSAR)
 library(shiny)
 ```
 
 ## Data Pre-Processing
     Load data using RStudio import, read.csv, or read.delim. Select and preview raw curve using `weed_raw()`.
-```{r eval=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 data("qPCR_data1")
+```
+```{reval=FALSE}
 runApp(weed_raw(qPCR_data1))
+```
+```{r message=FALSE, warning=FALSE}
 qPCR_data1 <- remove_raw(qPCR_data1, removerange = c("B", "H", "1", "12"))
 ```
     In the plot panel, user can interact with graph and select and un-select data by clicking on curves. Selection by grid is also possible. Click on grid to highlight wells of selection. Click again to un-highlight. User may also `View Selected` wells only and `Remove Selected`. To return to default page and current all change to data set, click `Refresh Screening`. To propagate the same changes to local data set, click `Copy Selected in Full Function Call` to copy a `remove_raw()` call containing all selected wells into clipboard. Paste the call back into console or script and run to propagate changes locally. 
