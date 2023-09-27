@@ -10,6 +10,8 @@
 #'     merged results from this function are required for downstream analysis
 #'     as the format is set up for the automated workflow.
 #'
+#' @importFrom dplyr bind_rows
+#'
 #' @param raw_data_path,analysis_file_path a character string or vector of
 #'     character strings; the path or the name of the file which the
 #'     'RawData' or "AnalysisData'  are to be read from. Raw data and Analysis
