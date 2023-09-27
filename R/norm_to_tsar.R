@@ -4,7 +4,7 @@
 #'     It merges and produces information variables used to group wells of same
 #'     set up.
 #'
-#' @importFrom dplyr rename mutate
+#' @importFrom dplyr rename mutate bind_rows
 #' @importFrom magrittr %>%
 #'
 #' @param data list, a character vector specifying the file paths of the data
