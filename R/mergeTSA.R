@@ -91,15 +91,15 @@ merge_TSA <- function(
         stop("analysis_file_path and raw_data_path must be equal length")
     }
 
-    tsa_data <- data.frame() # empty df to loop into
-    for (i in seq_len(n_pairs)) { # Repeat for every pair
+
+    tsa_data_list <- lapply(1:n_pairs, function(i) { # Repeat for every pair
         raw_data_i <- read_raw_data(path = raw_data_path[i]) # Load raw data
         raw_data_i <- raw_data_i[!names(raw_data_i) %in% c("Well", "Reading")]
-        analysis_i <- read_analysis(path = analysis_file_path[i]) # analyze
-        # Merge .eds file
-        tsa_data_i <- merge(analysis_i, raw_data_i, by = "well_ID")
-        tsa_data <- rbind(tsa_data, tsa_data_i) # Add .eds to merged files
-    }
+        analysis_i <- read_analysis(path = analysis_file_path[i]) #read analyze
+        tsa_data_i <- merge(analysis_i, raw_data_i, by = "well_ID") #Merge file
+        return(tsa_data_i)
+    })
+    tsa_data <- bind_rows(tsa_data_list) #bind preprocessed list
 
     #--- Filters
     if (!is.na(protein)) { # Filter by protein

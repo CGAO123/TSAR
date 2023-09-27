@@ -61,28 +61,25 @@ merge_norm <- function(data,
     dataset <- c()
 
     #pivot data input
-    for (i in seq_len(length(data))) {
-        if (is.data.frame(data[[i]]) == FALSE) {
-            dataset[[i]] <- data.frame(read.csv(
-                file = toString(data[i]),
-                header = TRUE
-            ))
+    dataset <- lapply(data, function(x) {
+        if (!is.data.frame(x)) {
+            return(as.data.frame(read.csv(file = toString(x), header = TRUE)))
         } else {
-            dataset[[i]] <- data.frame(data[[i]])
+            return(as.data.frame(x))
         }
-    }
+    })
 
     #create well ID and combine datasets
-    for (i in seq_len(length(dataset))) {
+    tsar_data <- lapply(seq_along(dataset), function(i) {
         cur <- dataset[[i]]
-        cur <- mutate(cur, ExperimentFileName = name[i])
-        tsar_cur <- cur %>%
-            mutate(well_ID = paste(cur$Well.Position, cur$Protein, cur$Ligand,
-                date[i],
-                sep = "_"
-            ))
-        tsar_data <- rbind(tsar_data, tsar_cur)
-    }
+        cur <- cur %>%
+            mutate(ExperimentFileName = name[i])
+        cur <- cur %>%
+            mutate(well_ID = paste(Well.Position, Protein, Ligand,
+                            date[i], sep = "_"))
+        return(cur)
+    }) %>% bind_rows()
+
     #create condition ID
     tsar_data <- data.frame(tsar_data)
     tsar_data <- tsar_data %>%
