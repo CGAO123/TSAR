@@ -164,6 +164,9 @@ view[[1]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 view[[2]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 Tm_est(test)
 ```
+View model generates a list of two graphs, showing fit of modeling on 
+fluorescence data and the derivative calculation of such data.
+
 
 ### 4.2.2 96-Well Plate Application
 

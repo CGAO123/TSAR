@@ -35,20 +35,22 @@ TSA_Tms <- function(
     condition_average = TRUE) {
     if (condition_average) { #--- Code to average by condition
         n_conditions <- condition_IDs(analysis_data, n = TRUE)
-        tm_df <- as.data.frame(matrix(ncol = 0, nrow = n_conditions))
-        for (i in seq_len(n_conditions)) {
+        tm_df_list <- as.data.frame(matrix(ncol = 0, nrow = 1))
+        condition_data_list <- lapply(1:n_conditions, function(i) {
             condition_i <- condition_IDs(analysis_data)[i]
-            analysis_data_i <-
-                analysis_data[analysis_data$condition_ID == condition_i, ]
-            tm_df_i <- dplyr::distinct(analysis_data_i, well_ID, Tm)
+            analysis_data_i <- analysis_data[analysis_data$condition_ID == condition_i, ]
+            tm_df_i <- distinct(analysis_data_i, well_ID, Tm)
             n_tms_i <- nrow(tm_df_i)
             avg_tm_i <- mean(tm_df_i$Tm, na.rm = TRUE)
             sd_tm_i <- sd(tm_df_i$Tm, na.rm = TRUE)
 
-
-            tm_df[i, seq_len((n_tms_i + 3))] <-
+            tm_df_list[i, seq_len((n_tms_i + 3))] <-
                 c(condition_i, avg_tm_i, sd_tm_i, tm_df_i$Tm)
-        }
+            tm_df_list[i,]
+        })
+        tm_df <- bind_rows(condition_data_list)
+
+
         #--- Format col names and data type
         names(tm_df) <- c(
             "condition_ID", "Avg_Tm", "SD_Tm",
