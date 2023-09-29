@@ -77,31 +77,37 @@ normalize_fluorescence <- function(
     tsa_data$RFU <- rep(NA, nrow(tsa_data))
 
     if (by == "rescale") { # Rescale between the min and max
-        for (i in seq_len(n_well_ids)) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                rescale(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
-        }
+        tsa_data$RFU <- unlist(lapply(well_ids, function(well_id) {
+            tsa_data$Fluorescence[tsa_data$well_ID == well_id] <-
+                rescale(tsa_data$Fluorescence[tsa_data$well_ID == well_id])
+            tsa_data$Fluorescence[tsa_data$well_ID == well_id]
+        }))
+
     }
     if (by == "max") { # Rescale by max
-        for (i in seq_len(n_well_ids)) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
-                    max(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
-        }
+        tsa_data$RFU <- unlist(lapply(well_ids, function(well_id) {
+            tsa_data$Fluorescence[tsa_data$well_ID == well_id] <-
+                tsa_data$Fluorescence[tsa_data$well_ID == well_id] /
+                max(tsa_data$Fluorescence[tsa_data$well_ID == well_id])
+            tsa_data$Fluorescence[tsa_data$well_ID == well_id]
+        }))
+
     }
     if (by == "min") { # Rescale by min
-        for (i in seq_len(n_well_ids)) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
-                    min(tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]])
-        }
+        tsa_data$RFU <- unlist(lapply(well_ids, function(well_id) {
+            tsa_data$RFU[tsa_data$well_ID == well_id] <-
+                tsa_data$Fluorescence[tsa_data$well_ID == well_id] /
+                    min(tsa_data$Fluorescence[tsa_data$well_ID == well_id])
+            tsa_data$Fluorescence[tsa_data$well_ID == well_id]
+        }))
     }
     if (by == "control") { # Rescale by user supplied vector
-        for (i in seq_len(n_well_ids)) {
-            tsa_data$RFU[tsa_data$well_ID == well_ids[i]] <-
-                tsa_data$Fluorescence[tsa_data$well_ID == well_ids[i]] /
-                    control_vect
-        }
+        tsa_data$RFU <- unlist(lapply(well_ids, function(well_id) {
+            tsa_data$RFU[tsa_data$well_ID == well_id] <-
+                tsa_data$Fluorescence[tsa_data$well_ID == well_id] /
+                control_vect
+            tsa_data$Fluorescence[tsa_data$well_ID == well_id]
+        }))
     }
     return(tsa_data)
 }

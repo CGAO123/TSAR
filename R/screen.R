@@ -51,18 +51,19 @@ screen <- function(raw_data,
                   Make sure it is named 'Well.Position' or 'Well'")
         }
     }
-    screened <- data.frame()
     #perform normalization
-    for (i in unique(section$Well.Position)) {
-        by_well <- subset(section, Well.Position == i)
-        by_well <- normalize(by_well,
-            selected = c(
-                "Well.Position", "Temperature",
-                "Fluorescence", "Normalized"
-            )
-        )
-        screened <- rbind(screened, by_well)
+    unique_well_positions <- unique(section$Well.Position)
+
+    normalize_by_well <- function(well_position, data) {
+        by_well <- subset(data, Well.Position == well_position)
+        by_well <- normalize(by_well, selected =
+            c("Well.Position", "Temperature", "Fluorescence", "Normalized"))
+        return(by_well)
     }
+    screened_list <- lapply(unique_well_positions,
+                        normalize_by_well, data = section)
+    screened <- do.call(rbind, screened_list)
+
     if (nrow(screened) == 0) {
         stop("Error: Select of Wells do not exist or are already removed.")
         return()

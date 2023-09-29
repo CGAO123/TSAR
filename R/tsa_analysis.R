@@ -84,35 +84,36 @@ Tm_est <- function(norm_data, min, max) {
 #'
 #' @export
 gam_analysis <- function(
-    raw_data,
-    keep = TRUE,
-    fit = FALSE,
-    smoothed = FALSE,
-    boltzmann = FALSE,
-    fluo_col = NA,
-    selections = c(
-        "Well.Position",
-        "Temperature",
-        "Fluorescence",
-        "Normalized"
-    )) {
-    # Initialize variables
-    tm <- c()
-    kept <- data.frame()
-    fitsummaries <- list()
-    # iterate through each individual well
-    for (i in unique(raw_data$Well.Position)) {
-        by_well <- subset(raw_data, raw_data$Well.Position == i)
-        # normalize data
+        raw_data,
+        keep = TRUE,
+        fit = FALSE,
+        smoothed = FALSE,
+        boltzmann = FALSE,
+        fluo_col = NA,
+        selections = c(
+            "Well.Position",
+            "Temperature",
+            "Fluorescence",
+            "Normalized"
+        )) {
+
+    # Function to process each well
+    process_well <- function(i) {
+        by_well <- subset(raw_data, Well.Position == i)
         by_well <- normalize(
             raw_data = by_well,
             fluo = fluo_col,
             selected = selections
         )
 
+        # Initialize variables for each well
+        tm <- c()
+        kept <- data.frame()
+        fitsummaries <- list()
+
         # fit model if not smoothed
-        if (smoothed == FALSE) {
-            if (boltzmann == TRUE) {
+        if (!smoothed) {
+            if (boltzmann) {
                 model <- run_boltzmann(norm_data = by_well)
             } else {
                 model <- model_gam(
@@ -121,27 +122,29 @@ gam_analysis <- function(
                     y = by_well$Normalized
                 )
             }
+
             # check if user wishes to keep summaries of each well's model fit
-            if (fit == TRUE) {
+            if (fit) {
                 newsum <- list(summary(model))
-                # concat fit summaries
                 fitsummaries <- append(fitsummaries, newsum)
             }
+
             # calculate derivatives and append derivated using fitted values
             by_well <- model_fit(norm_data = by_well, model = model)
         } else {
             # if data smoothing is already present, not modeling required
             # calculate derivatives using smoothed data, append derivatives
-            by_well <- mutate(by_well, norm_deriv = c(diff(by_well$Normalized)
-            / diff(by_well$Temperature), NA))
+            by_well <- mutate(by_well,
+                        norm_deriv = c(diff(by_well$Normalized) /
+                                        diff(by_well$Temperature), NA))
         }
 
         # estimate tm values and concat them into one list
         tm <- c(tm, Tm_est(by_well))
 
         # if user wishes to keep all fitted data
-        if (keep == TRUE) {
-            if (smoothed == FALSE) {
+        if (keep) {
+            if (!smoothed) {
                 # keep selected variables, fitted values, and derivatives
                 by_well <- dplyr::select(
                     by_well,
@@ -157,23 +160,36 @@ gam_analysis <- function(
             # concat data frame of each well into one big data frame
             kept <- rbind(kept, by_well)
         }
+
+        return(list(tm = tm, kept = kept, fitsummaries = fitsummaries))
     }
 
-    # typify all return values into data frames
-    tm <- data.frame(tm)
-    kept <- data.frame(kept)
-    # prepare initial list of output
+    # Apply process_well to each unique well
+    unique_well_positions <- unique(raw_data$Well.Position)
+    result_list <- lapply(unique_well_positions, process_well)
+
+    # Combine results
+    tm_list <- lapply(result_list, function(result) result$tm)
+    kept_list <- lapply(result_list, function(result) result$kept)
+    fitsummaries <- unlist(lapply(result_list,
+                                    function(result) result$fitsummaries),
+                                    recursive = FALSE)
+
+    # Combine the lists into single data frames
+    tm <- data.frame(do.call(rbind, tm_list))
+    colnames(tm) <- "tm"
+    kept <- data.frame(do.call(rbind, kept_list))
+
+    # Prepare output list
     tobereturned <- list(tm)
 
-    # concat by users' specifications
-    if (keep == TRUE) {
+    if (keep) {
         tobereturned <- append(tobereturned, list(kept))
     }
 
-    if (fit == TRUE) {
+    if (fit) {
         tobereturned <- append(tobereturned, list(fitsummaries))
     }
 
-    # return list of data frames
     return(tobereturned)
 }
