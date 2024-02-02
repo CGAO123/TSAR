@@ -87,4 +87,4 @@ runApp(graph_tsar())
 
 ## Funding
 
-    This research was supported in part by the National Institutes of Health (R01 AI120860 and U54 AI170855 to S.G.S.; W.M.M. was supported in part by T32 GM135060 and F31 AI174951). S.G.S. acknowledges funding from the Nahmias-Schinazi Distinguished Chair in Research. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not necessarily reflect the view of the funding agencies.  
+    This research was supported in part by the National Institutes of Health (R01 AI120860, U54 AI170855, T32 GM135060 and F31 AI174951). The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health. This research was supported in part by the Nahmias-Schinazi Distinguished Chair in Research.  We would also like to acknowledge the book R Packages by Hadley Wickham (O’Reilly) ©2015 Hadley Wickham, ISBN: 978-1-491-91059-7.
