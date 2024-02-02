@@ -20,7 +20,7 @@ Authors@R: c(person("Xinlin",
 			comment = c(ORCID = "0000-0002-5840-154X"))
 		)
 Description: This package automates analysis workflow for Thermal Shift 
-    Analysis (TSAS) data. Processing, analyzing, and visualizing data through 
+    Analysis (TSA) data. Processing, analyzing, and visualizing data through 
     both shiny applications and command lines. Package aims to simplify 
 	data analysis and offer front to end workflow, from raw data to 
 	multiple trial analysis.
