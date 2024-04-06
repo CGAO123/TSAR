@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
 ```
-
+```{r, echo=FALSE, fig.width=4, out.width="400px"}
+knitr::include_graphics("images/TSAR_logo.png")
+```
 ## 1. Introduction
 TSAR, short for Thermal Shift Analysis in R, provides simple solution to qPCR 
 data processing, computing thermal shift analysis given either raw fluorescent 
@@ -30,7 +32,7 @@ server address into web browser.
 ## 3. Load TSAR Package
 Use commands below to install TSAR package:
 library(BiocManager)
-BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
+BiocManager::install("TSAR")
 
 ```{r setup}
 library(TSAR)

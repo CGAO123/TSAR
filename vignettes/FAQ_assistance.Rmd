@@ -10,6 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
 ```
+```{r, echo=FALSE, fig.width=4, out.width="400px"}
+knitr::include_graphics("images/TSAR_logo.png")
+```
 
 ```{r setup}
 library(TSAR)

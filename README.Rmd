@@ -2,14 +2,16 @@
 title: "readme file"
 output: github_document
 ---
-
+```{r message=FALSE, warning=FALSE, echo=FALSE, fig.width=4, out.width="400px"}
+knitr::include_graphics("vignettes/images/TSAR_logo.png")
+```
 # TSAR
     TSAR, short for Thermal Shift Analysis in R, presents the simple interface to TSA data analysis and visualization.
     TSAR Package is contains three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser. All functions can be run outside shiny applications, refer to vignette, "TSAR Workflow by Command" for instructions.
     Download TSAR package from Bioconductor branch using the below command lines.
 ```{r message=FALSE, warning=FALSE}
 library(BiocManager)
-BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
+BiocManager::install("TSAR")
 library(TSAR)
 library(shiny)
 ```
@@ -46,7 +48,7 @@ runApp(analyze_norm(qPCR_data1))
 ```{r eval = FALSE}
 runApp(graph_tsar())
 ```
-    Upload is limited to 30MB in size, but not count size. After upload, user will be prompted corresponding numbers of input boxes to specify date of each experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview of tsar_data will be prompted. For a full list of well_ID and conditions_ID, refer to the helper buttons at the bottom of page.
+    Upload is limited to 30MB in data size, but not count size. After upload, user will be prompted corresponding numbers of input boxes to specify date of each experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview of tsar_data will be prompted. For a full list of well_ID and conditions_ID, refer to the helper buttons at the bottom of page.
     Top panel outputs all plots, selected desired graphing features below and click generate to output graphs. p.s. Graphing compare plots and selected curves are takes longer than boxplot, please give it few seconds to load.
     Generating compare plots will output all plausible comparisons by control. To any specific one, a drop list `View Only:` will be prompted below the botton `Generate Compare Plots`. Select by condition_ID to zoom in on graphs.
 

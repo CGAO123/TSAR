@@ -1,41 +1,19 @@
 readme file
 ================
 
-# TSAR
-
-    TSAR, short for Thermal Shift Analysis in R, presents the simple interface to TSA data analysis and visualization.
-    TSAR Package is contains three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser. All functions can be run outside shiny applications, refer to vignette, "TSAR Workflow by Command" for instructions.
-    Download TSAR package from Bioconductor branch using the below command lines.
+<img src="vignettes/images/TSAR_logo.png" width="400px" /> \# TSAR TSAR,
+short for Thermal Shift Analysis in R, presents the simple interface to
+TSA data analysis and visualization. TSAR Package is contains three
+separate shiny application regarding, data pre-processing, data
+analysis, and data visualization. All application can be opened in both
+interactive window or browsing engine by copy pasting server address
+into web browser. All functions can be run outside shiny applications,
+refer to vignette, “TSAR Workflow by Command” for instructions. Download
+TSAR package from Bioconductor branch using the below command lines.
 
 ``` r
 library(BiocManager)
-BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
-```
-
-    ## rmarkdown   (2.24    -> 2.25 ) [CRAN]
-    ## knitr       (1.43    -> 1.44 ) [CRAN]
-    ## dplyr       (1.1.2   -> 1.1.3) [CRAN]
-    ## askpass     (1.1     -> 1.2.0) [CRAN]
-    ## openssl     (2.1.0   -> 2.1.1) [CRAN]
-    ## prettyunits (1.1.1   -> 1.2.0) [CRAN]
-    ## pkgload     (1.3.2.1 -> 1.3.3) [CRAN]
-    ## minqa       (1.2.5   -> 1.2.6) [CRAN]
-    ## minpack.lm  (1.2-3   -> 1.2-4) [CRAN]
-    ## 
-    ## The downloaded binary packages are in
-    ##  /var/folders/xl/qmtpk7rs22xdzzmpmy3vgy0h0000gn/T//RtmpmSXKcc/downloaded_packages
-    ## ── R CMD build ─────────────────────────────────────────────────────────────────
-    ## * checking for file ‘/private/var/folders/xl/qmtpk7rs22xdzzmpmy3vgy0h0000gn/T/RtmpmSXKcc/remotes5e041236ea96/CGAO123-TSAR-0f9c1cb/DESCRIPTION’ ... OK
-    ## * preparing ‘TSAR’:
-    ## * checking DESCRIPTION meta-information ... OK
-    ## * installing the package to build vignettes
-    ## * creating vignettes ... OK
-    ## * checking for LF line-endings in source and make files and shell scripts
-    ## * checking for empty or unneeded directories
-    ## * looking to see if a ‘data/datalist’ file should be added
-    ## * building ‘TSAR_0.99.6.tar.gz’
-
-``` r
+BiocManager::install("TSAR")
 library(TSAR)
 library(shiny)
 ```
@@ -81,10 +59,10 @@ runApp(analyze_norm(qPCR_data1))
 runApp(graph_tsar())
 ```
 
-    Upload is limited to 30MB in size, but not count size. After upload, user will be prompted corresponding numbers of input boxes to specify date of each experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview of tsar_data will be prompted. For a full list of well_ID and conditions_ID, refer to the helper buttons at the bottom of page.
+    Upload is limited to 30MB in data size, but not count size. After upload, user will be prompted corresponding numbers of input boxes to specify date of each experiment. Click `Save Dates`, then `Merge and Save Data`. A short preview of tsar_data will be prompted. For a full list of well_ID and conditions_ID, refer to the helper buttons at the bottom of page.
     Top panel outputs all plots, selected desired graphing features below and click generate to output graphs. p.s. Graphing compare plots and selected curves are takes longer than boxplot, please give it few seconds to load.
     Generating compare plots will output all plausible comparisons by control. To any specific one, a drop list `View Only:` will be prompted below the botton `Generate Compare Plots`. Select by condition_ID to zoom in on graphs.
 
 ## Funding
 
-    This research was supported in part by the National Institutes of Health (R01 AI120860, U54 AI170855, T32 GM135060 and F31 AI174951). The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health. This research was supported in part by the Nahmias-Schinazi Distinguished Chair in Research.  We would also like to acknowledge the book R Packages by Hadley Wickham (O’Reilly) ©2015 Hadley Wickham, ISBN: 978-1-491-91059-7.
+    This research was supported in part by the National Institutes of Health (R01 AI120860 and U54 AI170855 to S.G.S.; W.M.M. was supported in part by T32 GM135060 and F31 AI174951). S.G.S. acknowledges funding from the Nahmias-Schinazi Distinguished Chair in Research. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not necessarily reflect the view of the funding agencies.  

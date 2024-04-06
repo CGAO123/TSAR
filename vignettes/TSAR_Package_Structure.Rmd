@@ -23,7 +23,7 @@ easy to manage and visualize.
 # 2. Installation
 Use commands below to install TSAR package:
 library(BiocManager)
-BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
+BiocManager::install("TSAR")
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(TSAR)

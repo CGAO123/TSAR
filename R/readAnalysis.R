@@ -110,7 +110,6 @@ read_analysis <- function(
 
     type <- match.arg(type, choices = c("fluorescence",
                                         "derivative", "boltzmann"))
-    conditions <- match.arg(conditions, choices = c("Protein", "Ligand"))
 
     # Note: Wells that do not have an Analysis Group assigned are removed
     #--- Loading and formatting
