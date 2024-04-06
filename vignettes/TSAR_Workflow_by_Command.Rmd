@@ -7,6 +7,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
+```{r, echo=FALSE, fig.width=4, out.width="400px"}
+knitr::include_graphics("images/TSAR_logo.png")
+```
 Pipeline analysis from raw data reading to graphic visualization
 
 ## 1. Introduction
@@ -28,7 +31,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#>")
 
 Use commands below to install TSAR package:
 library(BiocManager)
-BiocManager::install("CGAO123/TSAR", build_vignettes = TRUE)
+BiocManager::install("TSAR")
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(TSAR)
