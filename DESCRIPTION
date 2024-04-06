@@ -61,5 +61,5 @@ DataRawr: data/example_tsar_data.rda
 Depends: 
     R (>= 4.3.0)
 Config/testthat/edition: 3
-Citation: "X. Gao, W. M. McFadden, X. Wen, A. Emanuelli, Z. C. Lorson, H. Zheng, K. A. Kirby, S. G. Sarafianos (2023). _Use of TSAR, Thermal Shift Analysis in R, to identify Folic Acid as a Molecule that Interacts with HIV-1 Capsid_. bioRxiv. DOI: 10.1101/2023.11.29.569293"
+Citation: 'X. Gao, W. M. McFadden, X. Wen, A. Emanuelli, Z. C. Lorson, H. Zheng, K. A. Kirby, S. G. Sarafianos (2023). _Use of TSAR, Thermal Shift Analysis in R, to identify Folic Acid as a Molecule that Interacts with HIV-1 Capsid_. bioRxiv. DOI: 10.1101/2023.11.29.569293'
 
