@@ -1,15 +1,13 @@
 readme file
 ================
 
-<img src="vignettes/images/TSAR_logo.png" width="400px" /> \# TSAR TSAR,
-short for Thermal Shift Analysis in R, presents the simple interface to
-TSA data analysis and visualization. TSAR Package is contains three
-separate shiny application regarding, data pre-processing, data
-analysis, and data visualization. All application can be opened in both
-interactive window or browsing engine by copy pasting server address
-into web browser. All functions can be run outside shiny applications,
-refer to vignette, “TSAR Workflow by Command” for instructions. Download
-TSAR package from Bioconductor branch using the below command lines.
+<img src="vignettes/images/TSAR_logo.png" width="400px" />
+
+# TSAR
+
+    TSAR, short for Thermal Shift Analysis in R, presents the simple interface to TSA data analysis and visualization.
+    TSAR Package is contains three separate shiny application regarding, data pre-processing, data analysis, and data visualization. All application can be opened in both interactive window or browsing engine by copy pasting server address into web browser. All functions can be run outside shiny applications, refer to vignette, "TSAR Workflow by Command" for instructions.
+    Download TSAR package from Bioconductor branch using the below command lines.
 
 ``` r
 library(BiocManager)
