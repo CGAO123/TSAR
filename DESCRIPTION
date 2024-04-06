@@ -1,7 +1,7 @@
 Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
-Version: 1.1.3
+Version: 1.1.5
 Year: 2023
 Authors@R: c(person("Xinlin", 
 			"Gao", 
@@ -61,16 +61,3 @@ DataRawr: data/example_tsar_data.rda
 Depends: 
     R (>= 4.3.0)
 Config/testthat/edition: 3
-Citation: @article{Gao2023,
-  author = {X. Gao and W. M. McFadden and X. Wen and A. Emanuelli and Z. C. Lorson and H. Zheng and K. A. Kirby and S. G. Sarafianos},
-  title = {Use of TSAR, Thermal Shift Analysis in R, to Identify Folic Acid as a Molecule that Interacts with HIV-1 Capsid},
-  journal = {bioRxiv},
-  year = {2023},
-  doi = {10.1101/2023.11.29.569293},
-  publisher = {Cold Spring Harbor Laboratory},
-  abstract = {Thermal shift assay (TSA) is a versatile biophysical technique for studying protein interactions. Here, we report a free, open-source software tool TSAR (Thermal Shift Analysis in R) to expedite and automate the analysis of thermal shift data derived either from individual experiments or large screens of chemical libraries. The TSAR package incorporates multiple, dynamic workflows to facilitate the analysis of TSA data and returns publication-ready graphics or processed results. Further, the package includes a graphic user interface (GUI) that enables easy use by non-programmers, aiming to simplify TSA analysis while diversifying visualization. To exemplify the utility of TSAR, we screened a chemical library of vitamins to identify molecules that interact with the capsid protein (CA) of human immunodeficiency virus type 1 (HIV-1). Our data show that hexameric CA interacts with folic acid in vitro.},
-  URL = {https://www.biorxiv.org/content/early/2023/11/29/2023.11.29.569293},
-  eprint = {https://www.biorxiv.org/content/early/2023/11/29/2023.11.29.569293.full.pdf},
-  note = {Preprint},
-  keywords = {thermal shift assay, TSAR, folic acid, HIV-1 capsid}}
-

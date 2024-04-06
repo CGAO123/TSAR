@@ -1,0 +1,20 @@
+To cite package ‘TSAR’ in publications use:
+
+  X. Gao, W. M. McFadden, X. Wen, A. Emanuelli, Z. C. Lorson, H. Zheng,
+K. A. Kirby, S. G. Sarafianos (2023). _Use of TSAR, Thermal Shift Analysis in
+R, to identify Folic Acid as a Molecule that Interacts with HIV-1 Capsid_.
+bioRxiv. DOI: 10.1101/2023.11.29.569293
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {Use of TSAR, Thermal Shift Analysis in R, to identify Folic Acid
+            as a Molecule that Interacts with HIV-1 Capsid},
+    author = {X. Gao and W. M. McFadden and X. Wen and A. Emanuelli and Z. C.
+            Lorson and H. Zheng and K. A. Kirby and S. G. Sarafianos},
+    journal = {bioRxiv},
+    year = {2023},
+    publisher = {Cold Spring Harbor Laboratory},
+    URL = {https://www.biorxiv.org/content/early/2023/11/29/2023.11.29.569293},
+    doi = {10.1101/2023.11.29.569293},
+  }
