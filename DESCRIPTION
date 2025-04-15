@@ -1,7 +1,7 @@
 Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
-Version: 1.6.0
+Version: 1.7.0
 Year: 2023
 Authors@R: c(person("Xinlin", 
 			"Gao", 
