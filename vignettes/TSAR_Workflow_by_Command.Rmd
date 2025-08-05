@@ -77,7 +77,7 @@ test <- normalize(test, fluo = 5, selected = c(
 ))
 head(test)
 gammodel <- model_gam(test, x = test$Temperature, y = test$Normalized)
-test <- model_fit(test, model = gammodel)
+gammaresult <- model_fit(test, model = gammodel)
 ```
 
 Output analysis result using `view_model()` to view normalized data and fitted
@@ -88,11 +88,21 @@ Tm-estimation is proper. \*current model assumes derivative estimation
 of Tm value.
 
 ```{r}
-Tm_est(test)
-view <- view_model(test)
+Tm_est(gammaresult)
+view <- view_model(gammaresult)
 view[[1]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 view[[2]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
 ```
+Alternatively, user can also use `model_beta()` to fit a beta model to the data.
+
+```{r}
+betamodel <- model_beta(test, x ="Temperature", y = "Normalized")
+view <- view_model(betamodel)
+view[[1]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
+view[[2]] + theme(aspect.ratio = 0.7, legend.position = "bottom")
+```
+
+
 
 Screen all wells for curve shape on raw_data set and sift out corrupted
 data. This step is not required but may help remove data modeling
@@ -264,20 +274,26 @@ TSA_boxplot(conclusion,
 Specify Control condition by assigning condition_ID to control.
 TSA_compare_plot generated multiple line graphs for comparison.
 
+What's new:
+User can now choose the smoother type ("gam", "beta", or "none") to be used in the plot.
+
 ```{r}
 control_ID <- "CA FL_DMSO"
 
 TSA_compare_plot(conclusion,
     y = "RFU",
-    control_condition = control_ID
+    control_condition = control_ID,
+    smoother = "beta",
 )
 ```
 
 Select by condition or well IDs to view curves and estimated Tm values.
 
+What's new:
+User can now choose the smoother type ("gam", "beta", or "none") to be used in the plot.
 ```{r}
 error <- conclusion %>% filter(condition_ID == "CA FL_PyxINE HCl")
-TSA_wells_plot(error, separate_legend = FALSE)
+TSA_wells_plot(error, separate_legend = TRUE, smoother = "beta",)
 ```
 
 To further visualize the comparison, graph first derivatives grouped by needs 
