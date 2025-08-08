@@ -1,0 +1,115 @@
+#Positive Hit Settings: dTm Boltzmann: > 2.0, dTm Derivative: > 2.0
+
+#	Well	Protein	Ligand	Buffer	Salt	Task	Tm B	dTm B	B Fit	Tm B Start	Tm B End	Flag Indicator	Single/Multiple	Analysis Mode	Tm D	dTm D	High Background	High NPC	Algorithm Failure	Sparse Data	Low Signal	Poor Fit	Replicate Mismatch	Multiple Melts	Reference Mismatch	Analysis Group	Experiment File Name
+1	A01											0	Single	Auto													Thermal Shift_02_368.eds
+2	A02											0	Single	Auto													Thermal Shift_02_368.eds
+3	A03											0	Single	Auto													Thermal Shift_02_368.eds
+4	A04											0	Single	Auto													Thermal Shift_02_368.eds
+5	A05											0	Single	Auto													Thermal Shift_02_368.eds
+6	A06											0	Single	Auto													Thermal Shift_02_368.eds
+7	A07											0	Single	Auto													Thermal Shift_02_368.eds
+8	A08											0	Single	Auto													Thermal Shift_02_368.eds
+9	A09											0	Single	Auto													Thermal Shift_02_368.eds
+10	A10											0	Single	Auto													Thermal Shift_02_368.eds
+11	A11											0	Single	Auto													Thermal Shift_02_368.eds
+12	A12											0	Single	Auto													Thermal Shift_02_368.eds
+13	B01	CA121 WT	dH2O	Tris		Sample	44.02629		1.4431778	33.036118	51.235725	0	Single	Auto	44.79419											AG 1	Thermal Shift_02_368.eds
+14	B02	CA121 WT	dH2O	Tris		Sample	44.16592		1.369662	31.240105	51.475193	0	Single	Auto	44.94056											AG 1	Thermal Shift_02_368.eds
+15	B03	CA121 WT	PF74	Tris		Sample	51.71395		1.2438296	36.448544	59.73686	0	Single	Auto	53.283566											AG 1	Thermal Shift_02_368.eds
+16	B04	CA121 WT	PF74	Tris		Sample	51.883995		1.2091405	36.987347	60.27566	0	Single	Auto	54.161777											AG 1	Thermal Shift_02_368.eds
+17	B05	CA121 WT	Gallic acid	Tris		Sample	46.797768		1.0109813	32.557182	55.72576	0	Single	Auto	45.81877											AG 1	Thermal Shift_02_368.eds
+18	B06	CA121 WT	Gallic acid	Tris		Sample	45.052853		1.0427108	32.13811	53.690277	0	Single	Auto	45.233295											AG 1	Thermal Shift_02_368.eds
+19	B07											0	Single	Auto													Thermal Shift_02_368.eds
+20	B08											0	Single	Auto													Thermal Shift_02_368.eds
+21	B09											0	Single	Auto													Thermal Shift_02_368.eds
+22	B10											0	Single	Auto													Thermal Shift_02_368.eds
+23	B11											0	Single	Auto													Thermal Shift_02_368.eds
+24	B12											0	Single	Auto													Thermal Shift_02_368.eds
+25	C01											0	Single	Auto													Thermal Shift_02_368.eds
+26	C02											0	Single	Auto													Thermal Shift_02_368.eds
+27	C03											0	Single	Auto													Thermal Shift_02_368.eds
+28	C04											0	Single	Auto													Thermal Shift_02_368.eds
+29	C05											0	Single	Auto													Thermal Shift_02_368.eds
+30	C06											0	Single	Auto													Thermal Shift_02_368.eds
+31	C07											0	Single	Auto													Thermal Shift_02_368.eds
+32	C08											0	Single	Auto													Thermal Shift_02_368.eds
+33	C09											0	Single	Auto													Thermal Shift_02_368.eds
+34	C10											0	Single	Auto													Thermal Shift_02_368.eds
+35	C11											0	Single	Auto													Thermal Shift_02_368.eds
+36	C12											0	Single	Auto													Thermal Shift_02_368.eds
+37	D01	CA121 WT	FeCl3 + Gallic acid	Tris		Sample	51.1282		1.153149	38.723495	58.958584	0	Single	Auto	53.72267											AG 1	Thermal Shift_02_368.eds
+38	D02	CA121 WT	FeCl3 + Gallic acid	Tris		Sample	51.142647		1.1390685	38.364292	58.898716	0	Single	Auto	52.258984											AG 1	Thermal Shift_02_368.eds
+39	D03	CA121 WT	CuCl2 + Gallic acid	Tris		Sample	46.995796		1.1827004	30.401964	55.426426	0	Single	Auto	48.160667											AG 1	Thermal Shift_02_368.eds
+40	D04	CA121 WT	CuCl2 + Gallic acid	Tris		Sample	46.609108		1.2199956	29.204622	55.007355	0	Single	Auto	48.014297											AG 1	Thermal Shift_02_368.eds
+41	D05	CA121 WT	CaCl2 + Gallic acid	Tris		Sample	45.299065		1.0693842	32.078243	54.408684	0	Single	Auto	45.52603											AG 1	Thermal Shift_02_368.eds
+42	D06	CA121 WT	CaCl2 + Gallic acid	Tris		Sample	47.0948		1.0292838	32.736782	56.264565	0	Single	Auto	46.111507											AG 1	Thermal Shift_02_368.eds
+43	D07	CA121 WT	MgCl2 + Gallic acid	Tris		Sample	44.704742		1.0147783	33.21572	54.348816	0	Single	Auto	44.79419											AG 1	Thermal Shift_02_368.eds
+44	D08	CA121 WT	MgCl2 + Gallic acid	Tris		Sample	44.862103		1.0750881	34.951866	53.331074	0	Single	Auto	44.94056											AG 1	Thermal Shift_02_368.eds
+45	D09	CA121 WT	NaCl + Gallic acid	Tris		Sample	45.306187		1.0097935	32.018375	54.408684	0	Single	Auto	45.233295											AG 1	Thermal Shift_02_368.eds
+46	D10	CA121 WT	NaCl + Gallic acid	Tris		Sample	45.06292		1.0085988	32.617046	54.528416	0	Single	Auto	45.086926											AG 1	Thermal Shift_02_368.eds
+47	D11											0	Single	Auto													Thermal Shift_02_368.eds
+48	D12											0	Single	Auto													Thermal Shift_02_368.eds
+49	E01											0	Single	Auto													Thermal Shift_02_368.eds
+50	E02											0	Single	Auto													Thermal Shift_02_368.eds
+51	E03											0	Single	Auto													Thermal Shift_02_368.eds
+52	E04											0	Single	Auto													Thermal Shift_02_368.eds
+53	E05											0	Single	Auto													Thermal Shift_02_368.eds
+54	E06											0	Single	Auto													Thermal Shift_02_368.eds
+55	E07											0	Single	Auto													Thermal Shift_02_368.eds
+56	E08											0	Single	Auto													Thermal Shift_02_368.eds
+57	E09											0	Single	Auto													Thermal Shift_02_368.eds
+58	E10											0	Single	Auto													Thermal Shift_02_368.eds
+59	E11											0	Single	Auto													Thermal Shift_02_368.eds
+60	E12											0	Single	Auto													Thermal Shift_02_368.eds
+61	F01	CA121 WT	FeCl3	Tris		Sample	44.365993		1.372125	33.275585	51.71466	0	Single	Auto	44.94056											AG 1	Thermal Shift_02_368.eds
+62	F02	CA121 WT	FeCl3	Tris		Sample	44.422874		1.415802	34.892	51.35546	0	Single	Auto	44.94056											AG 1	Thermal Shift_02_368.eds
+63	F03	CA121 WT	CuCl2	Tris		Sample	42.19938		1.4732162	21.9607	49.379845	0	Single	Auto	43.330505											AG 1	Thermal Shift_02_368.eds
+64	F04	CA121 WT	CuCl2	Tris		Sample	42.04188		1.3883907	21.9607	48.960773	0	Single	Auto	43.62324											AG 1	Thermal Shift_02_368.eds
+65	F05	CA121 WT	CaCl2	Tris		Sample	44.672813		1.3473607	31.060503	52.672535	0	Single	Auto	45.52603											AG 1	Thermal Shift_02_368.eds
+66	F06	CA121 WT	CaCl2	Tris		Sample	44.33166		1.4081205	30.521698	51.59493	0	Single	Auto	45.233295											AG 1	Thermal Shift_02_368.eds
+67	F07	CA121 WT	MgCl2	Tris		Sample	44.29844		1.4008642	30.102629	51.59493	0	Single	Auto	45.233295											AG 1	Thermal Shift_02_368.eds
+68	F08	CA121 WT	MgCl2	Tris		Sample	44.096657		1.3729367	31.838776	50.756786	0	Single	Auto	45.086926											AG 1	Thermal Shift_02_368.eds
+69	F09	CA121 WT	NaCl	Tris		Sample	44.253483		1.3818107	30.641432	51.475193	0	Single	Auto	45.233295											AG 1	Thermal Shift_02_368.eds
+70	F10	CA121 WT	NaCl	Tris		Sample	43.99684		1.4362406	31.599306	51.175858	0	Single	Auto	44.94056											AG 1	Thermal Shift_02_368.eds
+71	F11											0	Single	Auto													Thermal Shift_02_368.eds
+72	F12											0	Single	Auto													Thermal Shift_02_368.eds
+73	G01											0	Single	Auto													Thermal Shift_02_368.eds
+74	G02											0	Single	Auto													Thermal Shift_02_368.eds
+75	G03											0	Single	Auto													Thermal Shift_02_368.eds
+76	G04											0	Single	Auto													Thermal Shift_02_368.eds
+77	G05											0	Single	Auto													Thermal Shift_02_368.eds
+78	G06											0	Single	Auto													Thermal Shift_02_368.eds
+79	G07											0	Single	Auto													Thermal Shift_02_368.eds
+80	G08											0	Single	Auto													Thermal Shift_02_368.eds
+81	G09											0	Single	Auto													Thermal Shift_02_368.eds
+82	G10											0	Single	Auto													Thermal Shift_02_368.eds
+83	G11											0	Single	Auto													Thermal Shift_02_368.eds
+84	G12											0	Single	Auto													Thermal Shift_02_368.eds
+85	H01											0	Single	Auto													Thermal Shift_02_368.eds
+86	H02											0	Single	Auto													Thermal Shift_02_368.eds
+87	H03											0	Single	Auto													Thermal Shift_02_368.eds
+88	H04											0	Single	Auto													Thermal Shift_02_368.eds
+89	H05											0	Single	Auto													Thermal Shift_02_368.eds
+90	H06											0	Single	Auto													Thermal Shift_02_368.eds
+91	H07											0	Single	Auto													Thermal Shift_02_368.eds
+92	H08											0	Single	Auto													Thermal Shift_02_368.eds
+93	H09											0	Single	Auto													Thermal Shift_02_368.eds
+94	H10											0	Single	Auto													Thermal Shift_02_368.eds
+95	H11											0	Single	Auto													Thermal Shift_02_368.eds
+96	H12											0	Single	Auto													Thermal Shift_02_368.eds
+
+#	Hits B	Hits D	Protein	Ligand	Buffer	Salt	Task	Analysis Group	Replicate Mismatch	Reference Mismatch	Tm B - Mean	Tm B Lower 95%	Tm B Upper 95%	Tm B - Median	Tm B - Std. Error	Tm B - Min	Tm B - Max	dTm B - Mean	dTm B Lower 95%	dTm B Upper 95%	dTm B - Median	dTm B - Std. Error	dTm B - Min	dTm B - Max	Tm D - Mean	Tm D Lower 95%	Tm D Upper 95%	Tm D - Median	Tm D - Std. Error	Tm D - Min	Tm D - Max	dTm D - Mean	dTm D Lower 95%	dTm D Upper 95%	dTm D - Median	dTm D - Std. Error	dTm D - Min	dTm D - Max
+1			CA121 WT	CuCl2	Tris		Sample	AG 1			42.12063	41.120033	43.121223	42.12063	0.0787487	42.04188	42.19938								43.476875	41.617092	45.33666	43.476875	0.14636803	43.330505	43.62324							
+2			CA121 WT	NaCl	Tris		Sample	AG 1			44.12516	42.49469	45.75563	44.12516	0.1283207	43.99684	44.253483								45.08693	43.227146	46.946712	45.08693	0.14636803	44.94056	45.233295							
+3			CA121 WT	CuCl2 + Gallic acid	Tris		Sample	AG 1			46.802452	44.345783	49.25912	46.802452	0.19334412	46.609108	46.995796								48.087482	47.15758	49.017384	48.087482	0.07318497	48.014297	48.160667							
+4			CA121 WT	FeCl3	Tris		Sample	AG 1			44.394432	44.033062	44.755802	44.394432	0.028440475	44.365993	44.422874								44.94056	44.94056	44.94056	44.94056	0.0	44.94056	44.94056							
+5			CA121 WT	MgCl2 + Gallic acid	Tris		Sample	AG 1			44.783424	43.7837	45.78315	44.783424	0.07868004	44.704742	44.862103								44.867374	43.937473	45.797276	44.867374	0.07318497	44.79419	44.94056							
+6			CA121 WT	CaCl2	Tris		Sample	AG 1			44.502235	42.33486	46.66961	44.502235	0.1705761	44.33166	44.672813								45.37966	43.51988	47.239445	45.37966	0.14636803	45.233295	45.52603							
+7			CA121 WT	NaCl + Gallic acid	Tris		Sample	AG 1			45.184555	43.639053	46.730057	45.184555	0.12163353	45.06292	45.306187								45.16011	44.23021	46.09001	45.16011	0.07318497	45.086926	45.233295							
+8			CA121 WT	CaCl2 + Gallic acid	Tris		Sample	AG 1			46.19693	34.78845	57.60541	46.19693	0.8978672	45.299065	47.0948								45.81877	42.099186	49.538357	45.81877	0.29273796	45.52603	46.111507							
+9			CA121 WT	FeCl3 + Gallic acid	Tris		Sample	AG 1			51.13542	51.043644	51.2272	51.13542	0.0072231297	51.1282	51.142647								52.99083	43.69187	62.289787	52.99083	0.73184395	52.258984	53.72267							
+10			CA121 WT	MgCl2	Tris		Sample	AG 1			44.197548	42.915604	45.479492	44.197548	0.10089112	44.096657	44.29844								45.16011	44.23021	46.09001	45.16011	0.07318497	45.086926	45.233295							
+11			CA121 WT	PF74	Tris		Sample	AG 1			51.798973	50.718666	52.87928	51.798973	0.08502197	51.71395	51.883995								53.72267	48.143303	59.30204	53.72267	0.439106	53.283566	54.161777							
+12			CA121 WT	dH2O	Tris		Sample	AG 1			44.096107	43.209026	44.98319	44.096107	0.06981468	44.02629	44.16592								44.867374	43.937473	45.797276	44.867374	0.07318497	44.79419	44.94056							
+13			CA121 WT	Gallic acid	Tris		Sample	AG 1			45.92531	34.83969	57.010925	45.92531	0.8724575	45.052853	46.797768								45.52603	41.806446	49.245617	45.52603	0.29273796	45.233295	45.81877							
+

@@ -37,7 +37,6 @@ BiocManager::install("TSAR")
 ```{r setup}
 library(TSAR)
 library(shiny)
-load_all('/Users/zhijiang/Desktop/University/Bio Lab/TSARnew')
 ```
 
 
@@ -179,10 +178,10 @@ control_ID <- "CA121 WT_dH2O"
 protein_filter <- NA
 ligand_filter <- NA
 
-analysis_path <- '/Users/zhijiang/Desktop/University/Bio Lab/WT gallic acid and metal/Analysis'
+analysis_path <- './Analysis'
 
 
-rawData_path <- '/Users/zhijiang/Desktop/University/Bio Lab/WT gallic acid and metal/Raw'
+rawData_path <- './Raw'
 
 nAnalysis<- length(dir(path = analysis_path)) 
 nRawData <- length(dir(path = rawData_path)) 
