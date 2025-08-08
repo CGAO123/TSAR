@@ -62,13 +62,13 @@
 TSA_wells_plot <- function(
     tsa_data,
     y = "RFU",
-    show_Tm = TRUE,
+  show_Tm = TRUE,
     Tm_label_nudge = 7.5,
-    show_average = TRUE,
+  show_average = TRUE,
     plot_title = NA,
     plot_subtitle = NA,
-    smooth = TRUE,                 # lines for wells + smooth aggregate if TRUE
-    separate_legend = TRUE,
+  smooth = TRUE,                 # lines for wells + smooth aggregate if TRUE
+  separate_legend = TRUE,
     # NEW: second-stage smoother for the aggregate curve/ribbon
     smoother = c("gam", "beta", "none"),
     beta_shape = 3,
@@ -78,6 +78,14 @@ TSA_wells_plot <- function(
 ) {
   smoother <- match.arg(smoother)
   y <- match.arg(y, choices = c("Fluorescence", "RFU"))
+  # sanitize logical flags (accept logical or "TRUE"/"FALSE" strings)
+  .to_bool <- function(x) { if (is.logical(x)) x else (tolower(as.character(x)) == "true") }
+  show_Tm_flag      <- .to_bool(show_Tm)
+  show_average_flag <- .to_bool(show_average)
+  smooth_flag       <- .to_bool(smooth)
+  sep_flag          <- .to_bool(separate_legend)
+  Tm_label_nudge_num <- suppressWarnings(as.numeric(Tm_label_nudge))
+  if (!is.finite(Tm_label_nudge_num)) Tm_label_nudge_num <- 0
   
   if (!"well_ID" %in% names(tsa_data) || !"condition_ID" %in% names(tsa_data)) {
     stop("tsa_data must be a data frame merged by merge_TSA() or merge_norm()")
@@ -88,11 +96,14 @@ TSA_wells_plot <- function(
     TSA_curve <- ggplot(tsa_data, aes(x = Temperature, y = Fluorescence))
     tm_height <- max(tsa_data$Fluorescence, na.rm = TRUE) / 4
   } else { # RFU
-    TSA_curve <- ggplot(tsa_data, aes(x = Temperature, y = Normalized))
+    if (!"RFU" %in% names(tsa_data)) {
+      stop("RFU column not found. Run normalize_fluorescence() or choose y='Fluorescence'.")
+    }
+    TSA_curve <- ggplot(tsa_data, aes(x = Temperature, y = RFU))
     tm_height <- 0.4
   }
   
-  if (isTRUE(smooth)) {
+  if (isTRUE(smooth_flag)) {
     TSA_curve <- TSA_curve + geom_line(aes(color = well_ID), alpha = 0.95)
   } else {
     TSA_curve <- TSA_curve + geom_point(aes(color = well_ID), alpha = 0.5)
@@ -101,15 +112,19 @@ TSA_wells_plot <- function(
   TSA_curve <- TSA_curve + theme_bw()
   
   # Optional Tm line/label
-  if (isTRUE(show_Tm)) {
-    avg_tm <- TSA_Tms(tsa_data)$Avg_Tm
-    TSA_curve <- TSA_curve +
-      geom_vline(xintercept = avg_tm, linetype = "dashed", color = "#BC9595") +
-      geom_label(
-        label = paste0("Tm=", round(avg_tm, 2), "C"),
-        aes(x = avg_tm, y = tm_height),
-        nudge_x = Tm_label_nudge
-      )
+  if (isTRUE(show_Tm_flag)) {
+    # protect against vector of Tm; pick the first (single condition expected)
+    avg_tm <- suppressWarnings(as.numeric(TSA_Tms(tsa_data)$Avg_Tm[1]))
+    if (is.finite(avg_tm)) {
+      TSA_curve <- TSA_curve +
+        geom_vline(xintercept = avg_tm, linetype = "dashed", color = "#BC9595") +
+        annotate(
+          "label",
+          x = avg_tm + Tm_label_nudge_num,
+          y = tm_height,
+          label = paste0("Tm=", round(avg_tm, 2), "C")
+        )
+    }
   }
   
   # Titles
@@ -132,7 +147,7 @@ TSA_wells_plot <- function(
   TSA_curve <- TSA_curve + labs(title = title, subtitle = subtitle)
   
   # Legend handling
-  if (isTRUE(separate_legend)) {
+  if (isTRUE(sep_flag)) {
     legend_plot <- get_legend(TSA_curve)
     TSA_curve <- TSA_curve + theme(legend.position = "none")
     TSA_return <- list(TSA_curve, legend_plot)
@@ -141,7 +156,7 @@ TSA_wells_plot <- function(
   }
   
   # Aggregate average curve + ribbon
-  if (isTRUE(show_average)) {
+  if (isTRUE(show_average_flag)) {
     # We use 'smooth' to decide whether to create smoothed columns in TSA_average,
     # and 'smoother' to choose the method (none/gam/beta) for those columns.
     tsa_average_df <- TSA_average(
@@ -157,16 +172,17 @@ TSA_wells_plot <- function(
     )
     
     # Safe columns for plotting (works for any smoother selection)
-    tsa_average_df$ymin_plot <- if (smooth && "sd_min_smooth" %in% names(tsa_average_df))
+  tsa_average_df$ymin_plot <- if (smooth_flag && "sd_min_smooth" %in% names(tsa_average_df))
       tsa_average_df$sd_min_smooth else tsa_average_df$sd_min
-    tsa_average_df$ymax_plot <- if (smooth && "sd_max_smooth" %in% names(tsa_average_df))
+  tsa_average_df$ymax_plot <- if (smooth_flag && "sd_max_smooth" %in% names(tsa_average_df))
       tsa_average_df$sd_max_smooth else tsa_average_df$sd_max
-    tsa_average_df$y_avg_plot <- if (smooth && "avg_smooth" %in% names(tsa_average_df))
+  tsa_average_df$y_avg_plot <- if (smooth_flag && "avg_smooth" %in% names(tsa_average_df))
       tsa_average_df$avg_smooth else tsa_average_df$average
-    
-    TSA_curve <- TSA_return[[1]] %||% TSA_return  # handle both return shapes
-    
-    TSA_curve <- TSA_curve +
+
+  # choose correct base plot depending on class (ggplot is also a list)
+  base_plot <- if (inherits(TSA_return, "ggplot")) TSA_return else TSA_return[[1]]
+
+    base_plot <- base_plot +
       geom_ribbon(
         inherit.aes = FALSE,
         data = tsa_average_df,
@@ -182,9 +198,9 @@ TSA_wells_plot <- function(
     
     # Put back into return container
     if (isTRUE(separate_legend)) {
-      TSA_return[[1]] <- TSA_curve
+      TSA_return[[1]] <- base_plot
     } else {
-      TSA_return <- TSA_curve
+      TSA_return <- base_plot
     }
   }
   
@@ -523,21 +539,11 @@ TSA_compare_plot <- function(
       )
     
     if (isTRUE(show_Tm)) {
-      avg_tm <- TSA_Tms(tsa_data)$Avg_Tm
-      
-      TSA_curve <- TSA_curve +
-        geom_vline(
-          xintercept = avg_tm,
-          linetype = "dashed",
-          color = "#BC9595"
-        ) +
-        # Avoid mapping constants inside aes() to prevent the warning:
-        annotate(
-          "label",
-          x = avg_tm + Tm_label_nudge,
-          y = tm_height,
-          label = paste0("Tm=", round(avg_tm, 2), "C")
-        )
+      # add vertical line at condition's average Tm
+      if (is.finite(tm_avg_i) && length(tm_avg_i) == 1) {
+        diff_curve_i <- diff_curve_i +
+          geom_vline(xintercept = tm_avg_i, linetype = "dashed", color = col_vect[i])
+      }
     }
     
     diff_curve_i <- diff_curve_i +
@@ -552,6 +558,12 @@ TSA_compare_plot <- function(
   control_curve <- control_curve +
     labs(title = "Control", subtitle = ctrl_subtitle) +
     theme_bw()
+  if (isTRUE(show_Tm)) {
+    if (is.finite(control_avg) && length(control_avg) == 1) {
+      control_curve <- control_curve +
+        geom_vline(xintercept = control_avg, linetype = "dashed", color = "#BC9595")
+    }
+  }
   
   curve_list[names(curve_list) == control_condition] <- NULL
   curve_list[[length(curve_list) + 1]] <- control_curve

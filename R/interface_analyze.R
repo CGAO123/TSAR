@@ -54,6 +54,15 @@ analyzepage <- function(raw_data, data_name) {
             ),
             column(
                 width = 3,
+                shiny::selectInput(
+                    "model_used",
+                    label = "Model used",
+                    choices = c("GAM", "beta"),
+                    selected = "GAM"
+                )
+            ),
+            column(
+                width = 3,
                 shiny::numericInput("num",
                     label = "Enter y column number:",
                     value = 5
