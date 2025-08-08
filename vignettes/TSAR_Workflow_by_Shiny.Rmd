@@ -51,7 +51,7 @@ change, close window properly by clicking `Close Window`. The updated data
 set will be stored in the global environment as `new_raw_data`.
 
 ```{r}
-data("qPCR_data1")
+raw <- data("qPCR_data1")
 qPCR_data1 <- remove_raw(qPCR_data1, removerange = c("B", "H", "1", "12"))
 ```
 ```{r, eval = FALSE}
@@ -107,6 +107,11 @@ preview data before saving to ensure data contains all necessary information.
 
 ```{r, eval = FALSE}
 runApp(analyze_norm(qPCR_data1))
+```
+new feature:
+user is able to choose either GAM or beta model for test fit.
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/beta_model.png")
 ```
 
 The top left panel output a preview of current data set. The right panel allows 
@@ -164,7 +169,34 @@ data of all test trials. Simply call `graph_tsar()` and click
 `Upload and Merge Data` button to reveal the panel to merge data.
 
 ```{r, eval = FALSE}
-runApp(graph_tsar())
+
+
+start_time <- Sys.time()
+output_name <- "CA121_WT_GA_Metal_analysis"
+
+control_ID <- "CA121 WT_dH2O"
+protein_filter <- NA
+ligand_filter <- NA
+
+analysis_path <- './Analysis'
+
+
+rawData_path <- './Raw'
+
+nAnalysis<- length(dir(path = analysis_path)) 
+nRawData <- length(dir(path = rawData_path)) 
+
+tsa_df <- merge_TSA(
+    analysis_file_path = dir(path = analysis_path,
+                             full.names = TRUE), 
+    raw_data_path = dir(path = rawData_path,
+                             full.names = TRUE)
+)
+
+normalized_tsa_df <- normalize_fluorescence(tsa_data = tsa_df)
+
+
+runApp(graph_tsar(normalized_tsa_df))
 ```
 
 Upload is limited to 30MB in size, but not count. After upload, user will 

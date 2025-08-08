@@ -8,8 +8,6 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
 
 ```{r}
-library('devtools')
-load_all('/Users/zhijiang/Desktop/University/Bio Lab/TSARnew')
 
 
 start_time <- Sys.time()
@@ -19,14 +17,14 @@ control_ID <- "CA121 WT_dH2O"
 protein_filter <- NA
 ligand_filter <- NA
 
-analysis_path <- '/Users/zhijiang/Desktop/University/Bio Lab/WT gallic acid and metal/Analysis'
+analysis_path <- './Analysis'
 ```
 
 ```{r}
 ```
 
 ```{r}
-rawData_path <- '/Users/zhijiang/Desktop/University/Bio Lab/WT gallic acid and metal/Raw'
+rawData_path <- './Raw'
 ```
 
 ```{r}
@@ -66,12 +64,12 @@ head(normalized_tsa_df)
 ```
 
 ```{r}
-# source("../R/tsa_curves.R")
+
 
 
 library('svglite')
 
-names(normalized_tsa_df)[names(normalized_tsa_df) == "RFU"] <- "Normalized"
+# names(normalized_tsa_df)[names(normalized_tsa_df) == "RFU"] <- "Normalized"
 # TSA_compare_plotx(normalized_tsa_df,y = "RFU",control_condition = control_ID,show_Tm = T)
 TSA_compare_plot(normalized_tsa_df, control_condition = control_ID,
                            y = "RFU", smoother = "beta",

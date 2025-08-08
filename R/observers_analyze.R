@@ -2,8 +2,27 @@ preview_model <- function(input, output, raw_data) {
     shiny::observeEvent(input$model_fit, {
         test <- subset(raw_data, Well.Position == as.character(input$well))
         test <- normalize(test, fluo = input$num)
-        model <- model_gam(test, x = test$Temperature, y = test$Normalized)
-        test <- model_fit(test, model = model)
+        # Choose modeling method based on UI selection
+        if (!is.null(input$model_used) && tolower(input$model_used) == "beta") {
+            # Fit beta-spline model centered at Tm and augment for view_model()
+            test <- model_beta(
+                norm_data = test,
+                x = "Temperature",
+                y = "Normalized"
+            )
+            # model_beta already returns augmented df with fitted and norm_deriv
+            # Ensure required columns exist for plotting
+            if (!"fitted" %in% names(test)) {
+                # fallback: if attribute stores model, predict
+                fit_attr <- attr(test, "beta_model")
+                if (!is.null(fit_attr)) {
+                    test$fitted <- stats::predict(fit_attr, newdata = test)
+                }
+            }
+        } else {
+            model <- model_gam(test, x = test$Temperature, y = test$Normalized)
+            test <- model_fit(test, model = model)
+        }
         gg <- view_model(test)
         build_view(input, output, gg)
     })
@@ -11,11 +30,21 @@ preview_model <- function(input, output, raw_data) {
 perform_analysis <- function(input, output, raw_data, analysis,
                              output_data, analyzed_done) {
     shiny::observeEvent(input$analyze, {
+        # convert selectInput values ("TRUE"/"FALSE") to logical
+        .to_bool <- function(x) {
+            if (is.logical(x)) return(x)
+            if (is.null(x)) return(FALSE)
+            tolower(as.character(x)) == "true"
+        }
+        keep_flag    <- .to_bool(input$keep)
+        fit_flag     <- .to_bool(input$fit)
+        smoothed_flag<- .to_bool(input$smooth)
+
         analysis_p <- gam_analysis(raw_data,
             fluo_col = input$num_a,
-            keep = input$keep,
-            fit = input$fit,
-            smoothed = input$smooth,
+            keep = keep_flag,
+            fit = fit_flag,
+            smoothed = smoothed_flag,
             selections = c(
                 input$checkGroup,
                 "Normalized"
@@ -27,7 +56,7 @@ perform_analysis <- function(input, output, raw_data, analysis,
         render_data_title(input, output, "Analyzed Data: norm_data")
         analyzed_done(TRUE)
         if (!input$dialogueToggle) {
-            showModal(modalDialog(
+            shiny::showModal(shiny::modalDialog(
                 title = "Analysis is complete",
                 "Proceede to inputting conditions and saving data
                         before closing window."
@@ -40,7 +69,7 @@ perform_analysis <- function(input, output, raw_data, analysis,
 join_condition <- function(input, output, analysis, output_data, imported,
                            analyzed_done, well_info, inFile) {
     shiny::observeEvent(input$withCondition, {
-        if (imported() == TRUE && input$withCondition == TRUE) {
+    if (imported() == TRUE && tolower(as.character(input$withCondition)) == "true") {
             output_data_p <- join_well_info(
                 file_path = inFile(),
                 file = well_info(),
@@ -67,7 +96,7 @@ write_file <- function(input, output, analyzed_done, output_data) {
     shiny::observeEvent(input$write, {
         if (analyzed_done() == FALSE) {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "Analysis is Incomplete!",
                     "Please analyze all data before saving."
                 ))
@@ -78,7 +107,7 @@ write_file <- function(input, output, analyzed_done, output_data) {
                 file = input$file_type
             )
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "Successfully Saved",
                     "Check your working directory for data file."
                 ))
@@ -91,15 +120,15 @@ preview_output <- function(input, output, analyzed_done, imported, output_data,
     shiny::observeEvent(input$preview, {
         if (analyzed_done() == FALSE) {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "Analysis is Incomplete!",
                     "Please analyze all data before saving."
                 ))
             }
         } else {
-            if (imported() == FALSE && input$withCondition == TRUE) {
+            if (imported() == FALSE && tolower(as.character(input$withCondition)) == "true") {
                 if (!input$dialogueToggle) {
-                    showModal(modalDialog(
+                    shiny::showModal(shiny::modalDialog(
                         title = "Conditions are not specified!",
                         "Please input condition information first
                                 or set 'With Conditions' as fasle."
@@ -107,7 +136,7 @@ preview_output <- function(input, output, analyzed_done, imported, output_data,
                 }
             } else {
                 if (!input$dialogueToggle) {
-                    showModal(modalDialog(
+                    shiny::showModal(shiny::modalDialog(
                         title = "Hint :)",
                         "If you are saving data for tsar_graphing
                                 functions, make sure to save all fluorescence
@@ -115,7 +144,7 @@ preview_output <- function(input, output, analyzed_done, imported, output_data,
                                 conditions plot."
                     ))
                 }
-                if (imported() == TRUE && input$withCondition == TRUE) {
+                if (imported() == TRUE && tolower(as.character(input$withCondition)) == "true") {
                     output_data_p <- join_well_info(
                         file_path = inFile(),
                         file = well_info(),
@@ -151,13 +180,13 @@ set_condition <- function(input, output, imported, analyzed_done, inFile,
     shiny::observeEvent(input$join, {
         if ((imported() == FALSE) || (analyzed_done() == FALSE)) {
             if ((analyzed_done() == FALSE) && (!input$dialogueToggle)) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "Analysis is Incomplete!",
                     "Please analyze all data before saving."
                 ))
             } else {
                 if (!input$dialogueToggle) {
-                    showModal(modalDialog(
+                    shiny::showModal(shiny::modalDialog(
                         title = "Conditions are not specified!",
                         "Please input condition information first
                                 or set 'With Conditions' as fasle."
@@ -176,7 +205,7 @@ set_condition <- function(input, output, imported, analyzed_done, inFile,
             )
             output_data(output_data_p)
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "Conditions Saved",
                     "Proceede to preview output and save data."
                 ))
@@ -191,9 +220,9 @@ preview_condition <- function(input, output, well_info, data) {
     shiny::observeEvent(input$previewBtn, {
         output$excelTable <- rhandsontable::renderRHandsontable({
             if (!is.null(well_info())) {
-                rhandsontable(data.frame(head(well_info(), 9)))
+                rhandsontable::rhandsontable(data.frame(head(well_info(), 9)))
             } else if (!is.null(data())) {
-                rhandsontable(data.frame(head(data(), 9)))
+                rhandsontable::rhandsontable(data.frame(head(data(), 9)))
             }
         })
     })
@@ -208,7 +237,7 @@ save_change <- function(input, output, imported, well_info) {
         imported(TRUE)
         well_info(rhandsontable::hot_to_r(input$excelTable))
         if (!input$dialogueToggle) {
-            showModal(modalDialog(
+            shiny::showModal(shiny::modalDialog(
                 title = "Success",
                 "Changes saved successfully."
             ))
@@ -219,7 +248,7 @@ save_analysis <- function(input, output, output_data) {
     shiny::observeEvent(input$savelocal, {
         assign(input$name, output_data(), envir = .GlobalEnv)
         if (!input$dialogueToggle) {
-            showModal(modalDialog(
+            shiny::showModal(shiny::modalDialog(
                 title = "Successfully Saved",
                 "Check your R environment for data file."
             ))
@@ -228,6 +257,6 @@ save_analysis <- function(input, output, output_data) {
 }
 stop_analyze <- function(input, output) {
     shiny::observeEvent(input$stopButton, {
-        stopApp()
+    shiny::stopApp()
     })
 }

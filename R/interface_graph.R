@@ -140,6 +140,15 @@ graphpage <- function(tsar_data) {
                 )
             ),
             column(
+                width = 2,
+                shiny::selectInput(
+                    "compare_smoother",
+                    label = "Model used:",
+                    choices = c("GAM", "beta"),
+                    selected = "GAM"
+                )
+            ),
+            column(
                 width = 3,
                 shiny::selectInput("Control_s",
                     label = "Control Condition",
@@ -168,6 +177,15 @@ graphpage <- function(tsar_data) {
                 shiny::selectInput("show_tm_c",
                     label = "Show Tm: ",
                     choices = c(TRUE, FALSE)
+                )
+            ),
+            column(
+                width = 2,
+                shiny::selectInput(
+                    "curves_smoother",
+                    label = "Model used:",
+                    choices = c("GAM", "beta"),
+                    selected = "GAM"
                 )
             ),
             column(

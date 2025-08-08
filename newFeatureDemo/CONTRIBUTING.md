@@ -117,6 +117,11 @@ numerical_Tm <- function(
 ) 
 ```
 
+### 4) Updated GUI by Shiny
+  - Beta method now has also incorporated into the Shiny app where user can choose either GAM or Beta method for analysis.
+
+![GUI beta curve](demoImgs/GUI_beta.png )
+
 
 
 

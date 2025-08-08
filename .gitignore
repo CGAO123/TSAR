@@ -8,3 +8,6 @@ inst/doc
 .DS_Store
 .Rproj
 TSAR.Rproj
+
+# Ignore project-local Copilot instructions
+.github/instructions/

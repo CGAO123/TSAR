@@ -9,6 +9,7 @@ vignette: >
 
 ```{r, echo=FALSE, fig.width=4, out.width="400px"}
 knitr::include_graphics("images/TSAR_logo.png")
+
 ```
 Pipeline analysis from raw data reading to graphic visualization
 

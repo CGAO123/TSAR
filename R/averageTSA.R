@@ -96,13 +96,16 @@ TSA_average <- function(
       )
   }
   if (y == "RFU") {
-    # assumes 'Normalized' column present
+    # use normalized fluorescence column 'RFU' created by normalize_fluorescence()
+    if (!"RFU" %in% names(tsa_data_new)) {
+      stop("Expected column 'RFU' not found. Run normalize_fluorescence() first or set y='Fluorescence'.")
+    }
     tsa_data_new <- dplyr::as_tibble(tsa_data_new) %>%
       dplyr::group_by(Temperature) %>%
       dplyr::summarize(
-        average = mean(Normalized, na.rm = TRUE),
+        average = mean(RFU, na.rm = TRUE),
         n       = dplyr::n(),
-        sd      = stats::sd(Normalized, na.rm = TRUE),
+        sd      = stats::sd(RFU, na.rm = TRUE),
         .groups = "drop"
       )
   }
