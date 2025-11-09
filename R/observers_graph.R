@@ -14,7 +14,7 @@ initialize <- function(input, output, graph_tsar_data) {
     shiny::observe({
         if (length(graph_tsar_data()) == 0) {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "No data input :(",
                     "No data input: Please upload analysis files to merge
                             or close window \nand call function with data
@@ -37,7 +37,7 @@ save_dates <- function(input, output, dated, datelist) {
         datelist(saved_dates)
         if (!is.null(datelist)) {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "Dates saved",
                     "Confirm in the textbox below if saved dates are
                             correct and proceede to merging data."
@@ -47,7 +47,7 @@ save_dates <- function(input, output, dated, datelist) {
             }
         } else {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = ":(",
                     "Please upload analysis files first before
                             setting dates."
@@ -60,7 +60,7 @@ saved_merged <- function(input, output, graph_tsar_data) {
     shiny::observeEvent(input$savetolocal, {
         assign("tsar_data", graph_tsar_data(), envir = .GlobalEnv)
         if (!input$dialogueToggle) {
-            showModal(modalDialog(
+            shiny::showModal(shiny::modalDialog(
                 title = "Data Saved Successfully",
                 "Data saved to global environment of r console.
                 Check for variable 'tsar_data'"
@@ -72,7 +72,7 @@ merge_update <- function(input, output, dated, graph_tsar_data,
                          datelist, session) {
     shiny::observeEvent(input$generate, {
         if ((dated() == FALSE) && (!input$dialogueToggle)) {
-            showModal(modalDialog(
+            shiny::showModal(shiny::modalDialog(
                 title = "Dates are not saved",
                 "please review and save dates of experiment!"
             ))
@@ -122,7 +122,7 @@ build_boxplot <- function(input, output, graph_tsar_data) {
         req(input$Boxplot)
         if (length(graph_tsar_data()) == 0) {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "No data input",
                     "No data input: Please upload analysis files to merge
                             or close window \nand call function with data
@@ -131,15 +131,32 @@ build_boxplot <- function(input, output, graph_tsar_data) {
             }
         } else {
             req(input$Boxplot)
+            # Validate required columns for boxplot
+            required_cols <- c("Tm", "condition_ID", "Protein", "Ligand", "well_ID")
+            if (!all(required_cols %in% names(graph_tsar_data()))) {
+                if (!input$dialogueToggle) {
+                    shiny::showModal(shiny::modalDialog(
+                        title = "Missing required columns",
+                        paste0(
+                            "Boxplot requires analyzed tsar_data with columns: ",
+                            paste(required_cols, collapse = ", "),
+                            ".\nUse 'Upload and Merge Data' to load analysis outputs or call graph_tsar(tsar_data)."
+                        )
+                    ))
+                }
+                return(invisible(NULL))
+            }
             if (input$Control == "NA") {
                 control_option_b <- NA
             } else {
                 control_option_b <- as.character(input$Control)
             }
+            # coerce Legend to logical
+            legend_flag <- tolower(as.character(input$Legend)) == "true"
             box <- TSA_boxplot(graph_tsar_data(),
                 color_by = input$Color,
                 label_by = input$Label,
-                separate_legend = input$Legend,
+                separate_legend = legend_flag,
                 control_condition = control_option_b
             )
             render_box(input, output, box)
@@ -150,7 +167,7 @@ build_compare <- function(input, output, graph_tsar_data, compare) {
     shiny::observeEvent(input$Compareplot, {
         if (length(graph_tsar_data()) == 0) {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "No data input",
                     "No data input: Please upload analysis files to merge
                             or close window \nand call function with data
@@ -158,11 +175,15 @@ build_compare <- function(input, output, graph_tsar_data, compare) {
                 ))
             }
         } else {
+            show_tm_flag <- tolower(as.character(input$show_tm)) == "true"
+            # map UI 'GAM'/'beta' to TSA_compare_plot smoother arg
+            smoother_val <- if (!is.null(input$compare_smoother) && tolower(input$compare_smoother) == "beta") "beta" else "gam"
             compare_p <- TSA_compare_plot(graph_tsar_data(),
                 y = input$y_axis,
                 title_by = input$title_by,
-                show_Tm = input$show_tm,
-                control_condition = input$Control_s
+                show_Tm = show_tm_flag,
+                control_condition = input$Control_s,
+                smoother = smoother_val
             )
             compare(compare_p)
             redner_compare(input, output, compare)
@@ -180,7 +201,7 @@ build_curves <- function(input, output, graph_tsar_data) {
     shiny::observeEvent(input$curves, {
         if (length(graph_tsar_data()) == 0) {
             if (!input$dialogueToggle) {
-                showModal(modalDialog(
+                shiny::showModal(shiny::modalDialog(
                     title = "No data input",
                     "No data input: Please upload analysis files to merge
                             or close window \nand call function with data
@@ -193,13 +214,20 @@ build_curves <- function(input, output, graph_tsar_data) {
                 condition_ID ==
                     input$Selected_condition
             )
+            # coerce flags from selectInput
+            show_tm_c_flag <- tolower(as.character(input$show_tm_c)) == "true"
+            average_flag   <- tolower(as.character(input$average)) == "true"
+            smooth_flag    <- tolower(as.character(input$smooth)) == "true"
+            sep_legend_flag<- tolower(as.character(input$separate_legend)) == "true"
+            smoother_curves <- if (!is.null(input$curves_smoother) && tolower(input$curves_smoother) == "beta") "beta" else "gam"
             curve_graph <- TSA_wells_plot(selected_curves,
-                show_Tm = input$show_tm_c,
+                show_Tm = show_tm_c_flag,
                 y = input$y_axis_c,
-                show_average = input$average,
-                smooth = input$smooth,
+                show_average = average_flag,
+                smooth = smooth_flag,
                 Tm_label_nudge = input$num,
-                separate_legend = input$separate_legend
+                separate_legend = sep_legend_flag,
+                smoother = smoother_curves
             )
             render_selected_condition(input, output, curve_graph)
         }
@@ -237,7 +265,7 @@ remove_selected_graph <- function(input, output, graph_tsar_data) {
         cur <- subset(cur, !well_ID %in% input$remove_well)
         graph_tsar_data(cur)
         if (!input$dialogueToggle) {
-            showModal(modalDialog(
+            shiny::showModal(shiny::modalDialog(
                 title = "Selection Removed",
                 "All selected condition_ID and well_ID are removed.
                 To revert to original data, click 'Restore Removal'."
@@ -249,7 +277,7 @@ restore_removal <- function(input, output, graph_tsar_data, stock_tsar_data) {
     shiny::observeEvent(input$Restore, {
         graph_tsar_data(stock_tsar_data())
         if (!input$dialogueToggle) {
-            showModal(modalDialog(
+            shiny::showModal(shiny::modalDialog(
                 title = "All removals restored",
                 "Data restored to original status."
             ))
@@ -258,6 +286,6 @@ restore_removal <- function(input, output, graph_tsar_data, stock_tsar_data) {
 }
 closegraph <- function(input, output) {
     shiny::observeEvent(input$stopButton, {
-        stopApp()
+        shiny::stopApp()
     })
 }

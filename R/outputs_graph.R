@@ -44,7 +44,46 @@ render_derivative <- function(input, output, graph_tsar_data) {
     shinyjs::hide("bplot")
     shinyjs::show("alternativeplot")
     output$altplot <- renderPlotly({
-        view_deriv(graph_tsar_data(), frame_by = input$frame_by)
+        df <- graph_tsar_data()
+        # Compute derivative if missing, using RFU if available, else Normalized, else Fluorescence
+        if (!"norm_deriv" %in% names(df)) {
+            y_col <- if ("RFU" %in% names(df)) {
+                "RFU"
+            } else if ("Normalized" %in% names(df)) {
+                "Normalized"
+            } else if ("Fluorescence" %in% names(df)) {
+                "Fluorescence"
+            } else NA_character_
+            if (is.na(y_col)) {
+                stop("No intensity column found to compute derivative (expected 'RFU', 'Normalized', or 'Fluorescence').")
+            }
+            if (!"well_ID" %in% names(df) && "Well.Position" %in% names(df)) {
+                df$well_ID <- df$Well.Position
+            }
+            by_well <- split(df, df$well_ID)
+            parts <- lapply(by_well, function(w) {
+                # ensure numeric Temperature
+                w$Temperature <- suppressWarnings(as.numeric(w$Temperature))
+                o <- order(w$Temperature)
+                w <- w[o, ]
+                dy <- diff(as.numeric(w[[y_col]]))
+                dx <- diff(as.numeric(w$Temperature))
+                deriv <- rep(NA_real_, nrow(w))
+                if (length(dy) > 0 && length(dx) == length(dy)) {
+                    dd <- dy / dx
+                    dd[!is.finite(dd)] <- NA_real_
+                    deriv[seq_along(dd)] <- dd
+                }
+                w$norm_deriv <- deriv
+                w
+            })
+            df <- do.call(rbind, parts)
+        }
+        # Ensure Tm column exists for label mapping inside view_deriv
+        if (!"Tm" %in% names(df)) {
+            df$Tm <- NA_real_
+        }
+        view_deriv(df, frame_by = input$frame_by)
     })
 }
 
@@ -55,8 +94,8 @@ render_box <- function(input, output, box) {
             shinyjs::show("alternativeplot")
             output$altplot <- renderPlotly({
                 boxp <- box + labs(y = "Tm (degree Celsius)")
-                boxp <- ggplotly(boxp, originalData = TRUE)
-                layout(boxp,
+                boxp <- plotly::ggplotly(boxp, originalData = TRUE)
+                plotly::layout(boxp,
                     yaxis = list(title_font = list(size = 18)),
                     xaxis = list(title_font = list(size = 18))
                 )
@@ -109,12 +148,14 @@ render_selected_condition <- function(input, output, curve_graph) {
     shinyjs::show("bplot")
     shinyjs::hide("alternativeplot")
     output$Plot <- renderPlot({
-        if (input$separate_legend == FALSE) {
+        sep_flag <- tolower(as.character(input$separate_legend)) == "true"
+        if (!isTRUE(sep_flag)) {
+            # curve_graph is a ggplot
             curve_graph + theme(text = element_text(size = 18))
         } else {
-            curve_graph[[1]] <- curve_graph[[1]] +
-                theme(text = element_text(size = 18))
-            ggarrange(plotlist = curve_graph)
+            # curve_graph is a list
+            curve_graph[[1]] <- curve_graph[[1]] + theme(text = element_text(size = 18))
+            ggpubr::ggarrange(plotlist = curve_graph)
         }
     })
 }

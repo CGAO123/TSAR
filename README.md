@@ -3,6 +3,11 @@ readme file
 
 <img src="vignettes/images/TSAR_logo.png" width="400px" />
 
+
+> **TSAR 1.2.0 update, August 2025**
+> Introduction of cubic spline with beta-knots for smoother curve fitting
+> see [`CONTRIBUTING.md`](newFeatureDemo/CONTRIBUTING.md)
+
 # TSAR
 
     TSAR, short for Thermal Shift Analysis in R, presents the simple interface to TSA data analysis and visualization.

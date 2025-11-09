@@ -32,6 +32,20 @@
 #' @param avg_smooth,sd_smooth logical; TRUE by default. Decides if the
 #'    average (avg_smooth) or standard deviation (sd_smooth) will be smoothened
 #'    by regression via mgcv::gam()
+#' @param smoother character; one of \code{c("gam","beta","none")}.
+#'     Passed to \code{\link{TSA_average}} to select the aggregate smoother:
+#'     \code{"gam"} uses \pkg{mgcv}, \code{"beta"} uses a natural cubic spline
+#'     with Beta(a,a) interior knots centered at Tm, and \code{"none"} uses the
+#'     unsmoothed average. Default follows \code{TSA_average}.
+#' @param beta_shape numeric; shape parameter \eqn{a} for the Beta(a,a) knot
+#'     placement when \code{smoother = "beta"}. \code{beta_shape = 3} by default.
+#' @param beta_n_knots integer or \code{NULL}; number of interior knots when
+#'     \code{smoother = "beta"}. If \code{NULL}, uses \code{beta_knots_frac}.
+#' @param beta_knots_frac numeric in (0,1); fraction of unique temperatures used
+#'     as interior knots when \code{smoother = "beta"} and \code{beta_n_knots}
+#'     is \code{NULL}. \code{beta_knots_frac = 0.008} by default.
+#' @param use_natural logical; if TRUE (default) uses natural cubic spline
+#'     basis for the beta method.
 #'
 #' @return a data frame of each temperature measured with the average, sd, and
 #'    n(# of averaged values) calculated. Depending on avg_smooth and sd_smooth,
@@ -49,54 +63,350 @@
 #' )
 #'
 #' @export
-TSA_average <- function(tsa_data,
-                        y = "Fluorescence",
-                        digits = 1,
-                        avg_smooth = TRUE,
-                        sd_smooth = TRUE) {
 
-    y <- match.arg(y, choices = c("Fluorescence", "RFU"))
-    tsa_data_new <- tsa_data
-    tsa_data_new$Temperature <- round(tsa_data_new$Temperature, digits = digits)
-    if (y == "Fluorescence") {
-        tsa_data_new <- tsa_data_new %>%
-            group_by(Temperature) %>%
-            summarize(
-                average = mean(Fluorescence),
-                n = n_distinct(Fluorescence),
-                sd = sd(Fluorescence)
-            )
-    }
-    if (y == "RFU") {
-        tsa_data_new <- tsa_data_new %>%
-            group_by(Temperature) %>%
-            summarize(
-                average = mean(Normalized),
-                n = n_distinct(Normalized),
-                sd = sd(Normalized)
-            )
-    }
-    tsa_data_new$sd_max <- tsa_data_new$average + tsa_data_new$sd
-    tsa_data_new$sd_min <- tsa_data_new$average - tsa_data_new$sd
-    if (avg_smooth) {
-        df <- tsa_data_new[, c("Temperature", "average")]
-        names(df) <- c("x", "y")
-        m <- gam(y ~ s(x), data = df)
-        p <- predict(m, newdata = data.frame(x = df$x))
-        tsa_data_new$avg_smooth <- p
-    }
-    if (sd_smooth) {
-        df <- tsa_data_new[, c("Temperature", "sd_min")]
-        names(df) <- c("x", "y")
-        m <- gam(y ~ s(x), data = df)
-        p <- predict(m, newdata = data.frame(x = df$x))
-        tsa_data_new$sd_min_smooth <- p
 
-        df <- tsa_data_new[, c("Temperature", "sd_max")]
-        names(df) <- c("x", "y")
-        m <- gam(y ~ s(x), data = df)
-        p <- predict(m, newdata = data.frame(x = df$x))
-        tsa_data_new$sd_max_smooth <- p
+TSA_average <- function(
+    tsa_data,
+    y = "Fluorescence",
+    digits = 1,
+    avg_smooth = TRUE,
+    sd_smooth  = TRUE,
+    smoother   = c("gam", "beta", "none"),
+    # beta-spline options (used when smoother == "beta")
+    beta_shape      = 4,        # 'a' in Beta(a, a); larger -> more central concentration
+    beta_n_knots    = NULL,     # integer; if NULL use fraction below
+    beta_knots_frac = 0.008,     # fraction of N (unique x) for interior knots
+    use_natural     = TRUE      # TRUE: natural cubic (splines::ns); FALSE: splines::bs
+) {
+  smoother <- match.arg(smoother)
+  y <- match.arg(y, choices = c("Fluorescence", "RFU"))
+  
+  tsa_data_new <- tsa_data
+  tsa_data_new$Temperature <- round(tsa_data_new$Temperature, digits = digits)
+  
+  # summarize by temperature
+  if (y == "Fluorescence") {
+    tsa_data_new <- dplyr::as_tibble(tsa_data_new) %>%
+      dplyr::group_by(Temperature) %>%
+      dplyr::summarize(
+        average = mean(Fluorescence, na.rm = TRUE),
+        n       = dplyr::n(),
+        sd      = stats::sd(Fluorescence, na.rm = TRUE),
+        .groups = "drop"
+      )
+  }
+  if (y == "RFU") {
+    # use normalized fluorescence column 'RFU' created by normalize_fluorescence()
+    if (!"RFU" %in% names(tsa_data_new)) {
+      stop("Expected column 'RFU' not found. Run normalize_fluorescence() first or set y='Fluorescence'.")
     }
-    return(tsa_data_new)
+    tsa_data_new <- dplyr::as_tibble(tsa_data_new) %>%
+      dplyr::group_by(Temperature) %>%
+      dplyr::summarize(
+        average = mean(RFU, na.rm = TRUE),
+        n       = dplyr::n(),
+        sd      = stats::sd(RFU, na.rm = TRUE),
+        .groups = "drop"
+      )
+  }
+  
+  # handle NA sd (e.g., n==1 at a given temperature)
+  tsa_data_new$sd[is.na(tsa_data_new$sd)] <- 0
+  tsa_data_new$sd_max <- tsa_data_new$average + tsa_data_new$sd
+  tsa_data_new$sd_min <- tsa_data_new$average - tsa_data_new$sd
+  
+  # ---- helper: beta-knot fit centered at Tm ----
+  .beta_fit_predict_centered <- function(x, y,
+                                         shape      = beta_shape,
+                                         n_knots    = beta_n_knots,
+                                         knots_frac = beta_knots_frac,
+                                         natural    = use_natural,
+                                         center_x   = NULL) {
+    o <- order(x); x_sorted <- x[o]; y_sorted <- y[o]
+    N <- length(x_sorted)
+    if (N < 6L) return(y)  # not enough points; return as-is in original order
+    
+    xmin <- min(x_sorted); xmax <- max(x_sorted)
+    span <- xmax - xmin
+    if (!is.finite(span) || span <= 0) return(y)
+    
+    # number of interior knots
+    m <- if (!is.null(n_knots)) as.integer(n_knots) else max(1L, floor(knots_frac * N))
+    m <- max(1L, min(m, max(1L, N - 5L)))
+    
+    # choose center: from Tm column if available; otherwise midpoint
+    cx <- if (is.null(center_x) || !is.finite(center_x)) (xmin + xmax) / 2 else center_x
+    cx <- max(xmin, min(xmax, cx))      # clip to domain
+    c_frac <- if (span > 0) (cx - xmin) / span else 0.5  # in [0,1]
+    
+    # Beta(a,a) interior quantiles on (0,1), then re-center around c_frac
+    u        <- seq_len(m) / (m + 1)
+    q_center <- stats::qbeta(u, shape1 = shape, shape2 = shape)  # around 0.5
+    # shift & scale so center is at c_frac and knots stay inside [0,1]
+    s <- 2 * min(c_frac, 1 - c_frac)        # ≤ 1
+    if (!is.finite(s) || s <= 0) s <- 1e-6  # if center at boundary, avoid collapse
+    q_shifted <- c_frac + (q_center - 0.5) * s
+    q_shifted <- pmin(1, pmax(0, q_shifted))
+    knots_x <- xmin + q_shifted * span
+    
+    B <- if (isTRUE(natural)) {
+      splines::ns(x_sorted, knots = knots_x, Boundary.knots = c(xmin, xmax), intercept = TRUE)
+    } else {
+      splines::bs(x_sorted, degree = 3, knots = knots_x, Boundary.knots = c(xmin, xmax), intercept = TRUE)
+    }
+    fit <- stats::lm(y_sorted ~ 0 + B)
+    yhat_sorted <- as.numeric(B %*% stats::coef(fit))
+    
+    yhat <- numeric(N); yhat[o] <- yhat_sorted
+    yhat
+  }
+  
+  # ---- smoother dispatcher ----
+  .smooth_vec <- function(x, y, method, center_x_for_beta = NULL) {
+    if (!isTRUE(all(is.finite(x)))) return(y)
+    if (method == "none") {
+      return(y)
+    } else if (method == "gam") {
+      df <- data.frame(x = x, y = y)
+      m  <- mgcv::gam(y ~ s(x), data = df)
+      return(as.numeric(stats::predict(m, newdata = data.frame(x = x))))
+    } else if (method == "beta") {
+      return(.beta_fit_predict_centered(x, y, center_x = center_x_for_beta))
+    } else {
+      return(y)
+    }
+  }
+  
+  x <- tsa_data_new$Temperature
+  
+  # Determine Tm center from original data (single value for this subset)
+  tm_center <- NA_real_
+  if ("Tm" %in% names(tsa_data)) {
+    # use a robust single-center value
+    tm_center <- suppressWarnings(stats::median(tsa_data$Tm, na.rm = TRUE))
+    if (!is.finite(tm_center)) tm_center <- NA_real_
+  }
+  
+  if (isTRUE(avg_smooth)) {
+    tsa_data_new$avg_smooth <- .smooth_vec(x, tsa_data_new$average, smoother,
+                                           center_x_for_beta = tm_center)
+  }
+  if (isTRUE(sd_smooth)) {
+    tsa_data_new$sd_min_smooth <- .smooth_vec(x, tsa_data_new$sd_min, smoother,
+                                              center_x_for_beta = tm_center)
+    tsa_data_new$sd_max_smooth <- .smooth_vec(x, tsa_data_new$sd_max, smoother,
+                                              center_x_for_beta = tm_center)
+  }
+  
+  return(tsa_data_new)
+}
+#' Diagnose Smoother Accuracy Across Conditions
+#'
+#' Computes per-condition fitting error for \code{gam} and \code{beta} smoothers
+#' (as implemented in \code{\link{TSA_average}}) against the aggregated mean
+#' curve. For each \code{condition_ID}, the function compares the smoothed mean
+#' (\code{avg_smooth}) to the real aggregated mean (\code{average}) at
+#' each temperature and reports the error in corresponding metric.
+#'
+#' By default, it evaluates:
+#' \itemize{
+#'   \item \strong{GAM}: \code{smoother = "gam"}
+#'   \item \strong{Beta (single spec)}: \code{beta_shape = 4}, \code{beta_knots_frac = 0.008}
+#' }
+#' If you supply vectors to \code{beta_shapes} and/or \code{beta_fracs}, the
+#' function evaluates \emph{all} combinations for the beta method.
+#'
+#' @inheritParams TSA_average
+#' @param metric character; one of \code{c("L2","L1","R2")} with default
+#'   \code{"L2"}. Defines the accuracy metric between \code{average} (truth) and
+#'   \code{avg_smooth} (fit):
+#'   \itemize{
+#'     \item \code{"L1"}: mean absolute error (MAE)
+#'     \item \code{"L2"}: root mean squared error (RMSE)
+#'     \item \code{"R2"}: coefficient of determination; higher is better
+#'   }
+#' @param beta_shapes numeric vector or \code{NULL}; shapes \eqn{a} for the
+#'   Beta(a,a) knot placement when evaluating the \code{"beta"} smoother.
+#'   \strong{Default behavior:} if \code{NULL} or length 0, uses a single value
+#'   \code{4}.
+#' @param beta_fracs numeric vector or \code{NULL}; fractions in \eqn{(0,1)}
+#'   giving the proportion of unique temperatures used as interior knots for the
+#'   \code{"beta"} smoother. \strong{Default behavior:} if \code{NULL} or length
+#'   0, uses a single value \code{0.008}.
+#' @param beta_n_knots integer or \code{NULL}; number of interior knots for the
+#'   \code{"beta"} smoother. If \code{NULL} (default), the number of knots is
+#'   determined by \code{beta_knots_frac}. Passed through to
+#'   \code{\link{TSA_average}}.
+#' @param digits integer; rounding applied to the Temperature grid before
+#'   aggregation. Default \code{1}. Passed to \code{\link{TSA_average}}.
+#' @param use_natural logical; if \code{TRUE} (default) uses natural cubic spline
+#'   basis for the beta method. Passed to \code{\link{TSA_average}}.
+#'
+#' 
+#' @return (Invisibly) a \code{data.frame} with columns:
+#' \itemize{
+#'   \item \code{condition_id}: condition label,
+#'   \item \code{method}: \code{"gam"} or \code{beta(a=..., frac=...)} string,
+#'   \item \code{error}: numeric value of the requested metric.
+#' }
+#' The function also prints a short textual summary to the console.
+#'
+#' @examples
+#' \dontrun{
+#' normalized_tsa_df
+#'
+#' result <- TSA_smoother_diagnostics(normalized_tsa_df, y = "RFU", metric = "L2")
+#' as.data.frame(result)
+
+#' @family Diagnostics
+#' @seealso \code{\link{TSA_average}} (smoother implementation),
+#'   \code{\link{TSA_wells_plot}} (visualization of per-well and averaged curves).
+
+TSA_smoother_diagnostics <- function(
+    tsa_data,
+    y = c("Fluorescence", "RFU"),
+    metric = c("L2", "L1", "R2"),
+    # beta grids to test; if NULL or length 0, default to a=4 and frac=0.008
+    beta_shapes = NULL,
+    beta_fracs  = NULL,
+    # pass-through options if you need them
+    digits = 1,
+    use_natural = TRUE,
+    beta_n_knots = NULL
+) {
+  y <- match.arg(y)
+  metric <- match.arg(metric)
+  
+  # --- safety checks
+  if (!all(c("Temperature", "condition_ID") %in% names(tsa_data))) {
+    stop("tsa_data must contain columns: Temperature and condition_ID (as in previous functions).")
+  }
+  
+  # conditions helper (use package helper if available)
+  get_conditions <- function(df) {
+    if (exists("condition_IDs", mode = "function")) {
+      condition_IDs(df)
+    } else {
+      unique(df$condition_ID)
+    }
+  }
+  
+  # defaults for beta grid
+  if (is.null(beta_shapes) || length(beta_shapes) == 0) beta_shapes <- 4
+  if (is.null(beta_fracs)  || length(beta_fracs)  == 0) beta_fracs  <- 0.008
+  
+  # internal: compute error between avg_smooth and average for a single condition
+  .fit_and_error <- function(df_cond, smoother, beta_shape = NA_real_, beta_frac = NA_real_) {
+    # run TSA_average to get smoothed mean; we smooth the average curve only
+    av <- TSA_average(
+      tsa_data    = df_cond,
+      y           = y,
+      digits      = digits,
+      avg_smooth  = TRUE,
+      sd_smooth   = FALSE,
+      smoother    = smoother,
+      beta_shape      = if (is.na(beta_shape)) 3 else beta_shape,
+      beta_n_knots    = beta_n_knots,
+      beta_knots_frac = if (is.na(beta_frac)) 0.12 else beta_frac,
+      use_natural     = use_natural
+    )
+    
+    # y_true = aggregated mean; y_hat = smoothed mean (or copy if smoother="none")
+    y_true <- av$average
+    y_hat  <- if ("avg_smooth" %in% names(av)) av$avg_smooth else av$average
+    
+    # remove any NA pairs to avoid trouble
+    ok <- is.finite(y_true) & is.finite(y_hat)
+    y_true <- y_true[ok]; y_hat <- y_hat[ok]
+    
+    if (length(y_true) < 2L) return(NA_real_)
+    
+    if (metric == "L1") {
+      # Mean Absolute Error
+      mean(abs(y_true - y_hat))
+    } else if (metric == "L2") {
+      # Root Mean Squared Error
+      sqrt(mean((y_true - y_hat)^2))
+    } else { # "R2"
+      ss_res <- sum((y_true - y_hat)^2)
+      ss_tot <- sum((y_true - mean(y_true))^2)
+      if (ss_tot == 0) return(NA_real_)
+      1 - ss_res / ss_tot
+    }
+  }
+  
+  conds <- get_conditions(tsa_data)
+  res_list <- vector("list", length = 0L)
+  
+  # --- iterate conditions
+  for (cond in conds) {
+    df_cond <- tsa_data[tsa_data$condition_ID == cond, , drop = FALSE]
+    
+    # 1) GAM
+    err_gam <- .fit_and_error(df_cond, smoother = "gam")
+    res_list[[length(res_list) + 1L]] <- data.frame(
+      condition_ID = cond,
+      method = "gam",
+      error = err_gam,
+      stringsAsFactors = FALSE
+    )
+    
+    # 2) BETA grid
+    for (a in beta_shapes) {
+      for (f in beta_fracs) {
+        err_beta <- .fit_and_error(df_cond, smoother = "beta", beta_shape = a, beta_frac = f)
+        res_list[[length(res_list) + 1L]] <- data.frame(
+          condition_ID = cond,
+          method = sprintf("beta(a=%s, frac=%s)", as.character(a), as.character(f)),
+          error = err_beta,
+          stringsAsFactors = FALSE
+        )
+      }
+    }
+  }
+  
+  results <- do.call(rbind, res_list)
+  
+  # --- summaries
+  # mean by method label
+  mean_by_method <- stats::aggregate(error ~ method, data = results, FUN = function(x) mean(x, na.rm = TRUE))
+  # separate mean for GAM vs each beta spec
+  mean_gam <- mean_by_method[mean_by_method$method == "gam", "error"]
+  mean_beta_rows <- mean_by_method[grepl("^beta\\(", mean_by_method$method), , drop = FALSE]
+  
+  # print required summaries
+  if (metric %in% c("L1", "L2")) {
+    cat(sprintf("mean %s error of gam method: %s\n",
+                metric, ifelse(length(mean_gam), signif(mean_gam, 4), "NA")))
+    if (nrow(mean_beta_rows)) {
+      for (i in seq_len(nrow(mean_beta_rows))) {
+        cat(sprintf("mean %s error of %s: %s\n",
+                    metric, mean_beta_rows$method[i], signif(mean_beta_rows$error[i], 4)))
+      }
+    }
+    # pick best (lowest)
+    best_idx <- which.min(mean_by_method$error)
+    if (length(best_idx)) {
+      cat("\n", mean_by_method$method[best_idx], " has lowest error and highest accuracy.\n", sep = "")
+    }
+  } else { # R2
+    cat(sprintf("mean %s of gam method: %s\n",
+                metric, ifelse(length(mean_gam), signif(mean_gam, 4), "NA")))
+    if (nrow(mean_beta_rows)) {
+      for (i in seq_len(nrow(mean_beta_rows))) {
+        cat(sprintf("mean %s of %s: %s\n",
+                    metric, mean_beta_rows$method[i], signif(mean_beta_rows$error[i], 4)))
+      }
+    }
+    # pick best (highest R2)
+    best_idx <- which.max(mean_by_method$error)
+    if (length(best_idx)) {
+      cat("\n", mean_by_method$method[best_idx], "has higher mean R^2 and thus higher accuracy.\n", sep = "")
+    }
+  }
+  
+  # return the full table (condition, method, error)
+  # column names as requested: (1) condition id (2) method name and param (3) corresponding error
+  names(results) <- c("condition_id", "method", "error")
+  return(invisible(results))
 }
