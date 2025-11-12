@@ -8,6 +8,14 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
 
 ```{r}
+# IMPORTANT: UNCOMMENT one of these for package loading
+# uncomment this if you install newest version of TSAR
+# library("TSAR")
+
+# uncomment this if you clone newst version of TSAR from GitHub
+rm(list = c("merge_TSA", "TSA_average", "TSA_boxplot", "TSA_compare_plot", "TSA_wells_plot"))
+library("devtools")
+load_all('../../TSARnew') # make sure this should be the directory of TSAR source code
 
 
 start_time <- Sys.time()
@@ -40,7 +48,8 @@ library(readr)
 
 ```{r}
 library(mgcv)
-library(TSAR)
+
+# library(TSAR)
 ```
 
 ```{r}
