@@ -8,16 +8,18 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
 
 ```{r}
-# IMPORTANT: UNCOMMENT one of these for package loading
-# uncomment this if you install newest version of TSAR
-# library("TSAR")
+# IMPORTANT
 
-# uncomment this if you clone newst version of TSAR from GitHub
-rm(list = c("merge_TSA", "TSA_average", "TSA_boxplot", "TSA_compare_plot", "TSA_wells_plot"))
-library("devtools")
-load_all('../../TSARnew') # make sure this should be the directory of TSAR source code
-devtools::document()
-devtools::install()
+
+# uncomment this if you clone newest version of TSAR from GitHub
+# rm(list = c("merge_TSA", "TSA_average", "TSA_boxplot", "TSA_compare_plot", "TSA_wells_plot"))
+# library("devtools")
+# load_all('../../TSARnew') # make sure this should be the directory of TSAR source code
+# devtools::document()
+# devtools::install()
+
+
+
 library(TSAR)
 
 
@@ -90,7 +92,7 @@ TSA_compare_plot(normalized_tsa_df, control_condition = control_ID,
                            y = "RFU", smoother = "beta",
                            beta_shape = 4, beta_knots_frac = 0.008, show_Tm = TRUE)
 
-# uncomment the following for plots generation
+# uncomment the following if you want to save the plots
 
 
 # for (nm in names(plots)) {
@@ -116,7 +118,7 @@ for(i in 1:condition_IDs(normalized_tsa_df, n = TRUE)) {
     
     print(plot_i)
     
-    # uncomment the following for plots generation
+    # uncomment the following if you want to save the plots
     # Create a filename for each condition
     # svg_file <- paste0("tsa_plot_", gsub("[^A-Za-z0-9_-]", "_", cond_i), ".svg")
   

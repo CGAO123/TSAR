@@ -4,9 +4,9 @@ readme file
 <img src="vignettes/images/TSAR_logo.png" width="400px" />
 
 
-> **TSAR 1.9.1 update, November 2025**
+> **TSAR 2.0.0 update, December 2025**
 > Introduction of cubic spline with beta-knots for smoother curve fitting
-> see [`CONTRIBUTING.md`](newFeatureDemo/CONTRIBUTING.md)
+> see [`CONTRIBUTING.md`](/CONTRIBUTING.md)
 
 # TSAR
 

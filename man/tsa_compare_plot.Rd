@@ -8,9 +8,15 @@ TSA_compare_plot(
   tsa_data,
   control_condition,
   y = "Fluorescence",
-  show_Tm = FALSE,
+  show_Tm = TRUE,
   title_by = "both",
-  digits = 1
+  digits = 1,
+  smoother = c("gam", "beta", "none"),
+  smooth_conditions = TRUE,
+  beta_shape = 3,
+  beta_n_knots = NULL,
+  beta_knots_frac = 0.12,
+  use_natural = TRUE
 )
 }
 \arguments{
@@ -28,18 +34,39 @@ When \code{y = 'Fluorescence'}, the original Fluorescence data from
 TSAR::read_raw_data() is averaged. When \code{y = 'RFU'}, the average is
 calculated by the rescaled fluorescence.}
 
-\item{show_Tm}{logical; \code{show_Tm = FALSE} by default. When TRUE, the Tm
+\item{show_Tm}{logical; \code{show_Tm = TRUE} by default. When TRUE, the Tm
 is displayed on the plot. When FALSE, the Tm is not added to the plot.}
 
 \item{title_by}{character string; c("ligand", "protein", "both").
 Automatically names the plots by the specified condition category.}
 
 \item{digits}{integer; the number of decimal places to round for change in Tm
-calculations displayed in the subtitle of each plot..}
+calculations displayed in the subtitle of each plot.}
+
+\item{smoother}{character; one of \code{c("gam","beta","none")}.
+Passed to \code{\link{TSA_average}} to select the aggregate smoother:
+\code{"gam"} uses \pkg{mgcv}, \code{"beta"} uses a natural cubic spline
+with Beta(a,a) interior knots centered at Tm, and \code{"none"} uses the
+unsmoothed average. Default follows \code{TSA_average}.}
+
+\item{beta_shape}{numeric; shape parameter \eqn{a} for the Beta(a,a) knot
+placement when \code{smoother = "beta"}. \code{beta_shape = 3} by default. Passed to \code{TSA_average}.}
+
+\item{beta_n_knots}{integer or \code{NULL}; number of interior knots when
+\code{smoother = "beta"}. If \code{NULL}, uses \code{beta_knots_frac}.
+Passed to \code{TSA_average}.}
+
+\item{beta_knots_frac}{numeric in (0,1); fraction of unique temperatures used
+as interior knots when \code{smoother = "beta"} and \code{beta_n_knots}
+is \code{NULL}. \code{beta_knots_frac = 0.008} by default. Passed to \code{TSA_average}.}
+
+\item{use_natural}{logical; if TRUE (default) uses natural cubic spline
+basis for the beta method. Passed to \code{TSA_average}.}
 }
 \value{
-Generates a number of ggplot objects equal to the number of unique
-    Condition IDs present in the input data.
+A \emph{named list} of ggplot objects. One plot per non-control
+    condition is included, each overlaid against the control. A final plot for
+    the control alone is appended and named \code{"Control: <control_condition>"}.
 }
 \description{
 Generate a number of plots based on the input data to compare the average
@@ -49,8 +76,11 @@ control condition. To see all conditions use \code{condition_IDs(tsa_data)}.
 \examples{
 data("example_tsar_data")
 TSA_compare_plot(example_tsar_data,
-    y = "RFU",
-    control_condition = "CA FL_DMSO"
+    y = "Fluorescence",
+    control_condition = "CA FL_DMSO",
+    smoother = "beta",
+    beta_shape = 4, 
+    beta_knots_frac = 0.008
 )
 }
 \seealso{

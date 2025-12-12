@@ -13,7 +13,12 @@ TSA_wells_plot(
   plot_title = NA,
   plot_subtitle = NA,
   smooth = TRUE,
-  separate_legend = TRUE
+  separate_legend = TRUE,
+  smoother = c("gam", "beta", "none"),
+  beta_shape = 3,
+  beta_n_knots = NULL,
+  beta_knots_frac = 0.12,
+  use_natural = TRUE
 )
 }
 \arguments{
@@ -49,10 +54,31 @@ individual points are plotted (slows down rendering).}
 \item{separate_legend}{logical; \code{separate_legend = TRUE} by default.
 When TRUE, the ggplot2 legend is separated from the TSA curve.
 This is to help with readability. One ggplot is returned when FALSE.}
+
+\item{smoother}{character; one of \code{c("gam","beta","none")}.
+Passed to \code{\link{TSA_average}} to select the aggregate smoother:
+\code{"gam"} uses \pkg{mgcv}, \code{"beta"} uses a natural cubic spline
+with Beta(a,a) interior knots centered at Tm, and \code{"none"} uses the
+unsmoothed average. Default follows \code{TSA_average}.}
+
+\item{beta_shape}{numeric; shape parameter \eqn{a} for the Beta(a,a) knot
+placement when \code{smoother = "beta"}. \code{beta_shape = 3} by default. Passed to \code{TSA_average}.}
+
+\item{beta_n_knots}{integer or \code{NULL}; number of interior knots when
+\code{smoother = "beta"}. If \code{NULL}, uses \code{beta_knots_frac}.
+Passed to \code{TSA_average}.}
+
+\item{beta_knots_frac}{numeric in (0,1); fraction of unique temperatures used
+as interior knots when \code{smoother = "beta"} and \code{beta_n_knots}
+is \code{NULL}. \code{beta_knots_frac = 0.008} by default. Passed to \code{TSA_average}.}
+
+\item{use_natural}{logical; if TRUE (default) uses natural cubic spline
+basis for the beta method. Passed to \code{TSA_average}.}
 }
 \value{
-by default, two ggplots are returned: one TSA curve and one key.
-    When \code{separate_legend = FALSE} one ggplot is returned.
+By default, two ggplots are returned: one TSA curve and one legend
+    key (when \code{separate_legend = TRUE}). When
+    \code{separate_legend = FALSE}, a single ggplot is returned.
 }
 \description{
 Generates the individual curves for each well in the merged tsa data input.
@@ -64,7 +90,8 @@ Generates the individual curves for each well in the merged tsa data input.
 \examples{
 data("example_tsar_data")
 check <- subset(example_tsar_data, condition_ID == "CA FL_PyxINE HCl")
-TSA_wells_plot(check, separate_legend = FALSE)
+TSA_wells_plot(check, y = "Fluorescence", smooth = TRUE, separate_legend = TRUE,
+               smoother = "beta", beta_shape = 4, beta_knots_frac = 0.008)
 
 }
 \seealso{

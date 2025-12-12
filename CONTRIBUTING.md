@@ -120,7 +120,7 @@ numerical_Tm <- function(
 ### 4) Updated GUI by Shiny
   - Beta method now has also incorporated into the Shiny app where user can choose either GAM or Beta method for analysis.
 
-![GUI beta curve](demoImgs/GUI_beta.png )
+![GUI beta curve](vignettes/images/GUI_beta.png )
 
 
 
@@ -138,8 +138,8 @@ numerical_Tm <- function(
     <td>Beta Method</td>
   </tr>
   <tr>
-    <td><img src="./demoImgs/gam CuCl2.png" width="100%" /></td>
-    <td><img src="./demoImgs/beta CuCl2.png" width="100%" /> </td>
+    <td><img src="./vignettes/images/gam CuCl2.png" width="100%" /></td>
+    <td><img src="./vignettes/images/beta CuCl2.png" width="100%" /> </td>
   </tr>
  </table>
 
@@ -151,8 +151,8 @@ numerical_Tm <- function(
     <td>Beta Method</td>
   </tr>
   <tr>
-    <td><img src="./demoImgs/gam PF74.png" width="100%" /></td>
-    <td><img src="./demoImgs/beta PF74.png" width="100%" /> </td>
+    <td><img src="./vignettes/images/gam PF74.png" width="100%" /></td>
+    <td><img src="./vignettes/images/beta PF74.png" width="100%" /> </td>
   </tr>
  </table>
 
@@ -196,7 +196,7 @@ beta(a=4, frac=0.008) has lowest error and highest accuracy.
 
 ## Usage
 
-see [`demo.Rmd`](demo.Rmd)
+see [`TSAR_Workflow_Beta_Method.Rmd`](/vignettes/TSAR_Workflow_Beta_Method.Rmd)
 
 
 

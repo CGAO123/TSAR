@@ -14,7 +14,7 @@ although tsar_data is more recommended given more data options.}
 \item{frame_by}{builds plotly by specified frame variable. To graph by a
 concentration gradient, well position, or other specified variable,
 simple specify \code{frame_by = "condition_ID"}. To view all derivative
-curves without frames, set to \code{frame_by = FALSE}, else it is
+curves without frames, set to \code{frame_by = "NA"}, else it is
 defaulted to frame by well labels.}
 }
 \value{

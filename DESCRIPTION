@@ -1,7 +1,7 @@
 Package: TSAR
 Type: Package
 Title: Thermal Shift Analysis in R
-Version: 1.9.1
+Version: 2.0.0
 Year: 2025
 Authors@R: c(person("Xinlin", 
 			"Gao", 
@@ -33,7 +33,7 @@ License: AGPL-3
 Encoding: UTF-8
 LazyData: false
 Testthat: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports: 
     dplyr (>= 1.0.7),
     ggplot2 (>= 3.3.5),
