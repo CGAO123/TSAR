@@ -23,27 +23,11 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 library(TSAR)
 
 
-start_time <- Sys.time()
-output_name <- "CA121_WT_GA_Metal_analysis"
-
 control_ID <- "CA121 WT_dH2O"
-protein_filter <- NA
-ligand_filter <- NA
-
-analysis_path <- './Analysis'
+data("example_normalized_data")
 
 
 
-```
-
-```{r}
-```
-
-```{r}
-rawData_path <- './Raw'
-```
-
-```{r}
 # library('svglite')
 library(ggplot2)
 library(ggpubr)
@@ -54,41 +38,16 @@ library(dplyr)
 library(readr)
 ```
 
-```{r}
-library(mgcv)
 
-# library(TSAR)
-```
-
-```{r}
-
-
-nAnalysis<- length(dir(path = analysis_path)) 
-nRawData <- length(dir(path = rawData_path)) 
-
-tsa_df <- merge_TSA(
-    analysis_file_path = dir(path = analysis_path,
-                             full.names = TRUE), 
-    raw_data_path = dir(path = rawData_path,
-                             full.names = TRUE)
-)
-tsa_df
-```
-
-```{r}
-normalized_tsa_df <- normalize_fluorescence(tsa_data = tsa_df)
-head(normalized_tsa_df)
-```
 
 ```{r}
 
 
 
 library('svglite')
-
 # names(normalized_tsa_df)[names(normalized_tsa_df) == "RFU"] <- "Normalized"
-# TSA_compare_plotx(normalized_tsa_df,y = "RFU",control_condition = control_ID,show_Tm = T)
-TSA_compare_plot(normalized_tsa_df, control_condition = control_ID,
+# TSA_compare_plotx(example_normalized_data,y = "RFU",control_condition = control_ID,show_Tm = T)
+TSA_compare_plot(example_normalized_data, control_condition = control_ID,
                            y = "RFU", smoother = "beta",
                            beta_shape = 4, beta_knots_frac = 0.008, show_Tm = TRUE)
 
@@ -108,10 +67,10 @@ TSA_compare_plot(normalized_tsa_df, control_condition = control_ID,
 ```{r}
 
 # source("../R/tsa_curves.R")
-for(i in 1:condition_IDs(normalized_tsa_df, n = TRUE)) {
-    cond_i <- condition_IDs(normalized_tsa_df)[i]
-    subset_i <- normalized_tsa_df$condition_ID == cond_i
-    subset_i <- normalized_tsa_df[subset_i, ]
+for(i in 1:condition_IDs(example_normalized_data, n = TRUE)) {
+    cond_i <- condition_IDs(example_normalized_data)[i]
+    subset_i <- example_normalized_data$condition_ID == cond_i
+    subset_i <- example_normalized_data[subset_i, ]
     # plot_i <- TSA_wells_plot(subset_i)
     plot_i <-  TSA_wells_plot(subset_i, y = "RFU", smooth = TRUE,
                smoother = "beta", beta_shape = 4, beta_knots_frac = 0.008)
@@ -130,7 +89,7 @@ for(i in 1:condition_IDs(normalized_tsa_df, n = TRUE)) {
 # 1) Compare L2 (RMSE) across GAM and a small Beta grid
 # source("../R/averageTSA.R")
 res_L2 <- TSA_smoother_diagnostics(
-  normalized_tsa_df,
+  example_normalized_data,
   y = "RFU",
   metric = "L2",
   # beta_shapes = c(2, 4),

@@ -171,32 +171,10 @@ data of all test trials. Simply call `graph_tsar()` and click
 ```{r, eval = FALSE}
 
 
-start_time <- Sys.time()
-output_name <- "CA121_WT_GA_Metal_analysis"
-
-control_ID <- "CA121 WT_dH2O"
-protein_filter <- NA
-ligand_filter <- NA
-
-analysis_path <- './Analysis'
+data("example_normalized_data")
 
 
-rawData_path <- './Raw'
-
-nAnalysis<- length(dir(path = analysis_path)) 
-nRawData <- length(dir(path = rawData_path)) 
-
-tsa_df <- merge_TSA(
-    analysis_file_path = dir(path = analysis_path,
-                             full.names = TRUE), 
-    raw_data_path = dir(path = rawData_path,
-                             full.names = TRUE)
-)
-
-normalized_tsa_df <- normalize_fluorescence(tsa_data = tsa_df)
-
-
-runApp(graph_tsar(normalized_tsa_df))
+runApp(graph_tsar(example_normalized_data))
 ```
 
 Upload is limited to 30MB in size, but not count. After upload, user will 
