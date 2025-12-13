@@ -117,7 +117,7 @@ numerical_Tm <- function(
 ) 
 ```
 
-### 4) Updated GUI by Shiny
+### 4) Updated Shiny GUI integrated with Beta Method
   - Beta method now has also incorporated into the Shiny app where user can choose either GAM or Beta method for analysis.
 
 ![GUI beta curve](vignettes/images/GUI_beta.png )
@@ -156,7 +156,10 @@ numerical_Tm <- function(
   </tr>
  </table>
 
-**Example 3** With 13 samples in one experiment of TSA, Beta method shows more accurate fitted curves (~30.4% improvement) than GAM
+**Example 3** With 13 samples in one experiment of TSA, Beta method shows more accurate fitted curves (~30.4% improvement) than GAM. The data comes from
+```R
+data("example_normalized_data")
+```
 	
 | condition_id                        | method                | error      |
 |-------------------------------------|-----------------------|------------|
