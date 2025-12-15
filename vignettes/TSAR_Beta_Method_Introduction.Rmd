@@ -4,7 +4,7 @@
 
 ## Summary
 
-This PR introduces a new smoothing method, beta method, overwriting for the `TSA_average()` function that utilizes a beta-knots natural cubic spline centered at numerical $T_m$ point to fit a smoother curve to the melting point data. The new method exhibits **solves the problem of oscillating fitted curves at the boundaries resulted by General Additive Model (GAM).**
+This document introduces a new smoothing method, beta method, overwriting for the `TSA_average()` function that utilizes a beta-knots natural cubic spline centered at numerical $T_m$ point to fit a smoother curve to the melting point data. The new method exhibits **solves the problem of oscillating fitted curves at the boundaries resulted by General Additive Model (GAM).**
 
 The new method is a overwritten method to existing method `TSA_average()` with two children methods calling the new method: `TSA_compare_plot()` and `TSA_wells_plot()` such that
 
