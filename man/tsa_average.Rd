@@ -9,7 +9,12 @@ TSA_average(
   y = "Fluorescence",
   digits = 1,
   avg_smooth = TRUE,
-  sd_smooth = TRUE
+  sd_smooth = TRUE,
+  smoother = c("gam", "beta", "none"),
+  beta_shape = 4,
+  beta_n_knots = NULL,
+  beta_knots_frac = 0.008,
+  use_natural = TRUE
 )
 }
 \arguments{
@@ -29,6 +34,25 @@ The number of decimal places to round temperature to for averaging.}
 \item{avg_smooth, sd_smooth}{logical; TRUE by default. Decides if the
 average (avg_smooth) or standard deviation (sd_smooth) will be smoothened
 by regression via mgcv::gam()}
+
+\item{smoother}{character; one of \code{c("gam","beta","none")}.
+Passed to \code{\link{TSA_average}} to select the aggregate smoother:
+\code{"gam"} uses \pkg{mgcv}, \code{"beta"} uses a natural cubic spline
+with Beta(a,a) interior knots centered at Tm, and \code{"none"} uses the
+unsmoothed average. Default follows \code{TSA_average}.}
+
+\item{beta_shape}{numeric; shape parameter \eqn{a} for the Beta(a,a) knot
+placement when \code{smoother = "beta"}. \code{beta_shape = 3} by default.}
+
+\item{beta_n_knots}{integer or \code{NULL}; number of interior knots when
+\code{smoother = "beta"}. If \code{NULL}, uses \code{beta_knots_frac}.}
+
+\item{beta_knots_frac}{numeric in (0,1); fraction of unique temperatures used
+as interior knots when \code{smoother = "beta"} and \code{beta_n_knots}
+is \code{NULL}. \code{beta_knots_frac = 0.008} by default.}
+
+\item{use_natural}{logical; if TRUE (default) uses natural cubic spline
+basis for the beta method.}
 }
 \value{
 a data frame of each temperature measured with the average, sd, and

@@ -54,8 +54,8 @@
 #' @examples
 #' data("example_tsar_data")
 #' check <- subset(example_tsar_data, condition_ID == "CA FL_PyxINE HCl")
-#' TSA_wells_plot(check, y = "RFU", smooth = TRUE, separate_legend = TRUE,
-#'                smoother = "beta", beta_shape = 4, beta_knots_frac = 0.10)
+#' TSA_wells_plot(check, y = "Fluorescence", smooth = TRUE, separate_legend = TRUE,
+#'                smoother = "beta", beta_shape = 4, beta_knots_frac = 0.008)
 #'
 #' @export
 
@@ -367,7 +367,7 @@ TSA_boxplot <- function(
 #'
 #' @inheritParams TSA_average
 #' @inheritParams Tm_difference
-#' @param show_Tm logical; \code{show_Tm = FALSE} by default. When TRUE, the Tm
+#' @param show_Tm logical; \code{show_Tm = TRUE} by default. When TRUE, the Tm
 #'     is displayed on the plot. When FALSE, the Tm is not added to the plot.
 #' @param title_by character string; c("ligand", "protein", "both").
 #'     Automatically names the plots by the specified condition category.
@@ -402,20 +402,19 @@ TSA_boxplot <- function(
 #' @examples
 #' data("example_tsar_data")
 #' TSA_compare_plot(example_tsar_data,
-#'     y = "RFU",
+#'     y = "Fluorescence",
 #'     control_condition = "CA FL_DMSO",
 #'     smoother = "beta",
-#'     beta_shape = 3, 
-#'     beta_knots_frac = 0.08
+#'     beta_shape = 4, 
+#'     beta_knots_frac = 0.008
 #' )
 #' @export
 #' 
-
 TSA_compare_plot <- function(
     tsa_data,
     control_condition,
     y = "Fluorescence",
-    show_Tm = FALSE,
+    show_Tm = TRUE,
     title_by = "both",
     digits = 1,
     # new options:
@@ -426,19 +425,19 @@ TSA_compare_plot <- function(
     beta_knots_frac = 0.12,
     use_natural     = TRUE
 ) {
-  
+
   smoother <- match.arg(smoother)
   y <- match.arg(y, choices = c("Fluorescence", "RFU"))
-  
+
   if (!"well_ID" %in% names(tsa_data) || !"condition_ID" %in% names(tsa_data)) {
     stop("tsa_data must be a data frame merged by merge_TSA()")
   } else if (!control_condition %in% condition_IDs(tsa_data)) {
     stop("control_condition must be a value from tsa_data$condition_ID")
   }
-  
+
   Tms_df <- TSA_Tms(tsa_data)
   control_avg <- Tms_df$Avg_Tm[Tms_df$condition_ID == control_condition]
-  
+
   # --- control curve ---
   control_df <- tsa_data[tsa_data$condition_ID == control_condition, ]
   control_df <- TSA_average(
@@ -448,12 +447,12 @@ TSA_compare_plot <- function(
     beta_shape = beta_shape, beta_n_knots = beta_n_knots,
     beta_knots_frac = beta_knots_frac, use_natural = use_natural
   )
-  
+
   # pick safe columns for control plotting
-  control_df$y_plot   <- if ("avg_smooth"     %in% names(control_df)) control_df$avg_smooth     else control_df$average
-  control_df$ymin_rib <- if ("sd_min_smooth"  %in% names(control_df)) control_df$sd_min_smooth  else control_df$sd_min
-  control_df$ymax_rib <- if ("sd_max_smooth"  %in% names(control_df)) control_df$sd_max_smooth  else control_df$sd_max
-  
+  control_df$y_plot   <- if ("avg_smooth"    %in% names(control_df)) control_df$avg_smooth    else control_df$average
+  control_df$ymin_rib <- if ("sd_min_smooth" %in% names(control_df)) control_df$sd_min_smooth else control_df$sd_min
+  control_df$ymax_rib <- if ("sd_max_smooth" %in% names(control_df)) control_df$sd_max_smooth else control_df$sd_max
+
   control_curve <- ggplot(
     control_df,
     aes(x = Temperature, y = y_plot)
@@ -463,30 +462,31 @@ TSA_compare_plot <- function(
       alpha = 0.4, fill = "black"
     ) +
     geom_line(linetype = "dotdash", color = "black")
-  
+
   # palette
   colfunc <- grDevices::colorRampPalette(c("red", "blue"))
   col_vect <- colfunc(condition_IDs(tsa_data, n = TRUE))
-  
+
   Tm_difference_DF <- Tm_difference(
     tsa_data = tsa_data,
     control_condition = control_condition
   )
-  
+
   curve_list <- as.list(rep(NA, condition_IDs(tsa_data, n = TRUE)))
-  
+
   for (i in seq_len(condition_IDs(tsa_data, n = TRUE))) {
     condition_i <- condition_IDs(tsa_data)[i]
     tm_avg_i <- Tms_df$Avg_Tm[Tms_df$condition_ID == condition_i]
-    
+
     Tm_diff_i <- Tm_difference_DF$delta_Tm[
       Tm_difference_DF$condition_ID == condition_i
     ]
     Tm_diff_i <- round(Tm_diff_i, digits = digits)
-    
+
     title_i <- condition_i
     subtitle_i <- paste("Tm = ", Tm_diff_i, "C", sep = "")
     ctrl_subtitle <- control_condition
+
     if (title_by == "ligand") {
       title_i <- Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID == condition_i]
       ctrl_subtitle <- Tm_difference_DF$Ligand[Tm_difference_DF$condition_ID == control_condition]
@@ -509,7 +509,7 @@ TSA_compare_plot <- function(
         sep = ""
       )
     }
-    
+
     cond_df_i <- tsa_data[tsa_data$condition_ID == condition_i, ]
     cond_df_i <- TSA_average(
       tsa_data = cond_df_i, y = y,
@@ -518,12 +518,12 @@ TSA_compare_plot <- function(
       beta_shape = beta_shape, beta_n_knots = beta_n_knots,
       beta_knots_frac = beta_knots_frac, use_natural = use_natural
     )
-    
+
     # pick safe columns for condition plotting
     cond_df_i$y_line   <- if (smooth_conditions && "avg_smooth"    %in% names(cond_df_i)) cond_df_i$avg_smooth    else cond_df_i$average
     cond_df_i$ymin_rib <- if (smooth_conditions && "sd_min_smooth" %in% names(cond_df_i)) cond_df_i$sd_min_smooth else cond_df_i$sd_min
     cond_df_i$ymax_rib <- if (smooth_conditions && "sd_max_smooth" %in% names(cond_df_i)) cond_df_i$sd_max_smooth else cond_df_i$sd_max
-    
+
     diff_curve_i <- control_curve +
       geom_ribbon(
         data = cond_df_i,
@@ -537,37 +537,46 @@ TSA_compare_plot <- function(
         color = col_vect[i],
         inherit.aes = FALSE
       )
-    
+
+    # --- FIX: restore BOTH vertical Tm lines in comparison plots (control + condition) ---
     if (isTRUE(show_Tm)) {
-      # add vertical line at condition's average Tm
-      if (is.finite(tm_avg_i) && length(tm_avg_i) == 1) {
+      ctrl_tm <- suppressWarnings(as.numeric(control_avg[1]))
+      cond_tm <- suppressWarnings(as.numeric(tm_avg_i[1]))
+
+      if (is.finite(ctrl_tm)) {
         diff_curve_i <- diff_curve_i +
-          geom_vline(xintercept = tm_avg_i, linetype = "dashed", color = col_vect[i])
+          geom_vline(xintercept = ctrl_tm, linetype = "dashed", color = "black")
+      }
+      if (is.finite(cond_tm)) {
+        diff_curve_i <- diff_curve_i +
+          geom_vline(xintercept = cond_tm, linetype = "dashed", color = col_vect[i])
       }
     }
-    
+
     diff_curve_i <- diff_curve_i +
       theme_bw() +
       labs(title = title_i, subtitle = subtitle_i)
-    
+
     curve_list[[i]] <- diff_curve_i
     names(curve_list)[i] <- condition_i
   }
-  
+
   # -- add control plot to list
   control_curve <- control_curve +
     labs(title = "Control", subtitle = ctrl_subtitle) +
     theme_bw()
+
   if (isTRUE(show_Tm)) {
-    if (is.finite(control_avg) && length(control_avg) == 1) {
+    ctrl_tm <- suppressWarnings(as.numeric(control_avg[1]))
+    if (is.finite(ctrl_tm)) {
       control_curve <- control_curve +
-        geom_vline(xintercept = control_avg, linetype = "dashed", color = "#BC9595")
+        geom_vline(xintercept = ctrl_tm, linetype = "dashed", color = "#BC9595")
     }
   }
-  
+
   curve_list[names(curve_list) == control_condition] <- NULL
   curve_list[[length(curve_list) + 1]] <- control_curve
   names(curve_list)[length(curve_list)] <- paste("Control: ", control_condition, sep = "")
-  
+
   return(curve_list)
 }

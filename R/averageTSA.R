@@ -257,7 +257,7 @@ TSA_average <- function(
 #'
 #' result <- TSA_smoother_diagnostics(normalized_tsa_df, y = "RFU", metric = "L2")
 #' as.data.frame(result)
-
+#' }
 #' @family Diagnostics
 #' @seealso \code{\link{TSA_average}} (smoother implementation),
 #'   \code{\link{TSA_wells_plot}} (visualization of per-well and averaged curves).

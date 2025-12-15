@@ -1,1 +1,8 @@
-bibentry(  bibtype  = "Article",  title    = "Use of TSAR, Thermal Shift Analysis in R, to identify Folic Acid as a Molecule that Interacts with HIV-1 Capsid",  author   = "X. Gao and W. M. McFadden and X. Wen and A. Emanuelli and Z. C. Lorson and H. Zheng and K. A. Kirby and S. G. Sarafianos",  journal  = "bioRxiv",  year     = 2023,  doi      = "10.1101/2023.11.29.569293")
+bibentry(
+  bibtype  = "Article",
+  title    = "TSAR, “Thermal Shift Analysis in R”, identifies endogenous molecules that interact with HIV-1 capsid hexamers",
+  author   = "William M. McFadden, Xinlin Gao, Zhijiang Ye, Xin Wen, Zach C. Lorson, Huanchun Zheng, Jessica Fahim, Andres E. Castaner, Karen A. Kirby, Stefan G. Sarafianos",
+  journal  = "bioRxiv",
+  year     = 2025,
+  doi      = "10.1101/2023.11.29.569293"
+)

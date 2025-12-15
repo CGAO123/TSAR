@@ -282,9 +282,12 @@ User can now choose the smoother type ("gam", "beta", or "none") to be used in t
 control_ID <- "CA FL_DMSO"
 
 TSA_compare_plot(conclusion,
-    y = "RFU",
+    y = "Fluorescence",
     control_condition = control_ID,
     smoother = "beta",
+    beta_shape = 4, 
+    beta_knots_frac = 0.008, 
+    show_Tm = TRUE
 )
 ```
 
@@ -294,7 +297,7 @@ What's new:
 User can now choose the smoother type ("gam", "beta", or "none") to be used in the plot.
 ```{r}
 error <- conclusion %>% filter(condition_ID == "CA FL_PyxINE HCl")
-TSA_wells_plot(error, separate_legend = TRUE, smoother = "beta",)
+TSA_wells_plot(error, y='Fluorescence', separate_legend = TRUE, smoother = "beta", beta_shape = 4, beta_knots_frac = 0.008, show_Tm = TRUE)
 ```
 
 To further visualize the comparison, graph first derivatives grouped by needs 
