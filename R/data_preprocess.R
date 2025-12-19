@@ -198,6 +198,7 @@ numerical_Tm <- function(data, x, y) {
 #' @param use_natural logical; if TRUE (default) uses \code{splines::ns()},
 #'   else \code{splines::bs(..., degree = 3)}.
 #' @return \code{"lm"} fit with spline basis; attributes store knots and settings.
+#' @export
 model_beta <- function(norm_data, x, y,
                        beta_shape = 4,
                        beta_knots_frac = 0.008,
