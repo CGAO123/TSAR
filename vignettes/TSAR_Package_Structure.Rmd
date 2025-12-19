@@ -332,7 +332,7 @@ readings `y = 'RFU'`.
 control_ID <- "CA FL_DMSO"
 
 TSA_compare_plot(conclusion,
-    y = "RFU",
+    y = "Fluorescence",
     control_condition = control_ID
 )
 ```
@@ -344,7 +344,7 @@ Users may also graph by condition IDs or well IDs using function
 
 ```{r}
 ABA_Cond <- conclusion %>% filter(condition_ID == "CA FL_4-ABA")
-TSA_wells_plot(ABA_Cond, separate_legend = TRUE)
+TSA_wells_plot(ABA_Cond, separate_legend = TRUE, y = "Fluorescence")
 ```
 
 ### 5.2.4 First Derivative Comparison
