@@ -132,17 +132,17 @@ numerical_Tm <- function(
 
 **Example 1** Beta method shows smoother fitted curves than GAM
 
-|                              |                               |
-|------------------------------|-------------------------------|
-| GAM                          | Beta Method                   |
-| ![](/images/gam%20CuCl2.png) | ![](/images/beta%20CuCl2.png) |
+|                            |                             |
+|----------------------------|-----------------------------|
+| GAM                        | Beta Method                 |
+| ![](/images/gam_CuCl2.png) | ![](/images/beta_CuCl2.png) |
 
 **Example 2** Beta method shows less oscillating boundary condition than GAM
 
-|                             |                              |
-|-----------------------------|------------------------------|
-| GAM                         | Beta Method                  |
-| ![](/images/gam%20PF74.png) | ![](/images/beta%20PF74.png) |
+|                           |                            |
+|---------------------------|----------------------------|
+| GAM                       | Beta Method                |
+| ![](/images/gam_PF74.png) | ![](/images/beta_PF74.png) |
 
 **Example 3** With 13 samples in one experiment of TSA, Beta method shows more accurate fitted curves (\~30.4% improvement) than GAM. The data comes from
 
