@@ -191,6 +191,7 @@ numerical_Tm <- function(data, x, y) {
 #' Tm from \code{\link{numerical_Tm}}.
 #'
 #' @inheritParams numerical_Tm
+#' @param norm_data data.frame with numeric columns x and y (normalized).
 #' @param beta_shape numeric > 0; Beta(a,a) shape parameter. Default 4.
 #' @param beta_knots_frac numeric in (0,1); fraction of unique x used for
 #'   interior knots if \code{beta_n_knots} is NULL. Default 0.008.

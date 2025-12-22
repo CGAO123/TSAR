@@ -15,6 +15,8 @@ model_beta(
 )
 }
 \arguments{
+\item{norm_data}{data.frame with numeric columns x and y (normalized).}
+
 \item{x, y}{character; names of the predictor and response columns.}
 
 \item{beta_shape}{numeric > 0; Beta(a,a) shape parameter. Default 4.}

@@ -378,6 +378,14 @@ TSA_boxplot <- function(
 #'     \code{"gam"} uses \pkg{mgcv}, \code{"beta"} uses a natural cubic spline
 #'     with Beta(a,a) interior knots centered at Tm, and \code{"none"} uses the
 #'     unsmoothed average. Default follows \code{TSA_average}.
+#' @param smooth_conditions logical; \code{smooth_conditions = TRUE} by default.
+#'   Controls whether each non-control condition curve is drawn using smoothed
+#'   aggregates from \code{\link{TSA_average}}. When \code{TRUE}, the condition
+#'   overlay uses \code{avg_smooth} and the smoothed standard deviation bounds
+#'   (\code{sd_min_smooth}, \code{sd_max_smooth}) when available. When \code{FALSE},
+#'   the overlay uses the unsmoothed mean (\code{average}) and raw bounds
+#'   (\code{sd_min}, \code{sd_max}). The control curve remains smoothed.
+#'   (Passed as \code{avg_smooth} and \code{sd_smooth} to \code{TSA_average}.)
 #' @param beta_shape numeric; shape parameter \eqn{a} for the Beta(a,a) knot
 #'     placement when \code{smoother = "beta"}. \code{beta_shape = 3} by default. Passed to \code{TSA_average}.
 #' @param beta_n_knots integer or \code{NULL}; number of interior knots when
